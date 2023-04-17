@@ -38,41 +38,41 @@ func (server *Server) Start() {
 		}
 	}(mongoClient, context.Background())
 
-	registrarRepository := server.initRegistrarRepository(mongoClient)
-	registrarService := server.initRegistrarService(registrarRepository)
-	registrarController := server.initRegistrarController(registrarService)
+	authRepository := server.initAuthRepository(mongoClient)
+	authService := server.initAuthService(authRepository)
+	authController := server.initAuthController(authService)
 
-	server.start(registrarController)
+	server.start(authController)
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
-	client, err := repository.GetMongoClient(server.config.RegistrarDBHost, server.config.RegistrarDBPort)
+	client, err := repository.GetMongoClient(server.config.AuthDBHost, server.config.AuthDBPort)
 	if err != nil {
 		log.Fatal(err)
 	}
 	return client
 }
 
-func (server *Server) initRegistrarRepository(client *mongo.Client) repository.RegistrarRepository {
-	store := repository_impl.NewRegistrarRepositoryImpl(client)
+func (server *Server) initAuthRepository(client *mongo.Client) repository.AuthRepository {
+	store := repository_impl.NewAuthRepositoryImpl(client)
 	return store
 }
 
-func (server *Server) initRegistrarService(store repository.RegistrarRepository) *service.RegistrarService {
-	return service.NewRegistrarService(store)
+func (server *Server) initAuthService(store repository.AuthRepository) *service.AuthService {
+	return service.NewAuthService(store)
 }
 
-func (server *Server) initRegistrarController(service *service.RegistrarService) *controller.RegistrarController {
-	return controller.NewRegistrarController(service)
+func (server *Server) initAuthController(service *service.AuthService) *controller.AuthController {
+	return controller.NewAuthController(service)
 }
 
 // start
-func (server *Server) start(registrarController *controller.RegistrarController) {
+func (server *Server) start(registrarController *controller.AuthController) {
 	router := mux.NewRouter()
 	registrarController.Init(router)
 
 	srv := &http.Server{
-		Addr:    fmt.Sprintf(":%s", server.config.RegistrarServicePort),
+		Addr:    fmt.Sprintf(":%s", server.config.AuthServicePort),
 		Handler: router,
 	}
 
