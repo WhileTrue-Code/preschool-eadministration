@@ -1,6 +1,6 @@
 package repository
 
-type RegistrarRepository interface {
+type AuthRepository interface {
 	//GetAll(ctx context.Context) ([]*Credentials, error)
 	//Register(ctx context.Context, user *Credentials) error
 	//GetOneUser(ctx context.Context, username string) (*Credentials, error)
