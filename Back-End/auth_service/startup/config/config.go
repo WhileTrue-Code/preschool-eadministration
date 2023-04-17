@@ -3,15 +3,15 @@ package config
 import "os"
 
 type Config struct {
-	RegistrarServicePort string
-	RegistrarDBPort      string
-	RegistrarDBHost      string
+	AuthServicePort string
+	AuthDBPort      string
+	AuthDBHost      string
 }
 
 func NewConfig() *Config {
 	return &Config{
-		RegistrarServicePort: os.Getenv("REGISTRAR_SERVICE_PORT"),
-		RegistrarDBHost:      os.Getenv("REGISTRAR_DB_HOST"),
-		RegistrarDBPort:      os.Getenv("REGISTRAR_DB_PORT"),
+		AuthServicePort: os.Getenv("AUTH_SERVICE_PORT"),
+		AuthDBHost:      os.Getenv("AUTH_DB_HOST"),
+		AuthDBPort:      os.Getenv("AUTH_DB_PORT"),
 	}
 }

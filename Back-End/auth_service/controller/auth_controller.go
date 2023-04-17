@@ -6,22 +6,22 @@ import (
 	"registrar_service/service"
 )
 
-type RegistrarController struct {
-	service *service.RegistrarService
+type AuthController struct {
+	service *service.AuthService
 }
 
-func NewRegistrarController(service *service.RegistrarService) *RegistrarController {
-	return &RegistrarController{
+func NewAuthController(service *service.AuthService) *AuthController {
+	return &AuthController{
 		service: service,
 	}
 }
 
-func (controller *RegistrarController) Init(router *mux.Router) {
+func (controller *AuthController) Init(router *mux.Router) {
 	router.HandleFunc("/test", controller.Test).Methods("GET")
 	http.Handle("/", router)
 }
 
-func (controller *RegistrarController) Test(writer http.ResponseWriter, req *http.Request) {
+func (controller *AuthController) Test(writer http.ResponseWriter, req *http.Request) {
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Okej"))
 	//jsonResponse(token, writer)

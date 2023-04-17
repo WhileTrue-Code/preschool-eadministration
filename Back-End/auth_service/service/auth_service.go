@@ -2,12 +2,12 @@ package service
 
 import "registrar_service/repository"
 
-type RegistrarService struct {
-	store repository.RegistrarRepository
+type AuthService struct {
+	store repository.AuthRepository
 }
 
-func NewRegistrarService(store repository.RegistrarRepository) *RegistrarService {
-	return &RegistrarService{
+func NewAuthService(store repository.AuthRepository) *AuthService {
+	return &AuthService{
 		store: store,
 	}
 }
