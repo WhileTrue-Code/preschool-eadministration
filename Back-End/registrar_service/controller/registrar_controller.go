@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"github.com/casbin/casbin"
 	"github.com/gorilla/mux"
+	"log"
 	"net/http"
+	"registrar_service/authorization"
 	"registrar_service/service"
 )
 
@@ -17,8 +20,16 @@ func NewRegistrarController(service *service.RegistrarService) *RegistrarControl
 }
 
 func (controller *RegistrarController) Init(router *mux.Router) {
-	router.HandleFunc("/test", controller.Test).Methods("GET")
+
+	authEnforcer, err := casbin.NewEnforcerSafe("./auth_model.conf", "./policy.csv")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	router.HandleFunc("/vencani", controller.Test).Methods("POST")
 	http.Handle("/", router)
+	log.Fatal(http.ListenAndServe(":8001", authorization.Authorizer(authEnforcer)(router)))
+
 }
 
 func (controller *RegistrarController) Test(writer http.ResponseWriter, req *http.Request) {

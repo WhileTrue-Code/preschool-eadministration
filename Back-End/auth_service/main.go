@@ -1,8 +1,8 @@
 package main
 
 import (
-	"registrar_service/startup"
-	"registrar_service/startup/config"
+	"auth_service/startup"
+	"auth_service/startup/config"
 )
 
 func main() {

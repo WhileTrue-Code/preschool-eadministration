@@ -1,4 +1,4 @@
-package domain
+package model
 
 import (
 	"encoding/json"
@@ -9,26 +9,34 @@ import (
 
 type User struct {
 	ID        primitive.ObjectID `bson:"_id" json:"id"`
-	Firstname string             `bson:"firstName,omitempty" json:"firstName,omitempty" validate:"onlyChar"`
-	Lastname  string             `bson:"lastName,omitempty" json:"lastName,omitempty" validate:"onlyChar"`
-	Age       int                `bson:"age,omitempty" json:"age,omitempty"`
-	Residence string             `bson:"residence,omitempty" json:"residence,omitempty" validate:"onlyCharAndSpace"`
-	JMBG      string             `bson:"username" json:"jmbg" validate:"onlyCharAndNum,required"`
+	Firstname string             `bson:"firstName" json:"firstName" validate:"onlyChar"`
+	Lastname  string             `bson:"lastName" json:"lastName" validate:"onlyChar"`
+	Age       int                `bson:"age" json:"age"`
+	Residence string             `bson:"residence" json:"residence" validate:"onlyCharAndSpace"`
+	JMBG      string             `bson:"jmbg" json:"jmbg" validate:"onlyCharAndNum,required"`
 	Password  string             `bson:"password" json:"password" validate:"onlyCharAndNum,required"`
 	UserType  UserType           `bson:"userType" json:"userType" validate:"onlyChar"`
+}
+
+type Credentials struct {
+	ID       primitive.ObjectID `bson:"_id" json:"id"`
+	JMBG     string             `bson:"jmbg" json:"jmbg" validate:"onlyCharAndNum,required"`
+	Password string             `bson:"password" json:"password" validate:"onlyCharAndNum,required"`
+	UserType UserType           `bson:"userType" json:"userType" validate:"onlyChar"`
 }
 
 type UserType string
 
 const (
 	Admin     = "Admin"
-	Citizen   = "Citizen"
+	Regular   = "Regular"
+	Doctor    = "Doctor"
 	Registrar = "Registrar"
 )
 
 type Claims struct {
 	UserID    primitive.ObjectID `json:"user_id"`
-	Username  string             `json:"username"`
+	JMBG      string             `json:"jmbg"`
 	Role      UserType           `json:"userType"`
 	ExpiresAt time.Time          `json:"expires_at"`
 }

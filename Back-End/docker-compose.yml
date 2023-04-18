@@ -12,8 +12,29 @@ services:
       - "8000:8000"
     depends_on:
       - registrar_service
+      - auth_service
     networks:
       - network
+
+  auth_service:
+    image: auth_service
+    container_name: auth_service
+    build:
+      context: .
+      dockerfile: ./auth_service/Dockerfile
+    restart: always
+    ports:
+      - ${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}
+    environment:
+      AUTH_SERVICE_HOST: ${AUTH_SERVICE_HOST}
+      AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT}
+      AUTH_DB_HOST: ${AUTH_DB_HOST}
+      AUTH_DB_PORT: ${AUTH_DB_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+    networks:
+      - network
+    depends_on:
+      - auth_db
 
   registrar_service:
     image: registrar_service
@@ -33,6 +54,15 @@ services:
       - network
     depends_on:
       - registrar_db
+
+  auth_db:
+    image: mongo
+    container_name: auth_db
+    restart: on-failure
+    networks:
+      - network
+  #    volumes:
+  #      - user_db:/data/db
 
   registrar_db:
     image: mongo

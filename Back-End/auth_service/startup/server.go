@@ -1,6 +1,11 @@
 package startup
 
 import (
+	"auth_service/controller"
+	"auth_service/repository"
+	"auth_service/repository/repository_impl"
+	"auth_service/service"
+	"auth_service/startup/config"
 	"context"
 	"fmt"
 	"github.com/gorilla/mux"
@@ -9,11 +14,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"registrar_service/controller"
-	"registrar_service/repository"
-	"registrar_service/repository/repository_impl"
-	"registrar_service/service"
-	"registrar_service/startup/config"
 	"syscall"
 	"time"
 )
