@@ -28,8 +28,6 @@ func (controller *RegistrarController) Init(router *mux.Router) {
 		log.Fatal(err)
 	}
 
-	log.Println(authEnforcer.GetPolicy())
-
 	router.HandleFunc("/registry", controller.CreateNewBirthCertificate).Methods("POST")
 	router.HandleFunc("/test", controller.Test).Methods("GET")
 	router.HandleFunc("/marriage", controller.Marriage).Methods("POST")

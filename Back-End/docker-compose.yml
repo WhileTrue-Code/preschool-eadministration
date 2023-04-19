@@ -31,10 +31,13 @@ services:
       AUTH_DB_HOST: ${AUTH_DB_HOST}
       AUTH_DB_PORT: ${AUTH_DB_PORT}
       SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
+      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
     networks:
       - network
     depends_on:
       - auth_db
+      - nats
 
   registrar_service:
     image: registrar_service
@@ -51,10 +54,13 @@ services:
       REGISTRAR_DB_HOST: ${REGISTRAR_DB_HOST}
       REGISTRAR_DB_PORT: ${REGISTRAR_DB_PORT}
       SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
+      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
     networks:
       - network
     depends_on:
       - registrar_db
+      - nats
 
   auth_db:
     image: mongo
@@ -62,8 +68,10 @@ services:
     restart: on-failure
     networks:
       - network
-  #    volumes:
-  #      - user_db:/data/db
+
+
+#    volumes:
+#      - user_db:/data/db
 
   registrar_db:
     image: mongo
@@ -71,8 +79,17 @@ services:
     restart: on-failure
     networks:
       - network
+
 #    volumes:
 #      - user_db:/data/db
+
+  nats:
+    image: nats
+    container_name: nats
+    restart: on-failure
+    networks:
+      - network
+
 
 networks:
   network:

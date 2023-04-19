@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"registrar_service/controller"
+	messageBroker "registrar_service/nats"
 	"registrar_service/repository"
 	"registrar_service/repository/repository_impl"
 	"registrar_service/service"
@@ -30,6 +32,10 @@ func NewServer(config *config.Config) *Server {
 
 func (server *Server) Start() {
 
+	//connectiong to NATS container
+	natsConnection := messageBroker.Conn()
+	defer natsConnection.Close()
+
 	mongoClient := server.initMongoClient()
 	defer func(mongoClient *mongo.Client, ctx context.Context) {
 		err := mongoClient.Disconnect(ctx)
@@ -39,8 +45,11 @@ func (server *Server) Start() {
 	}(mongoClient, context.Background())
 
 	registrarRepository := server.initRegistrarRepository(mongoClient)
-	registrarService := server.initRegistrarService(registrarRepository)
+	registrarService := server.initRegistrarService(registrarRepository, natsConnection)
 	registrarController := server.initRegistrarController(registrarService)
+
+	//pozivanje metode za subscribe na nats
+	registrarService.SubscribeToNats(natsConnection)
 
 	server.start(registrarController)
 }
@@ -58,8 +67,8 @@ func (server *Server) initRegistrarRepository(client *mongo.Client) repository.R
 	return store
 }
 
-func (server *Server) initRegistrarService(store repository.RegistrarRepository) *service.RegistrarService {
-	return service.NewRegistrarService(store)
+func (server *Server) initRegistrarService(store repository.RegistrarRepository, natsConnection *nats.Conn) *service.RegistrarService {
+	return service.NewRegistrarService(store, natsConnection)
 }
 
 func (server *Server) initRegistrarController(service *service.RegistrarService) *controller.RegistrarController {

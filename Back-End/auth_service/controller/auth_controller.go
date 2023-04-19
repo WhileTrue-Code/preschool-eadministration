@@ -62,6 +62,10 @@ func (controller *AuthController) SignUp(response http.ResponseWriter, request *
 		response.WriteHeader(http.StatusAccepted)
 		response.Write([]byte("JMBG already exist"))
 		return
+	} else if value == -2 {
+		response.WriteHeader(http.StatusAccepted)
+		response.Write([]byte("Sorry but that JMBG not exist in NewBornRegistry!"))
+		return
 	}
 
 	response.WriteHeader(http.StatusOK)

@@ -12,7 +12,7 @@ type User struct {
 	JMBGMajke     string             `json:"jmbg_majke" bson:"JMBGMajke"`
 	DatumRodjenja int64              `json:"datum_rodjenja" bson:"datumRodjenja"`
 	MestoRodjenja string             `json:"mesto_rodjenja" bson:"mestoRodjenja"`
-	JMBG          string             `json:"jmbg" bson:"JMBG"`
+	JMBG          string             `json:"jmbg" bson:"JMBG" unique:"true"`
 	Pol           Pol                `json:"pol" bson:"pol"`
 	Preminuo      bool               `json:"preminuo" bson:"Preminuo"`
 	DatimSmrti    int64              `json:"datim_smrti" bson:"DatimSmrti"`
@@ -25,6 +25,22 @@ type Pol string
 const (
 	Muski  = "Muski"
 	Zenski = "Zenski"
+)
+
+type Credentials struct {
+	ID       primitive.ObjectID `bson:"_id" json:"id"`
+	JMBG     string             `bson:"jmbg" json:"jmbg" validate:"onlyCharAndNum,required"`
+	Password string             `bson:"password" json:"password" validate:"onlyCharAndNum,required"`
+	UserType UserType           `bson:"userType" json:"userType" validate:"onlyChar"`
+}
+
+type UserType string
+
+const (
+	Admin     = "Admin"
+	Regular   = "Regular"
+	Doctor    = "Doctor"
+	Registrar = "Registrar"
 )
 
 type BirthCertificate struct {

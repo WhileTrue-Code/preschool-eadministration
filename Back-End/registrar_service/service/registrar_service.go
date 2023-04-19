@@ -1,19 +1,24 @@
 package service
 
 import (
+	"encoding/json"
+	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
+	"os"
 	"registrar_service/model/entity"
 	"registrar_service/repository"
 )
 
 type RegistrarService struct {
-	store repository.RegistrarRepository
+	store          repository.RegistrarRepository
+	natsConnection *nats.Conn
 }
 
-func NewRegistrarService(store repository.RegistrarRepository) *RegistrarService {
+func NewRegistrarService(store repository.RegistrarRepository, natsConnection *nats.Conn) *RegistrarService {
 	return &RegistrarService{
-		store: store,
+		store:          store,
+		natsConnection: natsConnection,
 	}
 }
 
@@ -51,4 +56,39 @@ func (service *RegistrarService) FindOneUser(jmbg string) *entity.User {
 func (service *RegistrarService) CreateNewMarriage(marriage entity.ExcerptFromTheMarriageRegister) {
 	marriage.ID = primitive.NewObjectID()
 	service.store.CreateNewMarriage(marriage)
+}
+
+func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
+
+	_, err := natsConnection.QueueSubscribe(os.Getenv("CHECK_USER_JMBG"), "queue-group", func(message *nats.Msg) {
+
+		var credentials entity.Credentials
+		err := json.Unmarshal(message.Data, &credentials)
+		if err != nil {
+			log.Println("Error in unmarshal JSON!")
+			return
+		}
+
+		isExist := service.store.IsUserExist(credentials.JMBG)
+
+		dataToSend, err := json.Marshal(isExist)
+		if err != nil {
+			log.Println("Error in marshaling json")
+			return
+		}
+		reply := dataToSend
+		err = natsConnection.Publish(message.Reply, reply)
+		if err != nil {
+			log.Printf("Error in publish response: %s", err.Error())
+			return
+		}
+	})
+
+	if err != nil {
+		log.Printf("Error in receiving message: %s", err.Error())
+		return
+	}
+
+	log.Printf("Subscribed to channel: %s", os.Getenv("CHECK_USER_JMBG"))
+
 }
