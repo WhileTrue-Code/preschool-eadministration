@@ -1,4 +1,3 @@
-p, Registrar, /vencani, POST
-
-
-
+p, NotLoggedIn, /registry, POST
+p, Registrar, /marriage, POST
+p, NotLoggedIn, /test, GET

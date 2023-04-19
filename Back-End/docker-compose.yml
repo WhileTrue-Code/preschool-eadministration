@@ -50,6 +50,7 @@ services:
       REGISTRAR_SERVICE_PORT: ${REGISTRAR_SERVICE_PORT}
       REGISTRAR_DB_HOST: ${REGISTRAR_DB_HOST}
       REGISTRAR_DB_PORT: ${REGISTRAR_DB_PORT}
+      SECRET_KEY: ${SECRET_KEY}
     networks:
       - network
     depends_on:
