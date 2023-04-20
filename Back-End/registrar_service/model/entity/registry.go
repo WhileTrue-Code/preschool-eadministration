@@ -43,6 +43,12 @@ const (
 	Registrar = "Registrar"
 )
 
+type UserDied struct {
+	JMBG       string `json:"jmbg" validate:"pattern=[0-9]+,required"`
+	DatimSmrti int64  `json:"datumSmrti" validate:"required"`
+	MestoSmrti string `json:"mestoSmrti" validate:"required"`
+}
+
 type BirthCertificate struct {
 	ID            primitive.ObjectID
 	Ime           string

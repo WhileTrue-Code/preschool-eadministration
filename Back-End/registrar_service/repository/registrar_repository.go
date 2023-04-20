@@ -7,4 +7,5 @@ type RegistrarRepository interface {
 	IsUserExist(jmbg string) bool
 	FindOneUser(jmbg string) *domain.User
 	CreateNewMarriage(marriage domain.ExcerptFromTheMarriageRegister)
+	UpdateCertificate(user domain.User) error
 }

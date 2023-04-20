@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
@@ -47,6 +48,26 @@ func (service *RegistrarService) FindOneCertificate(jmbg string, certificateType
 	//
 	//}
 
+}
+
+func (service *RegistrarService) UpdateCertificate(died entity.UserDied) error {
+
+	user := service.store.FindOneUser(died.JMBG)
+
+	if user == nil {
+		return fmt.Errorf("user not exist in database")
+	}
+
+	user.Preminuo = true
+	user.MestoSmrti = died.MestoSmrti
+	user.DatimSmrti = died.DatimSmrti
+
+	err := service.store.UpdateCertificate(*user)
+	if err != nil {
+		log.Printf("Error: %s", err.Error())
+		return err
+	}
+	return nil
 }
 
 func (service *RegistrarService) FindOneUser(jmbg string) *entity.User {

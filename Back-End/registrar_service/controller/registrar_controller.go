@@ -31,6 +31,7 @@ func (controller *RegistrarController) Init(router *mux.Router) {
 	router.HandleFunc("/registry", controller.CreateNewBirthCertificate).Methods("POST")
 	router.HandleFunc("/test", controller.Test).Methods("GET")
 	router.HandleFunc("/marriage", controller.Marriage).Methods("POST")
+	router.HandleFunc("/died", controller.UpdateCertificate).Methods("POST")
 	http.Handle("/", router)
 	log.Fatal(http.ListenAndServe(":8001", authorization.Authorizer(authEnforcer)(router)))
 
@@ -93,6 +94,28 @@ func (controller *RegistrarController) Marriage(writer http.ResponseWriter, req 
 	marriage.Svedok2 = *svedok2
 
 	controller.service.CreateNewMarriage(marriage)
+	writer.WriteHeader(http.StatusOK)
+	writer.Write([]byte("Okej"))
+	//jsonResponse(token, writer)
+}
+
+func (controller *RegistrarController) UpdateCertificate(writer http.ResponseWriter, req *http.Request) {
+
+	var userDied entity.UserDied
+	err := json.NewDecoder(req.Body).Decode(&userDied)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("Problem to parsing JSON to entity!"))
+		return
+	}
+
+	err = controller.service.UpdateCertificate(userDied)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte(err.Error()))
+		return
+	}
+
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Okej"))
 	//jsonResponse(token, writer)

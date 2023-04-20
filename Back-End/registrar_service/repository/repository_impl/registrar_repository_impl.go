@@ -79,3 +79,25 @@ func (store *RegistrarRepositoryImpl) CreateNewMarriage(marriage domain.ExcerptF
 		return
 	}
 }
+
+func (store *RegistrarRepositoryImpl) UpdateCertificate(user domain.User) error {
+
+	log.Println(user.ID)
+
+	update := bson.M{
+		"$set": bson.M{
+			"Preminuo":   user.Preminuo,
+			"DatimSmrti": user.DatimSmrti,
+			"MestoSmrti": user.MestoSmrti,
+		},
+	}
+
+	filter := bson.M{"_id": user.ID}
+
+	_, err := store.user_registry.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		log.Printf("Error in RegistrarRepositoryImpl UpdateOne(): %s", err.Error())
+		return err
+	}
+	return nil
+}
