@@ -1,19 +1,21 @@
 package startup
 
 import (
+	"auth_service/controller"
+	messageBroker "auth_service/nats"
+	"auth_service/repository"
+	"auth_service/repository/repository_impl"
+	"auth_service/service"
+	"auth_service/startup/config"
 	"context"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/nats-io/nats.go"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"registrar_service/controller"
-	"registrar_service/repository"
-	"registrar_service/repository/repository_impl"
-	"registrar_service/service"
-	"registrar_service/startup/config"
 	"syscall"
 	"time"
 )
@@ -30,6 +32,10 @@ func NewServer(config *config.Config) *Server {
 
 func (server *Server) Start() {
 
+	//connectiong to NATS container
+	natsConnection := messageBroker.Conn()
+	defer natsConnection.Close()
+
 	mongoClient := server.initMongoClient()
 	defer func(mongoClient *mongo.Client, ctx context.Context) {
 		err := mongoClient.Disconnect(ctx)
@@ -39,7 +45,7 @@ func (server *Server) Start() {
 	}(mongoClient, context.Background())
 
 	authRepository := server.initAuthRepository(mongoClient)
-	authService := server.initAuthService(authRepository)
+	authService := server.initAuthService(authRepository, natsConnection)
 	authController := server.initAuthController(authService)
 
 	server.start(authController)
@@ -58,8 +64,8 @@ func (server *Server) initAuthRepository(client *mongo.Client) repository.AuthRe
 	return store
 }
 
-func (server *Server) initAuthService(store repository.AuthRepository) *service.AuthService {
-	return service.NewAuthService(store)
+func (server *Server) initAuthService(store repository.AuthRepository, natsConnection *nats.Conn) *service.AuthService {
+	return service.NewAuthService(store, natsConnection)
 }
 
 func (server *Server) initAuthController(service *service.AuthService) *controller.AuthController {
