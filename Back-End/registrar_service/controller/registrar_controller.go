@@ -9,6 +9,7 @@ import (
 	"registrar_service/authorization"
 	"registrar_service/model/entity"
 	"registrar_service/service"
+	"strconv"
 )
 
 type RegistrarController struct {
@@ -30,6 +31,7 @@ func (controller *RegistrarController) Init(router *mux.Router) {
 
 	router.HandleFunc("/registry", controller.CreateNewBirthCertificate).Methods("POST")
 	router.HandleFunc("/test", controller.Test).Methods("GET")
+	router.HandleFunc("/certificate/{jmbg}/{typeOfCertificate}", controller.GetCertificate).Methods("GET")
 	router.HandleFunc("/marriage", controller.Marriage).Methods("POST")
 	router.HandleFunc("/died", controller.UpdateCertificate).Methods("POST")
 	http.Handle("/", router)
@@ -128,6 +130,37 @@ func (controller *RegistrarController) GetChildren(writer http.ResponseWriter, r
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Okej"))
 	//jsonResponse(token, writer)
+}
+
+func (controller *RegistrarController) GetCertificate(writer http.ResponseWriter, req *http.Request) {
+
+	vars := mux.Vars(req)
+	typeStr, _ := vars["typeOfCertificate"]
+	num, err := strconv.Atoi(typeStr)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("Error in convert string to int"))
+	}
+	jmbg, _ := vars["jmbg"]
+
+	one, two, three := controller.service.FindOneCertificateByType(jmbg, num)
+
+	if num == 1 {
+		jsonResponse(one, writer)
+
+	} else if num == 2 {
+		jsonResponse(two, writer)
+
+	} else if num == 3 {
+		jsonResponse(three, writer)
+
+	} else {
+		writer.WriteHeader(http.StatusNotAcceptable)
+		writer.Write([]byte("That type of certificate not exist!"))
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
 }
 
 func (controller *RegistrarController) Test(writer http.ResponseWriter, req *http.Request) {
