@@ -1,12 +1,13 @@
 package authorization
 
 import (
-	"github.com/casbin/casbin"
-	"github.com/cristalhq/jwt/v4"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/casbin/casbin"
+	"github.com/cristalhq/jwt/v4"
 )
 
 var jwtKey = []byte(os.Getenv("SECRET_KEY"))

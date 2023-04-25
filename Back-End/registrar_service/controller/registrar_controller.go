@@ -1,15 +1,16 @@
 package controller
 
 import (
+	"authorization"
 	"encoding/json"
-	"github.com/casbin/casbin"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
-	"registrar_service/authorization"
 	"registrar_service/model/entity"
 	"registrar_service/service"
 	"strconv"
+
+	"github.com/casbin/casbin"
+	"github.com/gorilla/mux"
 )
 
 type RegistrarController struct {

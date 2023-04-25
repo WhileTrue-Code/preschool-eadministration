@@ -9,6 +9,7 @@ require (
 	github.com/nats-io/nats.go v1.25.0
 	go.mongodb.org/mongo-driver v1.11.4
 	golang.org/x/crypto v0.8.0
+	authorization v0.0.0-00010101000000-000000000000
 )
 
 require (
@@ -31,3 +32,5 @@ require (
 	golang.org/x/text v0.9.0 // indirect
 	google.golang.org/protobuf v1.30.0 // indirect
 )
+
+replace authorization => ../authorization
