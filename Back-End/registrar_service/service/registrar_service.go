@@ -172,3 +172,7 @@ func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 	log.Printf("Subscribed to channel: %s", os.Getenv("CHECK_USER_JMBG"))
 
 }
+
+func (service *RegistrarService) GetChildren(jmbg string) []entity.User {
+	return service.store.GetChildren(jmbg, service.FindOneUser(jmbg).Pol)
+}

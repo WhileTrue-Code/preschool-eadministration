@@ -31,6 +31,7 @@ func (controller *RegistrarController) Init(router *mux.Router) {
 
 	router.HandleFunc("/registry", controller.CreateNewBirthCertificate).Methods("POST")
 	router.HandleFunc("/test", controller.Test).Methods("GET")
+	router.HandleFunc("/children/{jmbg}", controller.GetChildren).Methods("GET")
 	router.HandleFunc("/certificate/{jmbg}/{typeOfCertificate}", controller.GetCertificate).Methods("GET")
 	router.HandleFunc("/marriage", controller.Marriage).Methods("POST")
 	router.HandleFunc("/died", controller.UpdateCertificate).Methods("POST")
@@ -125,11 +126,15 @@ func (controller *RegistrarController) UpdateCertificate(writer http.ResponseWri
 
 func (controller *RegistrarController) GetChildren(writer http.ResponseWriter, req *http.Request) {
 
-	//vars := req.URL.
+	vars := mux.Vars(req)
+	jmbg, _ := vars["jmbg"]
+
+	//children := controller.service.GetChildren(jmbg)
+	//fmt.Println(children)
+
+	jsonResponse(controller.service.GetChildren(jmbg), writer)
 
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Okej"))
-	//jsonResponse(token, writer)
 }
 
 func (controller *RegistrarController) GetCertificate(writer http.ResponseWriter, req *http.Request) {
