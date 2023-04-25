@@ -121,6 +121,15 @@ func (controller *RegistrarController) UpdateCertificate(writer http.ResponseWri
 	//jsonResponse(token, writer)
 }
 
+func (controller *RegistrarController) GetChildren(writer http.ResponseWriter, req *http.Request) {
+
+	//vars := req.URL.
+
+	writer.WriteHeader(http.StatusOK)
+	writer.Write([]byte("Okej"))
+	//jsonResponse(token, writer)
+}
+
 func (controller *RegistrarController) Test(writer http.ResponseWriter, req *http.Request) {
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Okej"))
