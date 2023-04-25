@@ -1,11 +1,9 @@
 FROM golang:latest as builder
 WORKDIR /app
-COPY ./auth_service/go.mod ./auth_service/go.sum ./
-COPY ../authorization/go.mod ../authorization/go.sum  /authorization/
-RUN cd /authorization && go mod download
-RUN go mod download
 COPY ./auth_service/ .
 COPY ../authorization/ /authorization/
+RUN cd /authorization && go mod download
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 FROM alpine:latest
