@@ -1,0 +1,6 @@
+p, Registrar, /registry, POST
+p, Registrar, /marriage, POST
+p, Registrar, /died, POST
+p, NotLoggedIn, /test, GET
+p, Registrar, /certificate/*, GET
+p, NotLoggedIn, /children/*, GET

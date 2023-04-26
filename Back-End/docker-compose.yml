@@ -1,0 +1,96 @@
+version: '3.8'
+
+services:
+
+  api_gateway:
+    build:
+      context: ./api_gateway/
+      dockerfile: Dockerfile
+    container_name: api_gateway
+    restart: on-failure
+    ports:
+      - "8000:8000"
+    depends_on:
+      - registrar_service
+      - auth_service
+    networks:
+      - network
+
+  auth_service:
+    image: auth_service
+    container_name: auth_service
+    build:
+      context: .
+      dockerfile: ./auth_service/Dockerfile
+    restart: always
+    ports:
+      - ${AUTH_SERVICE_PORT}:${AUTH_SERVICE_PORT}
+    environment:
+      AUTH_SERVICE_HOST: ${AUTH_SERVICE_HOST}
+      AUTH_SERVICE_PORT: ${AUTH_SERVICE_PORT}
+      AUTH_DB_HOST: ${AUTH_DB_HOST}
+      AUTH_DB_PORT: ${AUTH_DB_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
+      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
+    networks:
+      - network
+    depends_on:
+      - auth_db
+      - nats
+
+  registrar_service:
+    image: registrar_service
+    container_name: registrar_service
+    build:
+      context: .
+      dockerfile: ./registrar_service/Dockerfile
+    restart: always
+    ports:
+      - ${REGISTRAR_SERVICE_PORT}:${REGISTRAR_SERVICE_PORT}
+    environment:
+      REGISTRAR_SERVICE_HOST: ${REGISTRAR_SERVICE_HOST}
+      REGISTRAR_SERVICE_PORT: ${REGISTRAR_SERVICE_PORT}
+      REGISTRAR_DB_HOST: ${REGISTRAR_DB_HOST}
+      REGISTRAR_DB_PORT: ${REGISTRAR_DB_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
+      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
+    networks:
+      - network
+    depends_on:
+      - registrar_db
+      - nats
+
+  auth_db:
+    image: mongo
+    container_name: auth_db
+    restart: on-failure
+    networks:
+      - network
+
+
+#    volumes:
+#      - user_db:/data/db
+
+  registrar_db:
+    image: mongo
+    container_name: registrar_db
+    restart: on-failure
+    networks:
+      - network
+
+#    volumes:
+#      - user_db:/data/db
+
+  nats:
+    image: nats
+    container_name: nats
+    restart: on-failure
+    networks:
+      - network
+
+
+networks:
+  network:
+    driver: bridge
