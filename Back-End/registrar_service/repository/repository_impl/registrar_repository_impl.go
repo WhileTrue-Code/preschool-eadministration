@@ -2,6 +2,7 @@ package repository_impl
 
 import (
 	"context"
+	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
@@ -100,4 +101,41 @@ func (store *RegistrarRepositoryImpl) UpdateCertificate(user domain.User) error 
 		return err
 	}
 	return nil
+}
+
+func (store *RegistrarRepositoryImpl) GetChildren(jmbg string, pol domain.Pol) []domain.User {
+
+	var filter interface{}
+
+	if pol == "Muski" {
+		filter = bson.M{"JMBGOca": jmbg}
+	} else if pol == "Zenski" {
+		filter = bson.M{"JMBGMajke": jmbg}
+
+	}
+	fmt.Printf("JMBG: %s\nPol: %s\nfilter: %s\n", jmbg, pol, filter)
+
+	users, err := store.user_registry.Find(context.Background(), filter)
+	if err != nil {
+		return nil
+	}
+
+	var children []domain.User
+
+	// loop through the documents
+	for users.Next(context.Background()) {
+		var result domain.User
+		err := users.Decode(&result)
+		if err != nil {
+			fmt.Println(err.Error())
+			return nil
+		}
+
+		children = append(children, result)
+		// do something with the result
+		fmt.Println(result)
+
+	}
+
+	return children
 }

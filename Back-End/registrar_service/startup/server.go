@@ -3,21 +3,22 @@ package startup
 import (
 	"context"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/nats-io/nats.go"
-	"go.mongodb.org/mongo-driver/mongo"
 	"log"
+	messageBroker "nats"
 	"net/http"
 	"os"
 	"os/signal"
 	"registrar_service/controller"
-	messageBroker "registrar_service/nats"
 	"registrar_service/repository"
 	"registrar_service/repository/repository_impl"
 	"registrar_service/service"
 	"registrar_service/startup/config"
 	"syscall"
 	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/nats-io/nats.go"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type Server struct {

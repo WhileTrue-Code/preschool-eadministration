@@ -1,15 +1,16 @@
 package controller
 
 import (
-	"auth_service/authorization"
 	domain "auth_service/model/entity"
 	"auth_service/service"
+	"authorization"
 	"encoding/json"
 	"fmt"
-	"github.com/casbin/casbin"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
+
+	"github.com/casbin/casbin"
+	"github.com/gorilla/mux"
 )
 
 type AuthController struct {

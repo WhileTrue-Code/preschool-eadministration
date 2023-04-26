@@ -8,4 +8,5 @@ type RegistrarRepository interface {
 	FindOneUser(jmbg string) *domain.User
 	CreateNewMarriage(marriage domain.ExcerptFromTheMarriageRegister)
 	UpdateCertificate(user domain.User) error
+	GetChildren(jmbg string, pol domain.Pol) []domain.User
 }
