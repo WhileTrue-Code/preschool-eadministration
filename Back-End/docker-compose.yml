@@ -90,6 +90,38 @@ services:
     networks:
       - network
 
+#sss
+  preschool_service:
+    build: preschool_service
+    container_name: preschool_service
+    restart: always
+    ports:
+      - "8003:8003"
+    environment:
+      PRESCHOOL_DB_HOST: ${PRESCHOOL_DB_HOST}
+      PRESCHOOL_DB_PORT: ${PRESCHOOL_DB_PORT}
+      PRESCHOOL_DB_NAME: ${PRESCHOOL_DB_NAME}
+      PRESCHOOL_SERVICE_PORT: ${PRESCHOOL_SERVICE_PORT}
+      PRESCHOOL_SERVICE_HOST: ${PRESCHOOL_SERVICE_HOST}
+      SECRET_KEY: ${SECRET_KEY}
+    depends_on:
+      - preschool_db
+    networks:
+      - network
+
+  preschool_db:
+    image: mongo
+    container_name: preschool_db
+    restart: always
+    networks:
+      - network
+    volumes:
+      - mongo_store:/data/db
+      #      - ${AUTH_DB_VOLUME}:/data/db
+
+
+volumes:
+  mongo_store:
 
 networks:
   network:
