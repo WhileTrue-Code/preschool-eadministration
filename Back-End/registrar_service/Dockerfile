@@ -1,8 +1,8 @@
 FROM golang:latest as builder
 WORKDIR /app
 COPY ./registrar_service/ .
-COPY ../authorization/ /authorization/
-COPY ../nats/ /nats/
+COPY ./authorization/ /authorization/
+COPY ./nats/ /nats/
 RUN cd /authorization && go mod download
 RUN cd /nats && go mod download
 RUN go mod download
