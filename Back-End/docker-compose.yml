@@ -56,6 +56,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       NATS_URI: ${NATS_URI}
       CHECK_USER_JMBG: ${CHECK_USER_JMBG}
+      GET_USER_BY_JMBG: ${GET_USER_BY_JMBG}
     networks:
       - network
     depends_on:
@@ -77,8 +78,9 @@ services:
       HEALTHCARE_DB_HOST: ${HEALTHCARE_DB_HOST}
       HEALTHCARE_DB_PORT: ${HEALTHCARE_DB_PORT}
       SECRET_KEY: ${SECRET_KEY}
-      NATS_URI: ${NATS_URI}
       CHECK_USER_JMBG: ${CHECK_USER_JMBG}
+      GET_USER_BY_JMBG: ${GET_USER_BY_JMBG}
+      NATS_URI: ${NATS_URI}
     networks:
       - network
     depends_on:

@@ -24,23 +24,28 @@ type Vaccination struct {
 }
 
 type User struct {
-	ID        primitive.ObjectID `bson:"_id" json:"id"`
-	Firstname string             `bson:"firstName" json:"firstName" validate:"onlyChar"`
-	Lastname  string             `bson:"lastName" json:"lastName" validate:"onlyChar"`
-	Age       int                `bson:"age" json:"age"`
-	Residence string             `bson:"residence" json:"residence" validate:"onlyCharAndSpace"`
-	JMBG      string             `bson:"jmbg" json:"jmbg" validate:"onlyCharAndNum,required"`
-	Password  string             `bson:"password" json:"password" validate:"onlyCharAndNum,required"`
-	UserType  UserType           `bson:"userType" json:"userType" validate:"onlyChar"`
+	ID            primitive.ObjectID `json:"id" bson:"_id"`
+	Ime           string             `json:"ime" bson:"ime"`
+	Prezime       string             `json:"prezime" bson:"prezime"`
+	ImeOca        string             `json:"ime_oca" bson:"imeOca"`
+	JMBGOca       string             `json:"jmbg_oca" bson:"JMBGOca"`
+	ImeMajke      string             `json:"ime_majke" bson:"imeMajke"`
+	JMBGMajke     string             `json:"jmbg_majke" bson:"JMBGMajke"`
+	DatumRodjenja int64              `json:"datum_rodjenja" bson:"datumRodjenja"`
+	MestoRodjenja string             `json:"mesto_rodjenja" bson:"mestoRodjenja"`
+	JMBG          string             `json:"jmbg" bson:"JMBG" unique:"true"`
+	Pol           Pol                `json:"pol" bson:"pol"`
+	Preminuo      bool               `json:"preminuo" bson:"Preminuo"`
+	DatimSmrti    int64              `json:"datim_smrti" bson:"DatimSmrti"`
+	MestoSmrti    string             `json:"mesto_smrti" bson:"MestoSmrti"`
+	Drzava        string             `json:"drzava" bson:"Drzava"`
 }
 
-type UserType string
+type Pol string
 
 const (
-	Admin     = "Admin"
-	Regular   = "Regular"
-	Doctor    = "Doctor"
-	Registrar = "Registrar"
+	Muski  = "Muski"
+	Zenski = "Zenski"
 )
 
 type VaccineType string

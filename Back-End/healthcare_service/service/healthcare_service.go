@@ -1,9 +1,13 @@
 package service
 
 import (
+	"encoding/json"
 	"github.com/nats-io/nats.go"
 	"healthcare_service/model"
 	"healthcare_service/repository"
+	"log"
+	"os"
+	"time"
 )
 
 type HealthcareService struct {
@@ -18,25 +22,23 @@ func NewHealthcareService(store repository.HealthcareRepository, natsConnection 
 	}
 }
 
-func (service *HealthcareService) CreateNewAppointment(appointment model.Appointment, doctorID string) error {
+func (service *HealthcareService) CreateNewAppointment(appointment model.Appointment, jmbg string) error {
 
-	//primitiveID, err := primitive.ObjectIDFromHex(doctorID)
-	//if err != nil {
-	//	log.Println("Primitive ID parsing error.")
-	//	return err
-	//}
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
 
-	//user, err := service.store.Get(primitiveID)
-	//if err != nil {
-	//
-	//}
+	log.Println(os.Getenv("GET_USER_BY_JMBG"))
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
 
-	//appointment.ID = primitive.NewObjectID()
-	//appointment.Doctor = user
-
-	//err = service.store.CreateNewAppointment(appointment)
-	//if err != nil {
-	//	return err
-	//}
+	var doctor model.User
+	err = json.Unmarshal(response.Data, &doctor)
+	if err != nil {
+		log.Println("Error in Unmarshaling json")
+		return err
+	}
+	log.Println(doctor)
+	//appointment.Doctor = doctor
 	return nil
 }

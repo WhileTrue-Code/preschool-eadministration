@@ -171,8 +171,51 @@ func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 
 	log.Printf("Subscribed to channel: %s", os.Getenv("CHECK_USER_JMBG"))
 
+	_, err = natsConnection.QueueSubscribe(os.Getenv("GET_USER_BY_JMBG"), "queue-group", func(message *nats.Msg) {
+		var jmbg string
+		err := json.Unmarshal(message.Data, &jmbg)
+		if err != nil {
+			log.Println("Error in unmarshal JSON!")
+			return
+		}
+
+		user := service.FindOneUser(jmbg)
+
+		dataToSend, err := json.Marshal(user)
+		if err != nil {
+			log.Println("Error in marshaling json")
+			return
+		}
+		reply := dataToSend
+		err = natsConnection.Publish(message.Reply, reply)
+		if err != nil {
+			log.Printf("Error in publish response: %s", err.Error())
+			return
+		}
+
+	})
+	if err != nil {
+		log.Println("Error in receiving message: %s", err.Error())
+	}
+
+	log.Printf("Subscribed to channel: %s", os.Getenv("GET_USER_BY_JMBG"))
+
 }
 
 func (service *RegistrarService) GetChildren(jmbg string) []entity.User {
 	return service.store.GetChildren(jmbg, service.FindOneUser(jmbg).Pol)
 }
+
+//func (service *RegistrarService) ReturnUserForHealthcare(natsConnection *nats.Conn) {
+//	_, err := natsConnection.QueueSubscribe(os.Getenv("CHECK_USER_JMBG"), "queue-group", func(message *nats.Msg) {
+//		var jmbg string
+//		err := json.Unmarshal(message.Data, &jmbg)
+//		if err != nil {
+//			log.Println("Error in unmarshal JSON!")
+//			return
+//		}
+//	})
+//	if err != nil {
+//		log.Println("Error in receiving message: %s", err.Error())
+//	}
+//}
