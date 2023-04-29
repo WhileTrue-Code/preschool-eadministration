@@ -34,6 +34,9 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 	}
 
 	router.HandleFunc("/newAppointment", controller.CreateNewAppointment).Methods("POST")
+	router.HandleFunc("/allAppointments", controller.GetAllAppointments).Methods("GET")
+
+	router.HandleFunc("/allVaccinations", controller.GetAllVaccinations).Methods("GET")
 
 	http.Handle("/", router)
 	log.Fatal(http.ListenAndServe(":8005", authorization.Authorizer(authEnforcer)(router)))
@@ -55,9 +58,34 @@ func (controller *HealthcareController) CreateNewAppointment(writer http.Respons
 	claims := authorization.GetMapClaims(token.Bytes())
 	jmbg := claims["jmbg"]
 
-	var appointment model.Appointment
-	err = controller.service.CreateNewAppointment(appointment, jmbg)
+	appointment := req.Context().Value(model.Appointment{}).(model.Appointment)
+	newAppointment, err := controller.service.CreateNewAppointment(&appointment, jmbg)
 	if err != nil {
 		return
 	}
+
+	jsonResponse(newAppointment, writer)
+	writer.WriteHeader(http.StatusCreated)
+}
+
+func (controller *HealthcareController) GetAllAppointments(writer http.ResponseWriter, req *http.Request) {
+	appointments, err := controller.service.GetAllAppointments()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse(appointments, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetAllVaccinations(writer http.ResponseWriter, req *http.Request) {
+	vaccinations, err := controller.service.GetAllVaccinations()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse(vaccinations, writer)
+	writer.WriteHeader(http.StatusOK)
 }

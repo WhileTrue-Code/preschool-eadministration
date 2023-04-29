@@ -31,7 +31,6 @@ func NewServer(config *config.Config) *Server {
 }
 
 func (server *Server) Start() {
-
 	//connectiong to NATS container
 	natsConnection := messageBroker.Conn()
 	defer natsConnection.Close()
@@ -72,7 +71,6 @@ func (server *Server) initHealthcareController(service *service.HealthcareServic
 	return controller.NewHealthcareController(service)
 }
 
-// start
 func (server *Server) start(registrarController *controller.HealthcareController) {
 	router := mux.NewRouter()
 	registrarController.Init(router)

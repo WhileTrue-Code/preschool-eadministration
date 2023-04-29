@@ -1,3 +1,5 @@
 p, Regular, /newAppointment, POST
+p, NotLoggedIn, /allAppointments, GET
+p, NotLoggedIn, /allVaccinations, GET
 
 

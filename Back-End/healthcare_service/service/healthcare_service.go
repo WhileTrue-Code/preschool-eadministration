@@ -11,34 +11,48 @@ import (
 )
 
 type HealthcareService struct {
-	store          repository.HealthcareRepository
+	repository     repository.HealthcareRepository
 	natsConnection *nats.Conn
 }
 
-func NewHealthcareService(store repository.HealthcareRepository, natsConnection *nats.Conn) *HealthcareService {
+func NewHealthcareService(repository repository.HealthcareRepository, natsConnection *nats.Conn) *HealthcareService {
 	return &HealthcareService{
-		store:          store,
+		repository:     repository,
 		natsConnection: natsConnection,
 	}
 }
 
-func (service *HealthcareService) CreateNewAppointment(appointment model.Appointment, jmbg string) error {
+func (service *HealthcareService) CreateNewAppointment(appointment *model.Appointment, jmbg string) (*model.Appointment, error) {
 
 	dataToSend, err := json.Marshal(jmbg)
 	if err != nil {
 		log.Println("Error Marshaling JMBG")
 	}
 
-	log.Println(os.Getenv("GET_USER_BY_JMBG"))
 	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
 
 	var doctor model.User
 	err = json.Unmarshal(response.Data, &doctor)
 	if err != nil {
-		log.Println("Error in Unmarshaling json")
-		return err
+		log.Println("Error in Unmarshalling json")
+		return nil, err
 	}
-	log.Println(doctor)
-	//appointment.Doctor = doctor
-	return nil
+
+	appointment.Doctor = doctor
+
+	retAppointment, err := service.repository.CreateNewAppointment(appointment)
+	if err != nil {
+		log.Println("Error in trying to save Appointment")
+		return nil, err
+	}
+
+	return retAppointment, nil
+}
+
+func (service *HealthcareService) GetAllAppointments() ([]*model.Appointment, error) {
+	return service.repository.GetAllAppointments()
+}
+
+func (service *HealthcareService) GetAllVaccinations() ([]*model.Vaccination, error) {
+	return service.repository.GetAllVaccinations()
 }
