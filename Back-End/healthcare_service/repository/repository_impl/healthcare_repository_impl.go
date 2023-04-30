@@ -3,9 +3,11 @@ package repository_impl
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"healthcare_service/model"
 	"healthcare_service/repository"
+	"log"
 )
 
 type HealthcareRepositoryImpl struct {
@@ -39,11 +41,38 @@ func (repository *HealthcareRepositoryImpl) GetAllAvailableAppointments() ([]*mo
 	return repository.filterAppointments(filter)
 }
 
+func (repository *HealthcareRepositoryImpl) GetAppointmentByID(id primitive.ObjectID) (*model.Appointment, error) {
+	filter := bson.M{"_id": id}
+	return repository.filterOneAppointment(filter)
+}
+
 func (repository *HealthcareRepositoryImpl) CreateNewAppointment(appointment model.Appointment) error {
 	_, err := repository.appointment.InsertOne(context.Background(), appointment)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (repository *HealthcareRepositoryImpl) SetAppointment(appointment *model.Appointment) error {
+	filter := bson.M{"_id": appointment.ID}
+	update := bson.D{{"$set", appointment}}
+	_, err := repository.appointment.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		log.Println("Updating Appointment Error MongoDB", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (repository *HealthcareRepositoryImpl) DeleteAppointmentByID(id primitive.ObjectID) error {
+	filter := bson.M{"_id": id}
+	_, err := repository.appointment.DeleteOne(context.Background(), filter)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 

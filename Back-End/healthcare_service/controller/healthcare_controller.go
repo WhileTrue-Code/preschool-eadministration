@@ -6,6 +6,7 @@ import (
 	"github.com/casbin/casbin"
 	"github.com/cristalhq/jwt/v4"
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"healthcare_service/model"
 	"healthcare_service/service"
 	"log"
@@ -34,9 +35,12 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 		log.Fatal(err)
 	}
 
-	router.HandleFunc("/newAppointment", controller.CreateNewAppointment).Methods("POST")
 	router.HandleFunc("/allAppointments", controller.GetAllAppointments).Methods("GET")
 	router.HandleFunc("/allAvailableAppointments", controller.GetAllAvailableAppointments).Methods("GET")
+	router.HandleFunc("/getAppointmentByID/{id}", controller.GetAppointmentByID).Methods("GET")
+	router.HandleFunc("/newAppointment", controller.CreateNewAppointment).Methods("POST")
+	router.HandleFunc("/setAppointment/{id}", controller.SetAppointment).Methods("PUT")
+	router.HandleFunc("/deleteAppointmentByID/{id}", controller.DeleteAppointmentByID).Methods("DELETE")
 
 	router.HandleFunc("/allVaccinations", controller.GetAllVaccinations).Methods("GET")
 
@@ -83,6 +87,47 @@ func (controller *HealthcareController) CreateNewAppointment(writer http.Respons
 	writer.Write([]byte("Added"))
 }
 
+func (controller *HealthcareController) SetAppointment(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id, ok := vars["id"]
+	if !ok {
+		log.Println("Get ID from req error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	bearer := req.Header.Get("Authorization")
+	bearerToken := strings.Split(bearer, "Bearer ")
+	tokenString := bearerToken[1]
+
+	token, err := jwt.Parse([]byte(tokenString), verifier)
+
+	if err != nil {
+		log.Println(err)
+		http.Error(writer, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims := authorization.GetMapClaims(token.Bytes())
+	jmbg := claims["jmbg"]
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Convert to Primitive error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+	err = controller.service.SetAppointment(objectID, jmbg)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte(err.Error()))
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
+	writer.Write([]byte("Updated"))
+}
+
 func (controller *HealthcareController) GetAllAppointments(writer http.ResponseWriter, req *http.Request) {
 	appointments, err := controller.service.GetAllAppointments()
 	if err != nil {
@@ -103,6 +148,60 @@ func (controller *HealthcareController) GetAllAvailableAppointments(writer http.
 
 	jsonResponse(appointments, writer)
 	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetAppointmentByID(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id, ok := vars["id"]
+	if !ok {
+		log.Println("Get ID from req error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Convert to Primitive error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	appointment, err := controller.service.GetAppointmentByID(objectID)
+	if err != nil {
+		log.Println("Error finding Appointment By ID")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	jsonResponse(appointment, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) DeleteAppointmentByID(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id, ok := vars["id"]
+	if !ok {
+		log.Println("Get ID from req error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Convert to Primitive error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	err = controller.service.DeleteAppointmentByID(objectID)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte(err.Error()))
+		return
+	}
+
+	writer.WriteHeader(http.StatusOK)
+	writer.Write([]byte("Deleted"))
 }
 
 func (controller *HealthcareController) GetAllVaccinations(writer http.ResponseWriter, req *http.Request) {
