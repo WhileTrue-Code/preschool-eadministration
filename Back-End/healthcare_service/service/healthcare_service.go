@@ -3,6 +3,7 @@ package service
 import (
 	"encoding/json"
 	"github.com/nats-io/nats.go"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"healthcare_service/model"
 	"healthcare_service/repository"
 	"log"
@@ -22,8 +23,7 @@ func NewHealthcareService(repository repository.HealthcareRepository, natsConnec
 	}
 }
 
-func (service *HealthcareService) CreateNewAppointment(appointment *model.Appointment, jmbg string) (*model.Appointment, error) {
-
+func (service *HealthcareService) CreateNewAppointment(appointment model.Appointment, jmbg string) (int, error) {
 	dataToSend, err := json.Marshal(jmbg)
 	if err != nil {
 		log.Println("Error Marshaling JMBG")
@@ -35,22 +35,30 @@ func (service *HealthcareService) CreateNewAppointment(appointment *model.Appoin
 	err = json.Unmarshal(response.Data, &doctor)
 	if err != nil {
 		log.Println("Error in Unmarshalling json")
-		return nil, err
+		return 1, err
 	}
 
+	appointment.ID = primitive.NewObjectID()
 	appointment.Doctor = doctor
+	appointment.User = nil
+	appointment.StartOfAppointment = time.Now()
+	appointment.EndOfAppointment = time.Now()
 
-	retAppointment, err := service.repository.CreateNewAppointment(appointment)
+	err = service.repository.CreateNewAppointment(appointment)
 	if err != nil {
 		log.Println("Error in trying to save Appointment")
-		return nil, err
+		return 0, err
 	}
 
-	return retAppointment, nil
+	return 0, nil
 }
 
 func (service *HealthcareService) GetAllAppointments() ([]*model.Appointment, error) {
 	return service.repository.GetAllAppointments()
+}
+
+func (service *HealthcareService) GetAllAvailableAppointments() ([]*model.Appointment, error) {
+	return service.repository.GetAllAvailableAppointments()
 }
 
 func (service *HealthcareService) GetAllVaccinations() ([]*model.Vaccination, error) {

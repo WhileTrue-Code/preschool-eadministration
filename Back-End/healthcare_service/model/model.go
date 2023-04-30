@@ -2,14 +2,15 @@ package model
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"time"
 )
 
 type Appointment struct {
 	ID                 primitive.ObjectID `json:"id" bson:"_id"`
-	DayOfAppointment   primitive.DateTime `json:"dayOfAppointment" bson:"dayOfAppointment"`
-	StartOfAppointment primitive.DateTime `json:"startOfAppointment" bson:"startOfAppointment"`
-	EndOfAppointment   primitive.DateTime `json:"endOfAppointment" bson:"endOfAppointment"`
-	User               User               `json:"user" bson:"user"`
+	DayOfAppointment   time.Weekday       `json:"dayOfAppointment" bson:"dayOfAppointment"`
+	StartOfAppointment time.Time          `json:"startOfAppointment" bson:"startOfAppointment"`
+	EndOfAppointment   time.Time          `json:"endOfAppointment" bson:"endOfAppointment"`
+	User               *User              `json:"user" bson:"user"`
 	Doctor             User               `json:"doctor" bson:"doctor"`
 }
 

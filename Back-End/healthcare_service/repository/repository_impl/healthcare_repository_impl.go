@@ -3,7 +3,6 @@ package repository_impl
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"healthcare_service/model"
 	"healthcare_service/repository"
@@ -35,13 +34,17 @@ func (repository *HealthcareRepositoryImpl) GetAllAppointments() ([]*model.Appoi
 	return repository.filterAppointments(filter)
 }
 
-func (repository *HealthcareRepositoryImpl) CreateNewAppointment(appointment *model.Appointment) (*model.Appointment, error) {
-	result, err := repository.appointment.InsertOne(context.TODO(), appointment)
+func (repository *HealthcareRepositoryImpl) GetAllAvailableAppointments() ([]*model.Appointment, error) {
+	filter := bson.M{"user": nil}
+	return repository.filterAppointments(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) CreateNewAppointment(appointment model.Appointment) error {
+	_, err := repository.appointment.InsertOne(context.Background(), appointment)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	appointment.ID = result.InsertedID.(primitive.ObjectID)
-	return appointment, nil
+	return nil
 }
 
 func (repository *HealthcareRepositoryImpl) filterAppointments(filter interface{}) ([]*model.Appointment, error) {
