@@ -48,6 +48,55 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 	log.Fatal(http.ListenAndServe(":8005", authorization.Authorizer(authEnforcer)(router)))
 }
 
+func (controller *HealthcareController) GetAllAppointments(writer http.ResponseWriter, req *http.Request) {
+	appointments, err := controller.service.GetAllAppointments()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse(appointments, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetAllAvailableAppointments(writer http.ResponseWriter, req *http.Request) {
+	appointments, err := controller.service.GetAllAvailableAppointments()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse(appointments, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetAppointmentByID(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	id, ok := vars["id"]
+	if !ok {
+		log.Println("Get ID from req error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Convert to Primitive error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	appointment, err := controller.service.GetAppointmentByID(objectID)
+	if err != nil {
+		log.Println("Error finding Appointment By ID")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	jsonResponse(appointment, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
 func (controller *HealthcareController) CreateNewAppointment(writer http.ResponseWriter, req *http.Request) {
 	var appointment model.Appointment
 	err := json.NewDecoder(req.Body).Decode(&appointment)
@@ -72,10 +121,10 @@ func (controller *HealthcareController) CreateNewAppointment(writer http.Respons
 	claims := authorization.GetMapClaims(token.Bytes())
 	jmbg := claims["jmbg"]
 
-	value, err := controller.service.CreateNewAppointment(appointment, jmbg)
+	value, err := controller.service.CreateNewAppointment(&appointment, jmbg)
 	if value == 1 {
-		writer.WriteHeader(http.StatusInternalServerError)
-		writer.Write([]byte("Error in Service"))
+		writer.WriteHeader(http.StatusNotAcceptable)
+		writer.Write([]byte("Appointment already exists in that time"))
 		return
 	}
 	if err != nil {
@@ -126,55 +175,6 @@ func (controller *HealthcareController) SetAppointment(writer http.ResponseWrite
 
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Updated"))
-}
-
-func (controller *HealthcareController) GetAllAppointments(writer http.ResponseWriter, req *http.Request) {
-	appointments, err := controller.service.GetAllAppointments()
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	jsonResponse(appointments, writer)
-	writer.WriteHeader(http.StatusOK)
-}
-
-func (controller *HealthcareController) GetAllAvailableAppointments(writer http.ResponseWriter, req *http.Request) {
-	appointments, err := controller.service.GetAllAvailableAppointments()
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		return
-	}
-
-	jsonResponse(appointments, writer)
-	writer.WriteHeader(http.StatusOK)
-}
-
-func (controller *HealthcareController) GetAppointmentByID(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	appointment, err := controller.service.GetAppointmentByID(objectID)
-	if err != nil {
-		log.Println("Error finding Appointment By ID")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	jsonResponse(appointment, writer)
-	writer.WriteHeader(http.StatusOK)
 }
 
 func (controller *HealthcareController) DeleteAppointmentByID(writer http.ResponseWriter, req *http.Request) {

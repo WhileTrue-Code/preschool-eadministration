@@ -32,7 +32,7 @@ func NewAuthRepositoryImpl(client *mongo.Client) repository.HealthcareRepository
 }
 
 func (repository *HealthcareRepositoryImpl) GetAllAppointments() ([]*model.Appointment, error) {
-	filter := bson.D{{}}
+	filter := bson.M{}
 	return repository.filterAppointments(filter)
 }
 
@@ -46,7 +46,7 @@ func (repository *HealthcareRepositoryImpl) GetAppointmentByID(id primitive.Obje
 	return repository.filterOneAppointment(filter)
 }
 
-func (repository *HealthcareRepositoryImpl) CreateNewAppointment(appointment model.Appointment) error {
+func (repository *HealthcareRepositoryImpl) CreateNewAppointment(appointment *model.Appointment) error {
 	_, err := repository.appointment.InsertOne(context.Background(), appointment)
 	if err != nil {
 		return err
@@ -77,7 +77,7 @@ func (repository *HealthcareRepositoryImpl) DeleteAppointmentByID(id primitive.O
 }
 
 func (repository *HealthcareRepositoryImpl) filterAppointments(filter interface{}) ([]*model.Appointment, error) {
-	cursor, err := repository.appointment.Find(context.TODO(), filter)
+	cursor, err := repository.appointment.Find(context.Background(), filter)
 	defer cursor.Close(context.TODO())
 
 	if err != nil {
@@ -88,7 +88,7 @@ func (repository *HealthcareRepositoryImpl) filterAppointments(filter interface{
 }
 
 func (repository *HealthcareRepositoryImpl) filterOneAppointment(filter interface{}) (appointment *model.Appointment, err error) {
-	result := repository.appointment.FindOne(context.TODO(), filter)
+	result := repository.appointment.FindOne(context.Background(), filter)
 	err = result.Decode(&appointment)
 	return
 }
@@ -107,7 +107,7 @@ func (repository *HealthcareRepositoryImpl) CreateNewVaccination(vaccination mod
 }
 
 func (repository *HealthcareRepositoryImpl) filterVaccinations(filter interface{}) ([]*model.Vaccination, error) {
-	cursor, err := repository.vaccination.Find(context.TODO(), filter)
+	cursor, err := repository.vaccination.Find(context.Background(), filter)
 	defer cursor.Close(context.TODO())
 
 	if err != nil {
@@ -118,13 +118,13 @@ func (repository *HealthcareRepositoryImpl) filterVaccinations(filter interface{
 }
 
 func (repository *HealthcareRepositoryImpl) filterOneVaccination(filter interface{}) (appointment *model.Appointment, err error) {
-	result := repository.appointment.FindOne(context.TODO(), filter)
+	result := repository.appointment.FindOne(context.Background(), filter)
 	err = result.Decode(&appointment)
 	return
 }
 
 func decodeAppointment(cursor *mongo.Cursor) (appointments []*model.Appointment, err error) {
-	for cursor.Next(context.TODO()) {
+	for cursor.Next(context.Background()) {
 		var appointment model.Appointment
 		err = cursor.Decode(&appointment)
 		if err != nil {
@@ -137,7 +137,7 @@ func decodeAppointment(cursor *mongo.Cursor) (appointments []*model.Appointment,
 }
 
 func decodeVaccination(cursor *mongo.Cursor) (vaccinations []*model.Vaccination, err error) {
-	for cursor.Next(context.TODO()) {
+	for cursor.Next(context.Background()) {
 		var vaccination model.Vaccination
 		err = cursor.Decode(&vaccination)
 		if err != nil {

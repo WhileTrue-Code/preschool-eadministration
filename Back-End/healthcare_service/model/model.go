@@ -11,7 +11,7 @@ type Appointment struct {
 	StartOfAppointment time.Time          `json:"startOfAppointment" bson:"startOfAppointment"`
 	EndOfAppointment   time.Time          `json:"endOfAppointment" bson:"endOfAppointment"`
 	User               *User              `json:"user" bson:"user"`
-	Doctor             User               `json:"doctor" bson:"doctor"`
+	Doctor             *User              `json:"doctor" bson:"doctor"`
 }
 
 type Vaccination struct {
