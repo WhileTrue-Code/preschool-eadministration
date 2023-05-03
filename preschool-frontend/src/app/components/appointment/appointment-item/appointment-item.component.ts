@@ -15,4 +15,12 @@ export class AppointmentItemComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  isTaken(): boolean {
+    if (this.appointment.user != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
 }

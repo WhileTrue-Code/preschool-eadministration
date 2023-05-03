@@ -7,4 +7,13 @@ export class Appointment {
     endOfAppointment: Date = new Date;
     user: User = new User;
     doctor: User = new User;
+
+    Appointment(id: number, dayOfAppointment: number, startOfAppointment: Date, endOfAppointment: Date, user: User, doctor: User) {
+        this.id = id;
+        this.dayOfAppointment = dayOfAppointment;
+        this.startOfAppointment = startOfAppointment;
+        this.endOfAppointment = endOfAppointment;
+        this.user = user;
+        this.doctor = doctor;
+    }
 }

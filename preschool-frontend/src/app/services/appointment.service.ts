@@ -8,7 +8,7 @@ import { Appointment } from "../models/appointment.mode";
     providedIn: 'root'
 })
 export class AppointmentService {
-    private url = "appointments";
+    private url = "healthcare";
     constructor(private http: HttpClient) { }
 
     public GetAllAppointments(): Observable<Appointment[]> {
