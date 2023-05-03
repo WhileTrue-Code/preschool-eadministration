@@ -1,0 +1,9 @@
+p, NotLoggedIn, /allAppointments, GET
+p, NotLoggedIn, /allAvailableAppointments, GET
+p, NotLoggedIn, /getAppointmentByID/*, GET
+p, Doctor, /newAppointment, POST
+p, Regular, /setAppointment/*, PUT
+p, Doctor, /deleteAppointmentByID/*, DELETE
+p, NotLoggedIn, /allVaccinations, GET
+
+

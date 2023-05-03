@@ -1,4 +1,4 @@
-module registrar_service
+module healthcare_service
 
 go 1.18
 

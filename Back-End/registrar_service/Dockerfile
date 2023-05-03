@@ -1,8 +1,11 @@
 FROM golang:latest as builder
 WORKDIR /app
-COPY ./registrar_service/go.mod ./registrar_service/go.sum ./
-RUN go mod download
 COPY ./registrar_service/ .
+COPY ./authorization/ /authorization/
+COPY ./nats/ /nats/
+RUN cd /authorization && go mod download
+RUN cd /nats && go mod download
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 FROM alpine:latest

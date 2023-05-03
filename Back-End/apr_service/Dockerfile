@@ -1,15 +1,12 @@
 FROM golang:latest as builder
 WORKDIR /app
-COPY ./auth_service/ .
-COPY ./authorization/ /authorization/
-RUN cd /authorization && go mod download
+COPY ./apr_service/go.mod ./apr_service/go.sum ./
 RUN go mod download
+COPY ./apr_service/ .
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 FROM alpine:latest
 WORKDIR /root/
 COPY --from=builder /app/main .
-COPY /rbac/auth_model.conf/ .
-COPY /auth_service/policy.csv .
 EXPOSE 8000
 CMD ["./main"]

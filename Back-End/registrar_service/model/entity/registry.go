@@ -50,50 +50,45 @@ type UserDied struct {
 }
 
 type BirthCertificate struct {
-	ID            primitive.ObjectID
-	Ime           string
-	Prezime       string
-	ImeOca        string
-	JMBGOca       string
-	ImeMajke      string
-	JMBGMajke     string
-	DatumRodjenja string
-	MestoRodjenja string
-	JMBG          string
-	Pol           Pol
+	Ime           string `json:"ime"`
+	Prezime       string `json:"prezime"`
+	ImeOca        string `json:"ime_oca"`
+	JMBGOca       string `json:"jmbg_oca"`
+	ImeMajke      string `json:"ime_majke"`
+	JMBGMajke     string `json:"jmbg_majke"`
+	DatumRodjenja int64  `json:"datum_rodjenja"`
+	MestoRodjenja string `json:"mesto_rodjenja"`
+	JMBG          string `json:"jmbg"`
+	Pol           Pol    `json:"pol"`
 }
 
 type ExtractFromTheDeathRegister struct {
-	ID            primitive.ObjectID
-	Ime           string
-	Prezime       string
-	ImeOca        string
-	JMBGOca       string
-	ImeMajke      string
-	JMBGMajke     string
-	DatumRodjenja string
-	MestoRodjenja string
-	JMBG          string
-	Pol           Pol
-	DatimSmrti    string
-	MestoSmrti    string
+	Ime           string `json:"ime"`
+	Prezime       string `json:"prezime"`
+	ImeOca        string `json:"ime_oca"`
+	JMBGOca       string `json:"jmbg_oca"`
+	ImeMajke      string `json:"ime_majke"`
+	JMBGMajke     string `json:"jmbg_majke"`
+	DatumRodjenja int64  `json:"datum_rodjenja"`
+	MestoRodjenja string `json:"mesto_rodjenja"`
+	JMBG          string `json:"jmbg"`
+	Pol           Pol    `json:"pol"`
+	DatimSmrti    int64  `json:"datim_smrti"`
+	MestoSmrti    string `json:"mesto_smrti"`
 }
 
 type CertificateOfCitizenship struct {
-	ID            primitive.ObjectID
-	Ime           string
-	Prezime       string
-	ImeOca        string
-	JMBGOca       string
-	ImeMajke      string
-	JMBGMajke     string
-	DatumRodjenja string
-	MestoRodjenja string
-	JMBG          string
-	Pol           Pol
-	DatimSmrti    string
-	MestoSmrti    string
-	Drzava        string
+	Ime           string `json:"ime"`
+	Prezime       string `json:"prezime"`
+	ImeOca        string `json:"ime_oca"`
+	JMBGOca       string `json:"jmbg_oca"`
+	ImeMajke      string `json:"ime_majke"`
+	JMBGMajke     string `json:"jmbg_majke"`
+	DatumRodjenja int64  `json:"datum_rodjenja"`
+	MestoRodjenja string `json:"mesto_rodjenja"`
+	JMBG          string `json:"jmbg"`
+	Pol           Pol    `json:"pol"`
+	Drzava        string `json:"drzava"`
 }
 
 type ExcerptFromTheMarriageRegister struct {
