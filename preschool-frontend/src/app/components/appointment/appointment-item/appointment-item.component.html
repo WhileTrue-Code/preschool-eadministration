@@ -1,0 +1,11 @@
+<mat-card class="post-card">
+    <mat-card-title class="community-title">
+      {{appointment.doctor.ime}}
+    </mat-card-title>
+    <mat-card-title class="post-user">{{appointment.user.ime}}</mat-card-title>
+    <mat-card-title class="post-title" [routerLink]="['/Appointment-View', appointment.id]">{{appointment.dayOfAppointment}}</mat-card-title>
+    <mat-card-content>
+      <p class="post-karma">Karma: {{appointment.startOfAppointment}}</p>
+      <p class="post-numberOfComments">Comments: {{appointment.endOfAppointment}}</p>
+    </mat-card-content>
+  </mat-card>

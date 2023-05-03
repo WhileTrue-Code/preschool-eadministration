@@ -1,0 +1,18 @@
+<mat-toolbar class="app-navbar" color="primary">
+    <div class="right">
+        <div fxFlex="1 1 auto" fxLayout="row" fxLayoutAlign="flex-end center">
+            <button *ngIf="!isLoggedIn()" mat-button mat-ripple routerLink="/Login">
+                <span>Prijava</span>
+            </button>
+            <button *ngIf="!isLoggedIn()" mat-button mat-ripple routerLink="/Register">
+                <span>Registracija</span>
+            </button>
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments">
+                <span>Pregledi</span>
+            </button>
+            <button *ngIf="isLoggedIn()" (click)="logout()" mat-button mat-ripple>
+                <span>Logout</span>
+            </button>
+        </div>
+    </div>
+</mat-toolbar>
