@@ -1,0 +1,4 @@
+<h1>Pregled svih konkursa</h1>
+<a routerLink="/Competition-Add" *ngIf="isLoggedIn()"><button class="btn btn-success">Napravi konkurs</button></a>
+<app-competition-list [competitions]="competitions"></app-competition-list>
+
