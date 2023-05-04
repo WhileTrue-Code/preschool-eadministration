@@ -64,7 +64,7 @@ func (controller *AuthController) SignUp(response http.ResponseWriter, request *
 		response.Write([]byte("JMBG already exist"))
 		return
 	} else if value == -2 {
-		response.WriteHeader(http.StatusAccepted)
+		response.WriteHeader(http.StatusCreated)
 		response.Write([]byte("Sorry but that JMBG not exist in NewBornRegistry!"))
 		return
 	}
@@ -86,18 +86,20 @@ func (controller *AuthController) Login(response http.ResponseWriter, request *h
 
 	token, value := controller.service.Login(credentials.JMBG, credentials.Password)
 	if value == 1 {
-		response.WriteHeader(http.StatusForbidden)
+		response.WriteHeader(http.StatusAccepted)
 		response.Write([]byte("JMBG not exist!"))
 		return
 	} else if value == 2 {
-		response.WriteHeader(http.StatusForbidden)
+		response.WriteHeader(http.StatusAccepted)
 		response.Write([]byte("Password doesn't match!"))
 		return
 	} else if value == 3 {
-		response.WriteHeader(http.StatusForbidden)
+		response.WriteHeader(http.StatusAccepted)
 		response.Write([]byte("Problem with generating token"))
 		return
 	}
+
+	log.Println(token)
 
 	response.WriteHeader(http.StatusOK)
 	response.Write([]byte(token))
