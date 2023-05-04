@@ -35,22 +35,46 @@ func (service *HealthcareService) GetAppointmentByID(id primitive.ObjectID) (*mo
 	return service.repository.GetAppointmentByID(id)
 }
 
+func (service *HealthcareService) GetMe(jmbg string) (*model.User, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var user model.User
+	err = json.Unmarshal(response.Data, &user)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return nil, err
+	}
+
+	return &user, nil
+}
+
 func (service *HealthcareService) CreateNewAppointment(appointment *model.Appointment, jmbg string) (int, error) {
 	dataToSend, err := json.Marshal(jmbg)
 	if err != nil {
 		log.Println("Error Marshaling JMBG")
 	}
 
-	//existingAppointments, err := service.repository.GetAllAppointments()
-	//for _, existingAppointment := range existingAppointments {
-	//	if appointment.DayOfAppointment == existingAppointment.DayOfAppointment {
-	//		return 1, nil
-	//	}
-	//}
-	//if err != nil {
-	//	log.Println("Error getting all Appointments", err)
-	//	return 0, err
-	//}
+	existingAppointments, err := service.repository.GetAllAppointments()
+	for _, existingAppointment := range existingAppointments {
+		if (existingAppointment.StartOfAppointment >= appointment.StartOfAppointment && existingAppointment.StartOfAppointment <= appointment.EndOfAppointment) ||
+			(existingAppointment.EndOfAppointment >= appointment.StartOfAppointment && existingAppointment.EndOfAppointment <= appointment.EndOfAppointment) ||
+			(existingAppointment.StartOfAppointment >= appointment.StartOfAppointment && existingAppointment.EndOfAppointment <= appointment.EndOfAppointment) {
+			log.Println(appointment.StartOfAppointment)
+			log.Println(existingAppointment.StartOfAppointment)
+			log.Println(appointment.EndOfAppointment)
+			log.Println(existingAppointment.EndOfAppointment)
+			return 1, nil
+		}
+	}
+	if err != nil {
+		log.Println("Error getting all Appointments", err)
+		return 0, err
+	}
 
 	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
 

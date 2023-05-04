@@ -5,7 +5,14 @@
   margin-right: auto;
 }
 
-.appointment-title {
+.appointment-title-taken {
+  font-size: 22px;
+  text-align: center;
+  color:red;
+  margin-bottom: 20px;
+}
+
+.appointment-title-available {
   font-size: 22px;
   text-align: center;
   color:blue;

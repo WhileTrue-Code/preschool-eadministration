@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Appointment } from 'src/app/models/appointment.mode';
+import { User } from 'src/app/models/user.model';
 import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
@@ -10,6 +11,7 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 export class AppointmentsComponent implements OnInit {
 
   appointments: Array<Appointment> = [];
+  user: User = new User();
 
   constructor(private appointmentService: AppointmentService) { }
 
@@ -18,6 +20,16 @@ export class AppointmentsComponent implements OnInit {
       .subscribe({
         next: (data) => {
           this.appointments = data;
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      })
+
+    this.appointmentService.GetMe()
+      .subscribe({
+        next: (data) => {
+          this.user = data;
         },
         error: (error) => {
           console.log(error)
