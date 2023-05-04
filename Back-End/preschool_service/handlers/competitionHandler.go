@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
@@ -31,6 +32,29 @@ func (p *CompetitionsHandler) GetAllCompetitions(rw http.ResponseWriter, h *http
 	}
 
 	err = allCompetitions.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		p.logger.Fatal("Unable to convert to json :", err)
+		return
+	}
+}
+
+func (p *CompetitionsHandler) GetCompetitionById(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	competition, err := p.repo.GetById(id)
+	if err != nil {
+		p.logger.Print("Database exception: ", err)
+	}
+
+	if competition == nil {
+		http.Error(rw, "Patient with given id not found", http.StatusNotFound)
+		p.logger.Printf("Patient with id: '%s' not found", id)
+		return
+	}
+
+	err = competition.ToJSON(rw)
 	if err != nil {
 		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
 		p.logger.Fatal("Unable to convert to json :", err)
