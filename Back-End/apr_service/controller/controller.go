@@ -2,6 +2,8 @@ package controller
 
 import (
 	"apr_service/domain"
+	"encoding/json"
+	"io"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -9,14 +11,14 @@ import (
 )
 
 type AprController struct {
-	Logger     *zap.Logger
-	AprService domain.AprService
+	Logger  *zap.Logger
+	Service domain.AprService
 }
 
 func NewController(aprService domain.AprService, logger *zap.Logger) *AprController {
 	return &AprController{
-		Logger:     logger,
-		AprService: aprService,
+		Logger:  logger,
+		Service: aprService,
 	}
 }
 
@@ -28,8 +30,39 @@ func (controller *AprController) Init(router *mux.Router) {
 }
 
 func (controller *AprController) RegisterAprCompany(writer http.ResponseWriter, req *http.Request) {
-	controller.Logger.Info("Started registering new apr company account.")
-	writer.Write([]byte("All is ok!"))
+	controller.Logger.Info("Started registering new APR account.")
+	var account domain.AprAccount
+	bytes, err := io.ReadAll(req.Body)
+	if err != nil {
+		controller.Logger.Error("error in reading request body bytes.",
+			zap.Error(err),
+		)
+		http.Error(writer, "error in reading request body bytes.", http.StatusBadRequest)
+		return
+	}
+
+	err = json.Unmarshal(bytes, &account)
+	if err != nil {
+		controller.Logger.Error("error in unmarshalling bytes to model.",
+			zap.Error(err),
+		)
+		http.Error(writer, "error in unmarshalling bytes to model.", http.StatusBadRequest)
+		return
+	}
+
+	controller.Logger.Info("ACCOUNT MODEL STRUCT",
+		zap.Any("account", account),
+	)
+
+	err = controller.Service.RegisterAprAccount(&account)
+	if err != nil {
+		http.Error(writer, "error in saving AprAccount to repository.", http.StatusInternalServerError)
+		return
+	}
+
+	controller.Logger.Info("APR account registered successfully.")
+	writer.WriteHeader(http.StatusCreated)
+	writer.Write([]byte("Registration was successfully."))
 
 }
 

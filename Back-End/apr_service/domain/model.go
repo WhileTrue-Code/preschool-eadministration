@@ -1,17 +1,13 @@
 package domain
 
 type AprAccount struct {
-	Name                      string `json:"name"`
-	Address                   string `json:"address"`
-	CompanyID                 string `json:"companyID"`
-	Password                  string `json:"password"`
-	FounderFirstName          string `json:"founderFirstName"`
-	FounderLastName           string `json:"founderLastName"`
-	FounderEmail              string `json:"founderEmail"`
-	FounderPhone              string `json:"founderPhone"`
-	FounderID                 string `json:"founderID"`
-	StartCapital              int    `json:"startCapital"`
-	AuthorizedPersonFirstName string `json:"authorizedPersonFirstName"`
-	AuthorizedPersonLastName  string `json:"authorizedPersonLastName"`
-	LastUpdateDate            int    `json:"lastUpdateDate"`
+	ID                        string `bson:"_id" json:"id"`
+	CompanyID                 string `bson:"companyID" json:"companyID"`
+	Name                      string `bson:"name" json:"name"`
+	Address                   string `bson:"address" json:"address"`
+	FounderID                 string `bson:"founderID" json:"founderID"`
+	StartCapital              int    `bson:"startCapital" json:"startCapital"`
+	AuthorizedPersonFirstName string `bson:"authorizedPersonFirstName" json:"authorizedPersonFirstName"`
+	AuthorizedPersonLastName  string `bson:"authorizedPersonLastName" json:"authorizedPersonLastName"`
+	LastUpdateDate            int    `bson:"lastUpdateDate" json:"lastUpdateDate"`
 }
