@@ -4,7 +4,6 @@ import (
 	"auth_service/data"
 	"auth_service/handlers"
 	"context"
-	gorillaHandlers "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
@@ -46,14 +45,14 @@ func main() {
 	getCompetitionById := router.Methods(http.MethodGet).Subrouter()
 	getCompetitionById.HandleFunc("/competitions/getById/{id}", competitionsHandler.GetCompetitionById)
 
-	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"http://localhost:4200"}),
-		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
-		gorillaHandlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"}),
-		gorillaHandlers.AllowCredentials())
+	//cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"http://localhost:4200"}),
+	//	gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
+	//	gorillaHandlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"}),
+	//	gorillaHandlers.AllowCredentials())
 
 	server := http.Server{
 		Addr:         ":" + port,
-		Handler:      cors(router),
+		Handler:      router,
 		IdleTimeout:  120 * time.Second,
 		ReadTimeout:  1 * time.Second,
 		WriteTimeout: 1 * time.Second,

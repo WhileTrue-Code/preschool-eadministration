@@ -109,6 +109,7 @@ func (pr *CompetitionRepo) PostCompetition(competition *Competition) error {
 	competitionsCollection := pr.getCollection()
 
 	competition.ID = primitive.NewObjectID()
+
 	result, err := competitionsCollection.InsertOne(ctx, &competition)
 	if err != nil {
 		pr.logger.Println(err)

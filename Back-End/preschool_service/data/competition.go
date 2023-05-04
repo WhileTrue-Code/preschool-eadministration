@@ -8,9 +8,9 @@ import (
 
 type Competition struct {
 	ID              primitive.ObjectID `json:"id" bson:"_id"`
-	DatumObjave     primitive.DateTime `json:"datum_objave" bson:"datumObjave"`
-	PocetakKonkursa primitive.DateTime `json:"pocetak_konkursa" bson:"pocetakKonkursa"`
-	KrajKonkursa    primitive.DateTime `json:"kraj_konkursa" bson:"krajKonkursa"`
+	DatumObjave     int64              `json:"datum_objave" bson:"datumObjave"`
+	PocetakKonkursa int64              `json:"pocetak_konkursa" bson:"pocetakKonkursa"`
+	KrajKonkursa    int64              `json:"kraj_konkursa" bson:"krajKonkursa"`
 	Grad            string             `json:"grad" bson:"grad"`
 	Opstina         string             `json:"opstina" bson:"opstina"`
 	Uzrast          string             `json:"uzrast" bson:"uzrast"`
