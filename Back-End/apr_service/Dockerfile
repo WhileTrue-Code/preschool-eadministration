@@ -1,8 +1,9 @@
 FROM golang:latest as builder
 WORKDIR /app
-COPY ./apr_service/go.mod ./apr_service/go.sum ./
-RUN go mod download
 COPY ./apr_service/ .
+COPY ./authorization/ /authorization/
+COPY ./nats/ /nats/
+RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 
 FROM alpine:latest

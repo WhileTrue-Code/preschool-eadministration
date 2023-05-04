@@ -87,6 +87,48 @@ services:
       - healthcare_db
       - nats
 
+  apr_service:
+    image: apr_service
+    container_name: apr_service
+    build:
+      context: .
+      dockerfile: ./apr_service/Dockerfile
+    restart: always
+    ports:
+      - ${APR_SERVICE_PORT}:${APR_SERVICE_PORT}
+    environment:
+      SERVICE_HOST: ${APR_SERVICE_HOST}
+      SERVICE_PORT: ${APR_SERVICE_PORT}
+      DB_HOST: ${APR_DB_HOST}
+      DB_PORT: ${APR_DB_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
+      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
+    networks:
+      - network
+    depends_on:
+      - auth_db
+      - nats
+
+    preschool_service:
+      build: preschool_service
+      container_name: preschool_service
+      restart: always
+      ports:
+        - "8003:8003"
+      environment:
+        PRESCHOOL_DB_HOST: ${PRESCHOOL_DB_HOST}
+        PRESCHOOL_DB_PORT: ${PRESCHOOL_DB_PORT}
+        PRESCHOOL_DB_NAME: ${PRESCHOOL_DB_NAME}
+        PRESCHOOL_SERVICE_PORT: ${PRESCHOOL_SERVICE_PORT}
+        PRESCHOOL_SERVICE_HOST: ${PRESCHOOL_SERVICE_HOST}
+        SECRET_KEY: ${SECRET_KEY}
+      depends_on:
+        - preschool_db
+      networks:
+        - network
+
+
   auth_db:
     image: mongo
     container_name: auth_db
@@ -100,10 +142,8 @@ services:
     restart: on-failure
     networks:
       - network
-
-
-#    volumes:
-#      - user_db:/data/db
+    volumes:
+     - auth_db:/data/db
 
   registrar_db:
     image: mongo
@@ -111,33 +151,22 @@ services:
     restart: on-failure
     networks:
       - network
+    volumes:
+     - registrar_db:/data/db
 
-#    volumes:
-#      - user_db:/data/db
+  apr_db:
+    image: mongo
+    container_name: apr_db
+    restart: on-failure
+    networks:
+      - network
+    volumes:
+     - apr_db:/data/db
 
   nats:
     image: nats
     container_name: nats
     restart: on-failure
-    networks:
-      - network
-
-#sss
-  preschool_service:
-    build: preschool_service
-    container_name: preschool_service
-    restart: always
-    ports:
-      - "8003:8003"
-    environment:
-      PRESCHOOL_DB_HOST: ${PRESCHOOL_DB_HOST}
-      PRESCHOOL_DB_PORT: ${PRESCHOOL_DB_PORT}
-      PRESCHOOL_DB_NAME: ${PRESCHOOL_DB_NAME}
-      PRESCHOOL_SERVICE_PORT: ${PRESCHOOL_SERVICE_PORT}
-      PRESCHOOL_SERVICE_HOST: ${PRESCHOOL_SERVICE_HOST}
-      SECRET_KEY: ${SECRET_KEY}
-    depends_on:
-      - preschool_db
     networks:
       - network
 
@@ -149,11 +178,13 @@ services:
       - network
     volumes:
       - mongo_store:/data/db
-      #      - ${AUTH_DB_VOLUME}:/data/db
 
 
 volumes:
   mongo_store:
+  auth_db:
+  registrar_db:
+  apr_db:
 
 networks:
   network:

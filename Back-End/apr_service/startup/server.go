@@ -3,6 +3,7 @@ package startup
 import (
 	"apr_service/controller"
 	"apr_service/domain"
+	"apr_service/repo"
 	"apr_service/service"
 	"apr_service/startup/config"
 	"context"
@@ -29,7 +30,6 @@ func NewServer() *Server {
 		log.Printf("Error in initialization logger cause of: %s", err)
 		panic(err)
 	}
-
 	server := &Server{
 		Config: config.NewConfig(),
 		Logger: logger,
@@ -40,13 +40,24 @@ func NewServer() *Server {
 }
 
 func (server *Server) Start() {
-	service := server.initAprService()
+	repository := server.initAprRepository()
+	service := server.initAprService(repository)
 	controller := server.initController(service)
 	server.start(controller)
 }
 
-func (server *Server) initAprService() domain.AprService {
-	return service.NewAprService(nil, server.Logger)
+func (server *Server) initAprRepository() domain.AprRepository {
+	cli := repo.GetMongoClient(server.Config.DB_HOST, server.Config.DB_PORT, server.Logger)
+	if cli == nil {
+		server.Logger.Error("MongoDB cli is null, shutting down...")
+		os.Exit(1)
+	}
+
+	return repo.NewMongoRepo(cli, server.Logger)
+}
+
+func (server *Server) initAprService(repo domain.AprRepository) domain.AprService {
+	return service.NewAprService(repo, server.Logger)
 }
 
 func (server *Server) initController(service domain.AprService) *controller.AprController {
