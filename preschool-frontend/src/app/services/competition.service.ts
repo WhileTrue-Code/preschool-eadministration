@@ -19,4 +19,8 @@ export class CompetitionService {
     public AddCompetition(competition: Competition): Observable<Competition> {
         return this.http.post<Competition>(`${environment.baseApiUrl}/${this.url}/add`, competition);
     }
+
+    public GetSingleCompetition(competition_id: string): Observable<Competition> {
+        return this.http.get<Competition>(`${environment.baseApiUrl}/${this.url}/getById/` + competition_id);
+    }
 }

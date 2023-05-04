@@ -30,6 +30,7 @@ import { CompetitionsComponent } from './components/competitions/competitions/co
 import { CompetitionListComponent } from './components/competitions/competition-list/competition-list.component';
 import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
 import { CompetitionItemComponent } from './components/competitions/competition-item/competition-item.component';
+import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { CompetitionItemComponent } from './components/competitions/competition-
     CompetitionsComponent,
     CompetitionListComponent,
     CompetitionAddComponent,
-    CompetitionItemComponent
+    CompetitionItemComponent,
+    CompetitionViewComponent
   ],
   imports: [
     BrowserModule,

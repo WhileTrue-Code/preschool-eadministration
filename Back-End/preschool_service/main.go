@@ -43,6 +43,9 @@ func main() {
 	postCompetition.HandleFunc("/competitions/add", competitionsHandler.PostCompetition)
 	//postCompetition.Use(competitionsHandler.MiddlewareCompetitionDeserialization)
 
+	getCompetitionById := router.Methods(http.MethodGet).Subrouter()
+	getCompetitionById.HandleFunc("/competitions/getById/{id}", competitionsHandler.GetCompetitionById)
+
 	cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"http://localhost:4200"}),
 		gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
 		gorillaHandlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"}),

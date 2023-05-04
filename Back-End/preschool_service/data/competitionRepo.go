@@ -87,6 +87,22 @@ func (pr *CompetitionRepo) GetAll() (Competitions, error) {
 	return competitions, nil
 }
 
+func (pr *CompetitionRepo) GetById(id string) (*Competition, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	competitionCollection := pr.getCollection()
+
+	var competition Competition
+	objID, _ := primitive.ObjectIDFromHex(id)
+	err := competitionCollection.FindOne(ctx, bson.M{"_id": objID}).Decode(&competition)
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	return &competition, nil
+}
+
 func (pr *CompetitionRepo) PostCompetition(competition *Competition) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
