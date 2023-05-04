@@ -1,1 +1,51 @@
-<p>competition-add works!</p>
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <form class="p-5" [formGroup]="competitionForm">
+            <h2>Dodaj konkurs</h2>
+
+            <div class="mb-3">
+                <label class="form-label">Datum objave</label>
+                <input type="datetime-local" class="form-control" id="" formControlName="datum_objave">
+            </div>
+
+            <div class="mb-3">
+                <label>Pocetak konkursa</label>
+                <input type="datetime-local" class="form-control" id="" formControlName="pocetak_konkursa">
+            </div>
+
+            <div class="mb-3">
+              <label>Kraj konkursa</label>
+              <input type="datetime-local" class="form-control" id="" formControlName="kraj_konkursa">
+          </div>
+
+          <div class="mb-3">
+            <label>Grad</label>
+            <input type="text" class="form-control" id="" formControlName="grad">
+        </div>
+
+        <div class="mb-3">
+          <label>Opstina</label>
+          <input type="text" class="form-control" id="" formControlName="opstina">
+      </div>
+
+      <div class="mb-3">
+        <label>Uzrast</label>
+        <input type="text" class="form-control" id="" formControlName="uzrast">
+    </div>
+
+    <div class="mb-3">
+      <label>Broj dece</label>
+      <input type="number" class="form-control" id="" formControlName="broj_dece">
+  </div>
+        
+            <div class="button-box col-lg-12">
+                <button type="submit" class="btn btn-primary me-2" (click)="onSubmit()">Dodaj konkurs</button>
+                <a routerLink="/Competitions"><button class="btn btn-danger">Povratak na konkurse</button></a>
+            </div>
+            
+
+        </form>
+
+    </div>
+</div>
+<div>

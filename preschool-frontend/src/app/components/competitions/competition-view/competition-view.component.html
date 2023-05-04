@@ -3,9 +3,9 @@
       Konkurs
     </mat-card-title>
     <mat-card-content>
-      <p class="competition-datumObjave">Datum objave: {{competition.datum_objave | date:"medium"}}</p>
-      <p class="competition-pocetakKonkursa">Pocetak konkursa: {{competition.pocetak_konkursa | date:"medium" }}</p>
-      <p class="competition-krajKonkursa">Kraj konkursa: {{competition.kraj_konkursa | date:"medium"}}</p>
+      <p class="competition-datumObjave">Datum objave: {{competition.datum_objave * 1000 | date:"medium"}}</p>
+      <p class="competition-pocetakKonkursa">Pocetak konkursa: {{competition.pocetak_konkursa * 1000 | date:"medium" }}</p>
+      <p class="competition-krajKonkursa">Kraj konkursa: {{competition.kraj_konkursa * 1000 | date:"medium"}}</p>
       <p class="competition-grad">Grad: {{competition.grad}}</p>
       <p class="competition-opstina">Opstina: {{competition.opstina}}</p>
       <p class="competition-uzrast">Uzrast: {{competition.uzrast}}</p>
