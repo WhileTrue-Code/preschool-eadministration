@@ -26,6 +26,10 @@ import { AppointmentViewComponent } from './components/appointment/appointment-v
 import { AppointmentsComponent } from './components/appointment/appointments/appointments.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
+import { CompetitionsComponent } from './components/competitions/competitions/competitions.component';
+import { CompetitionListComponent } from './components/competitions/competition-list/competition-list.component';
+import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
+import { CompetitionItemComponent } from './components/competitions/competition-item/competition-item.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +41,11 @@ import { LoginComponent } from './components/login/login.component';
     AppointmentViewComponent,
     AppointmentsComponent,
     RegisterComponent,
-    LoginComponent
+    LoginComponent,
+    CompetitionsComponent,
+    CompetitionListComponent,
+    CompetitionAddComponent,
+    CompetitionItemComponent
   ],
   imports: [
     BrowserModule,

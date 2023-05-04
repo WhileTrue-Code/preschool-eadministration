@@ -10,6 +10,9 @@
             <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments">
                 <span>Pregledi</span>
             </button>
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Competitions">
+                <span>Konkursi</span>
+            </button>
             <button *ngIf="isLoggedIn()" (click)="logout()" mat-button mat-ripple>
                 <span>Logout</span>
             </button>
