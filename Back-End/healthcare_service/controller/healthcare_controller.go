@@ -38,6 +38,7 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 	router.HandleFunc("/allAppointments", controller.GetAllAppointments).Methods("GET")
 	router.HandleFunc("/allAvailableAppointments", controller.GetAllAvailableAppointments).Methods("GET")
 	router.HandleFunc("/getAppointmentByID/{id}", controller.GetAppointmentByID).Methods("GET")
+	router.HandleFunc("/getMe", controller.GetMe).Methods("GET")
 	router.HandleFunc("/newAppointment", controller.CreateNewAppointment).Methods("POST")
 	router.HandleFunc("/setAppointment/{id}", controller.SetAppointment).Methods("PUT")
 	router.HandleFunc("/deleteAppointmentByID/{id}", controller.DeleteAppointmentByID).Methods("DELETE")
@@ -94,6 +95,31 @@ func (controller *HealthcareController) GetAppointmentByID(writer http.ResponseW
 	}
 
 	jsonResponse(appointment, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetMe(writer http.ResponseWriter, req *http.Request) {
+	bearer := req.Header.Get("Authorization")
+	bearerToken := strings.Split(bearer, "Bearer ")
+	tokenString := bearerToken[1]
+
+	token, err := jwt.Parse([]byte(tokenString), verifier)
+
+	if err != nil {
+		log.Println(err)
+		http.Error(writer, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims := authorization.GetMapClaims(token.Bytes())
+	jmbg := claims["jmbg"]
+
+	user, err := controller.service.GetMe(jmbg)
+	if err != nil {
+		log.Println("Error getting User")
+	}
+
+	jsonResponse(user, writer)
 	writer.WriteHeader(http.StatusOK)
 }
 

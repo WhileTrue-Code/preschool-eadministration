@@ -7,20 +7,19 @@ import (
 )
 
 type AprServiceImpl struct {
-	AprRepository domain.AprRepository
-	Logger        *zap.Logger
+	Repo   domain.AprRepository
+	Logger *zap.Logger
 }
 
 func NewAprService(aprRepo domain.AprRepository, logger *zap.Logger) domain.AprService {
 	return &AprServiceImpl{
-		AprRepository: aprRepo,
-		Logger:        logger,
+		Repo:   aprRepo,
+		Logger: logger,
 	}
 }
 
 func (service *AprServiceImpl) RegisterAprAccount(account *domain.AprAccount) error {
-
-	return nil
+	return service.Repo.SaveAprAccount(account)
 }
 
 func (service *AprServiceImpl) FindAprByFounderID(founderID string) ([]domain.AprAccount, error) {

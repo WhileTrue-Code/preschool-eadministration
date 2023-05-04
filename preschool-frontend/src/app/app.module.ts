@@ -65,6 +65,8 @@ import { CompetitionViewComponent } from './components/competitions/competition-
     MatDividerModule,
     BrowserAnimationsModule,
     MatCheckboxModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

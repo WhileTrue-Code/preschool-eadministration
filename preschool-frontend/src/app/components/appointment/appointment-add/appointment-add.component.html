@@ -1,1 +1,44 @@
-<p>appointment-add works!</p>
+<div>
+    <div>
+        <mat-card class="add-appointment-card">
+            <mat-card-title class="card-title-main">Pravljenje Novog Pregleda</mat-card-title>
+            <div class="form-group">
+                <form [formGroup]="appointmentFormGroup">
+
+                    <mat-card-title class="input-title">Dan Pregleda</mat-card-title>
+                    <div class="date-pick">
+                        <input type="date" min="2023-05-04" max="2023-05-31" formControlName="dayOfAppointment" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && appointmentGroup['dayOfAppointment'].errors }">
+                        <div *ngIf="submitted && appointmentGroup['dayOfAppointment'].errors" class="invalid-feedback">
+                            <div *ngIf="appointmentGroup['dayOfAppointment'].errors['required']">Datum je obavezan.</div>
+                        </div>
+                    </div>
+
+                    <mat-card-title class="input-title">Početak Pregleda</mat-card-title>
+                    <div class="date-pick">
+                        <input type="datetime-local" min="2023-05-04T00:00" max="2023-05-31T00:00" formControlName="startOfAppointment" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && appointmentGroup['startOfAppointment'].errors }">
+                        <div *ngIf="submitted && appointmentGroup['startOfAppointment'].errors" class="invalid-feedback">
+                            <div *ngIf="appointmentGroup['startOfAppointment'].errors['required']">Datum je obavezan.</div>
+                        </div>
+                    </div>
+
+                    <mat-card-title class="input-title">Kraj Pregleda</mat-card-title>
+                    <div class="date-pick">
+                        <input type="datetime-local" min="2023-05-04T00:00" max="2023-05-31T00:00" formControlName="endOfAppointment" class="form-control"
+                        [ngClass]="{ 'is-invalid': submitted && appointmentGroup['endOfAppointment'].errors }">
+                        <div *ngIf="submitted && appointmentGroup['endOfAppointment'].errors" class="invalid-feedback">
+                            <div *ngIf="appointmentGroup['endOfAppointment'].errors['required']">Datum je obavezan.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group form-check">
+                        <button type="submit" class="btn btn-primary" (click)="onSubmit()">Dodaj</button>
+                    </div>
+
+                </form>
+            </div>
+        </mat-card>
+
+    </div>
+</div>
