@@ -41,16 +41,16 @@ func (service *HealthcareService) CreateNewAppointment(appointment *model.Appoin
 		log.Println("Error Marshaling JMBG")
 	}
 
-	existingAppointments, err := service.repository.GetAllAppointments()
-	for _, existingAppointment := range existingAppointments {
-		if appointment.DayOfAppointment == existingAppointment.DayOfAppointment {
-			return 1, nil
-		}
-	}
-	if err != nil {
-		log.Println("Error getting all Appointments", err)
-		return 0, err
-	}
+	//existingAppointments, err := service.repository.GetAllAppointments()
+	//for _, existingAppointment := range existingAppointments {
+	//	if appointment.DayOfAppointment == existingAppointment.DayOfAppointment {
+	//		return 1, nil
+	//	}
+	//}
+	//if err != nil {
+	//	log.Println("Error getting all Appointments", err)
+	//	return 0, err
+	//}
 
 	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
 
