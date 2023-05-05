@@ -8,6 +8,7 @@ import { CompetitionViewComponent } from './components/competitions/competition-
 import { RegisterAprComponent } from './components/register-apr/register-apr.component';
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 const routes: Routes = [
   {
@@ -41,6 +42,10 @@ const routes: Routes = [
   {
     path: "MyAprs",
     component: MyAprsComponent
+  },
+  {
+    path: "Welcome",
+    component: WelcomeComponent
   }
 ];
 

@@ -44,4 +44,8 @@ export class MyAprsComponent implements OnInit {
     return true
   }
 
+  redirectToRegister() {
+
+  }
+
 }
