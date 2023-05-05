@@ -1,0 +1,65 @@
+<mat-card style="width: 50%; margin:auto; margin-top: 10px;">
+    <mat-card-title class="card-title" style="text-align: center; margin-bottom: 15px;">Registracija firme na APR</mat-card-title>
+    <div class="form-group">
+        <form [formGroup]="formGroup">
+            <mat-card-content>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Naziv firme</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="name"
+                        [ngClass]="{ 'is-invalid': submitted && registerAprForm['name'].errors }">
+                    <div *ngIf="submitted && registerAprForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="registerAprForm['name'].errors['required']">Naziv firme je obavezan.</div>
+                        <div *ngIf="registerAprForm['name'].errors['minlength']">Naziv firme mora biti dužine minimalno 3 karaktera.</div>
+                        <div *ngIf="registerAprForm['name'].errors['maxlength']">Naziv firme ne sme biti duži od 30 karaktera.</div>
+                        <div *ngIf="registerAprForm['name'].errors['pattern']">Specijalni karakteri nisu dozvoljeni u imenu firme.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Adresa firme</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="address"
+                        [ngClass]="{ 'is-invalid': submitted && registerAprForm['address'].errors }">
+                    <div *ngIf="submitted && registerAprForm['address'].errors" class="invalid-feedback">
+                        <div *ngIf="registerAprForm['address'].errors['required']">Adresa firme je obavezna.</div>
+                        <div *ngIf="registerAprForm['address'].errors['minlength']">Adresa firme mora biti dužine minimalno 3 karaktera.</div>
+                        <div *ngIf="registerAprForm['address'].errors['maxlength']">Adresa firme ne sme biti duža od 30 karaktera.</div>
+                        <div *ngIf="registerAprForm['address'].errors['pattern']">Specijalni karakteri nisu dozvoljeni u adresi firme.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Početni kapital</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="startCapital"
+                        [ngClass]="{ 'is-invalid': submitted && registerAprForm['startCapital'].errors }">
+                    <div *ngIf="submitted && registerAprForm['startCapital'].errors" class="invalid-feedback">
+                        <div *ngIf="registerAprForm['startCapital'].errors['required']">Početni kapital firme je obavezan.</div>
+                        <div *ngIf="registerAprForm['startCapital'].errors['min']">Početni kapital firme mora biti u minimalnom iznosu od 100 dinara.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Ime ovlašćenog lica</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="authorizedPersonFn"
+                        [ngClass]="{ 'is-invalid': submitted && registerAprForm['authorizedPersonFn'].errors }">
+                    <div *ngIf="submitted && registerAprForm['authorizedPersonFn'].errors" class="invalid-feedback">
+                        <div *ngIf="registerAprForm['authorizedPersonFn'].errors['required']">Ime ovlašćenog lica obavezno.</div>
+                        <div *ngIf="registerAprForm['authorizedPersonFn'].errors['minlength']">Ime ovlašćenog lica mora biti dužine minimalno 3 karaktera.</div>
+                        <div *ngIf="registerAprForm['authorizedPersonFn'].errors['maxlength']">Ime ovlašćenog lica ne sme biti duža od 30 karaktera.</div>
+                        <div *ngIf="registerAprForm['authorizedPersonFn'].errors['pattern']">Specijalni karakteri nisu dozvoljeni u imenu ovlašćenog lica.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Prezime ovlašćenog lica</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="authorizedPersonLn"
+                        [ngClass]="{ 'is-invalid': submitted && registerAprForm['authorizedPersonLn'].errors }">
+                    <div *ngIf="submitted && registerAprForm['authorizedPersonLn'].errors" class="invalid-feedback">
+                        <div *ngIf="registerAprForm['authorizedPersonLn'].errors['required']">Prezime ovlašćenog lica obavezno.</div>
+                        <div *ngIf="registerAprForm['authorizedPersonLn'].errors['minlength']">Prezime ovlašćenog lica mora biti dužine minimalno 3 karaktera.</div>
+                        <div *ngIf="registerAprForm['authorizedPersonLn'].errors['maxlength']">Prezime ovlašćenog lica ne sme biti duža od 30 karaktera.</div>
+                        <div *ngIf="registerAprForm['authorizedPersonLn'].errors['pattern']">Specijalni karakteri nisu dozvoljeni u prezimenu ovlašćenog lica.</div>
+                    </div>   
+                </div>
+                <div class="form-group form-check mt-4" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Registruj firmu</button>
+                </div>
+            </mat-card-content>
+        </form>
+    </div>
+</mat-card>

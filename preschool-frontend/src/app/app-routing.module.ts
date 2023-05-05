@@ -5,6 +5,8 @@ import { RegisterComponent } from './components/register/register.component';
 import { AppointmentsComponent } from './components/appointment/appointments/appointments.component';
 import { CompetitionsComponent } from './components/competitions/competitions/competitions.component';
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
+import { RegisterAprComponent } from './components/register-apr/register-apr.component';
+import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
 
 const routes: Routes = [
@@ -31,6 +33,14 @@ const routes: Routes = [
   {
     path: "Competition-Add",
     component: CompetitionAddComponent
+  },
+  {
+    path: "RegisterApr",
+    component: RegisterAprComponent
+  },
+  {
+    path: "MyAprs",
+    component: MyAprsComponent
   }
 ];
 

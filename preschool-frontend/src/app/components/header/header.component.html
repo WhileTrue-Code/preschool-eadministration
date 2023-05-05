@@ -7,6 +7,9 @@
             <button *ngIf="!isLoggedIn()" mat-button mat-ripple routerLink="/Register">
                 <span>Registracija</span>
             </button>
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/MyAprs">
+                <span>Moj APR</span>
+            </button>
             <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments">
                 <span>Pregledi</span>
             </button>

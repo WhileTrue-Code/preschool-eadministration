@@ -4,6 +4,7 @@ import (
 	"apr_service/domain"
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
 )
@@ -36,6 +37,33 @@ func (repo *AprMongoRepo) SaveAprAccount(aprAccount *domain.AprAccount) (err err
 	return
 }
 
-func (repo *AprMongoRepo) FindAprAccountsByFounderID(founderID string) ([]domain.AprAccount, error) {
-	return nil, nil
+func (repo *AprMongoRepo) FindAprAccountsByFounderID(founderID string) (results []domain.AprAccount, err error) {
+	cursor, err := repo.Collection.Find(context.Background(), bson.D{{"founderID", founderID}})
+	if err != nil {
+		repo.Logger.Info("Error in getting accounts by founderID",
+			zap.Error(err),
+		)
+		return
+	}
+
+	results = []domain.AprAccount{}
+	err = cursor.All(context.Background(), &results)
+	if err != nil {
+		repo.Logger.Info("Error in decoding by results with All()",
+			zap.Error(err),
+		)
+		return
+	}
+
+	return
+}
+
+func (repo *AprMongoRepo) DoesExistAprWithID(ID int) (exists bool) {
+
+	result := repo.Collection.FindOne(context.Background(), bson.M{"companyID": ID})
+	if err := result.Err(); err != nil {
+		return false
+	}
+
+	return true
 }

@@ -31,6 +31,10 @@ import { CompetitionListComponent } from './components/competitions/competition-
 import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
 import { CompetitionItemComponent } from './components/competitions/competition-item/competition-item.component';
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
+import { RegisterAprComponent } from './components/register-apr/register-apr.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
+import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +51,10 @@ import { CompetitionViewComponent } from './components/competitions/competition-
     CompetitionListComponent,
     CompetitionAddComponent,
     CompetitionItemComponent,
-    CompetitionViewComponent
+    CompetitionViewComponent,
+    RegisterAprComponent,
+    MyAprsComponent,
+    AprListItemComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +73,8 @@ import { CompetitionViewComponent } from './components/competitions/competition-
     BrowserAnimationsModule,
     MatCheckboxModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatSnackBarModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

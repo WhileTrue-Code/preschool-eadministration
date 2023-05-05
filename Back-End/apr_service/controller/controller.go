@@ -2,11 +2,14 @@ package controller
 
 import (
 	"apr_service/domain"
+	"authorization"
 	"encoding/json"
 	"io"
 	"net/http"
+	"strings"
 
 	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.uber.org/zap"
 )
 
@@ -24,7 +27,7 @@ func NewController(aprService domain.AprService, logger *zap.Logger) *AprControl
 
 func (controller *AprController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterAprCompany).Methods("POST")
-	router.HandleFunc("/{founderID}", controller.FindAprByFounderID).Methods("GET")
+	router.HandleFunc("/", controller.FindAprByFounderID).Methods("GET")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
 }
@@ -33,6 +36,7 @@ func (controller *AprController) RegisterAprCompany(writer http.ResponseWriter, 
 	controller.Logger.Info("Started registering new APR account.")
 	var account domain.AprAccount
 	bytes, err := io.ReadAll(req.Body)
+	controller.Logger.Info("Bytes from fend", zap.String("Json stringified", string(bytes)))
 	if err != nil {
 		controller.Logger.Error("error in reading request body bytes.",
 			zap.Error(err),
@@ -49,10 +53,14 @@ func (controller *AprController) RegisterAprCompany(writer http.ResponseWriter, 
 		http.Error(writer, "error in unmarshalling bytes to model.", http.StatusBadRequest)
 		return
 	}
+	account.ID = primitive.NewObjectID()
 
-	controller.Logger.Info("ACCOUNT MODEL STRUCT",
-		zap.Any("account", account),
-	)
+	authToken := req.Header.Get("Authorization")
+	splitted := strings.Split(authToken, " ")
+	claims := authorization.GetMapClaims([]byte(splitted[1]))
+
+	founderID := claims["jmbg"]
+	account.FounderID = founderID
 
 	err = controller.Service.RegisterAprAccount(&account)
 	if err != nil {
@@ -60,17 +68,26 @@ func (controller *AprController) RegisterAprCompany(writer http.ResponseWriter, 
 		return
 	}
 
+	controller.Logger.Info("ACCOUNT MODEL STRUCT",
+		zap.Any("account", account),
+	)
 	controller.Logger.Info("APR account registered successfully.")
-	writer.WriteHeader(http.StatusCreated)
-	writer.Write([]byte("Registration was successfully."))
+	// writer.WriteHeader(http.StatusCreated)
+	var response any = "Registration was successfully."
+	stringResp, _ := json.Marshal(response)
+	writer.Write([]byte(stringResp))
 
 }
 
 func (controller *AprController) FindAprByFounderID(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	founderID, ok := vars["founderID"]
-	if !ok {
-		http.Error(writer, "founder id wasn't provided.", http.StatusBadRequest)
+	authToken := req.Header.Get("Authorization")
+	splitted := strings.Split(authToken, " ")
+	claims := authorization.GetMapClaims([]byte(splitted[1]))
+
+	founderID := claims["jmbg"]
+	res, err := controller.Service.FindAprByFounderID(founderID)
+	if err != nil {
+		http.Error(writer, "Error on server-side, please try again.", http.StatusInternalServerError)
 		return
 	}
 
@@ -79,6 +96,7 @@ func (controller *AprController) FindAprByFounderID(writer http.ResponseWriter, 
 	))
 	log.Info("Started getting owned apr accounts by founderID")
 
-	writer.Write([]byte("All is ok!"))
+	resBytes, _ := json.Marshal(res)
+	writer.Write(resBytes)
 
 }
