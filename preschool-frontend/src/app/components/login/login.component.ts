@@ -39,8 +39,14 @@ export class LoginComponent implements OnInit {
       ({
         next: (response) => {
           if (response != null){
-            localStorage.setItem('authToken', response)
             console.log(response)
+            if (response == "JMBG not exist!"){
+              localStorage.clear()
+            }else if (response == "Password doesn't match!"){
+              localStorage.clear()
+            }else{
+              localStorage.setItem('authToken', response)
+            }
           }
         },
         error: (error) => {
