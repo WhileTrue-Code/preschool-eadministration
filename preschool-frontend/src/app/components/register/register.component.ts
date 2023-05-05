@@ -8,6 +8,7 @@ import {
 import {Credentials} from "../../models/credentials";
 import {AuthService} from "../../services/auth.service";
 import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -18,7 +19,8 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {
   }
 
@@ -47,6 +49,9 @@ export class RegisterComponent implements OnInit {
     this.authService.Registration(credentials).subscribe(
       response => {
         console.log(response)
+        this.router.navigate(["/Login"])
+      }, error => {
+        this.router.navigate(["/Login"])
       }
     )
   }

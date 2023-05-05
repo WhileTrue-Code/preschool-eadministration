@@ -3,6 +3,7 @@ import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Credentials} from "../../models/credentials";
 import {AuthService} from "../../services/auth.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private router: Router
   ) { }
 
   formGroup: FormGroup = new FormGroup({
@@ -42,6 +44,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('authToken', response)
             console.log(response)
           }
+          this.router.navigate(['/Welcome']);
         },
         error: (error) => {
           localStorage.clear()

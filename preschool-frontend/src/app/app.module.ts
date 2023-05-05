@@ -35,6 +35,7 @@ import { RegisterAprComponent } from './components/register-apr/register-apr.com
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
+import { WelcomeComponent } from './components/welcome/welcome.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { AprListItemComponent } from './components/apr-list-item/apr-list-item.c
     CompetitionViewComponent,
     RegisterAprComponent,
     MyAprsComponent,
-    AprListItemComponent
+    AprListItemComponent,
+    WelcomeComponent
   ],
   imports: [
     BrowserModule,
