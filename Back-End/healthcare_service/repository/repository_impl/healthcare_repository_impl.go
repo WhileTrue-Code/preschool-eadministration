@@ -36,6 +36,11 @@ func (repository *HealthcareRepositoryImpl) GetAllAppointments() ([]*model.Appoi
 	return repository.filterAppointments(filter)
 }
 
+func (repository *HealthcareRepositoryImpl) GetMyAppointmentsDoctor(id primitive.ObjectID) ([]*model.Appointment, error) {
+	filter := bson.M{"doctor._id": id}
+	return repository.filterAppointments(filter)
+}
+
 func (repository *HealthcareRepositoryImpl) GetAllAvailableAppointments() ([]*model.Appointment, error) {
 	filter := bson.M{"user": nil}
 	return repository.filterAppointments(filter)

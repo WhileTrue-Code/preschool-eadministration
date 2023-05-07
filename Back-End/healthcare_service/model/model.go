@@ -6,7 +6,6 @@ import (
 
 type Appointment struct {
 	ID                 primitive.ObjectID `json:"id" bson:"_id"`
-	DayOfAppointment   int64              `json:"dayOfAppointment" bson:"dayOfAppointment"`
 	StartOfAppointment int64              `json:"startOfAppointment" bson:"startOfAppointment"`
 	EndOfAppointment   int64              `json:"endOfAppointment" bson:"endOfAppointment"`
 	User               *User              `json:"user" bson:"user"`

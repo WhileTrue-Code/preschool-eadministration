@@ -7,9 +7,9 @@
     </mat-card-title>
     <mat-card-title class="appointment-doctor">Doktor: {{appointment.doctor.ime + " " + appointment.doctor.prezime}}</mat-card-title>
     <mat-card-title *ngIf="isTaken()" class="appointment-user">Pacijent: {{appointment.user.ime + " " + appointment.user.prezime}}</mat-card-title>
-    <mat-card-title class="appointment-day">Dan: {{appointment.dayOfAppointment * 1000 | date: "shortDate"}}</mat-card-title>
+    <!-- <mat-card-title class="appointment-day">Dan: {{appointment.dayOfAppointment * 1000 | date: "shortDate"}}</mat-card-title> -->
     <mat-card-content>
-      <p class="appointment-start">Početak: {{appointment.startOfAppointment * 1000 | date: "shortTime"}}</p>
-      <p class="appointment-end">Kraj: {{appointment.endOfAppointment * 1000 | date: "shortTime"}}</p>
+      <p class="appointment-start">Početak: {{appointment.startOfAppointment * 1000 | date: "longDate"}}</p>
+      <p class="appointment-end">Kraj: {{appointment.endOfAppointment * 1000 | date: "longDate"}}</p>
     </mat-card-content>
   </mat-card>

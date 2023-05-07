@@ -1,24 +1,40 @@
 <div>
     <div>
         <mat-card class="add-appointment-card">
-            <mat-card-title class="card-title-main">Pravljenje Novog Pregleda</mat-card-title>
+            <mat-card-title class="card-title-main">Kreiranje Novog Pregleda</mat-card-title>
             <div class="form-group">
                 <form [formGroup]="appointmentFormGroup">
 
-                    <!-- <h2>Angular Date Range Picker Demo</h2>
-                    <mat-form-field appearance="legacy">
-                    <mat-label>Choose Date Range</mat-label>
-                    <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
-                        <input matStartDate formControlName="start" placeholder="Start Date">
-                        <input matEndDate formControlName="end" placeholder="End Date">
-                    </mat-date-range-input>
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-date-range-picker #picker></mat-date-range-picker>
+                    <mat-form-field class="date-pick" appearance="outline">
+                        <mat-label>Izaberite Početak i Kraj</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="startOfAppointment" placeholder="Početak"
+                                [ngClass]="{ 'is-invalid': submitted && appointmentGroup['startOfAppointment'].errors }">
+                                <div *ngIf="submitted && appointmentGroup['startOfAppointment'].errors" class="invalid-feedback">
+                                    <div *ngIf="appointmentGroup['startOfAppointment'].errors['required']">Početak je obavezan.</div>
+                                </div>
+
+                                <input matEndDate formControlName="endOfAppointment" placeholder="Kraj"
+                                [ngClass]="{ 'is-invalid': submitted && appointmentGroup['endOfAppointment'].errors }">
+                                <div *ngIf="submitted && appointmentGroup['endOfAppointment'].errors" class="invalid-feedback">
+                                    <div *ngIf="appointmentGroup['endOfAppointment'].errors['required']">Kraj je obavezan.</div>
+                                </div>
+                            </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
-                    <h2>
-                    Start: {{dateRange.value.start | date}}
-                    End: {{dateRange.value.end | date}}
-                    </h2> -->
+                    <h2 class="already-exists" *ngIf="alreadyExists">Pregled već postoji u datom vremenu
+                        <button mat-button (click)="removeError()">
+                            <mat-icon>remove_circle</mat-icon>
+                        </button>
+                    </h2>
+
+                    <h2 class="time-display">Početak: {{appointmentFormGroup.value.startOfAppointment | date}}</h2>
+                    <h2 class="time-display">Kraj: {{appointmentFormGroup.value.endOfAppointment | date}}</h2>
+                    
+                    <div class="form-group form-check">
+                        <button type="submit" class="btn btn-primary" (click)="onSubmit()">Dodaj</button>
+                    </div>
 
                     <!-- <mat-card-title class="input-title">Dan Pregleda</mat-card-title>
                     <div class="date-pick">
@@ -46,10 +62,6 @@
                             <div *ngIf="appointmentGroup['endOfAppointment'].errors['required']">Datum je obavezan.</div>
                         </div>
                     </div> -->
-
-                    <div class="form-group form-check">
-                        <button type="submit" class="btn btn-primary" (click)="onSubmit()">Dodaj</button>
-                    </div>
 
                 </form>
             </div>

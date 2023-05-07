@@ -25,6 +25,10 @@ export class AppointmentService {
         return this.http.get<Appointment>(`${environment.baseApiUrl}/${this.url}/getAppointmentByID/` + appointment_id);
     }
 
+    public GetMyAppointmentsDoctor(): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/myAppointmentsDoctor`);
+    }
+
     public AddAppointment(addAppointment: AddAppointment): Observable<AddAppointment> {
         return this.http.post<AddAppointment>(`${environment.baseApiUrl}/${this.url}/newAppointment`, addAppointment);
     }

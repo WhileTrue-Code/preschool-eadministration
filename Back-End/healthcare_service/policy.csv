@@ -1,6 +1,7 @@
 p, Doctor, /allAppointments, GET
 p, Regular, /allAppointments, GET
 p, NotLoggedIn, /allAppointments, GET
+p, Doctor, /myAppointmentsDoctor, GET
 p, Doctor, /getMe, GET
 p, Regular, /getMe, GET
 p, Doctor, /getAppointmentByID/*, GET

@@ -27,6 +27,26 @@ func (service *HealthcareService) GetAllAppointments() ([]*model.Appointment, er
 	return service.repository.GetAllAppointments()
 }
 
+func (service *HealthcareService) GetMyAppointmentsDoctor(jmbg string) ([]*model.Appointment, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var doctor model.User
+	err = json.Unmarshal(response.Data, &doctor)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return nil, err
+	}
+
+	doctorID := doctor.ID
+
+	return service.repository.GetMyAppointmentsDoctor(doctorID)
+}
+
 func (service *HealthcareService) GetAllAvailableAppointments() ([]*model.Appointment, error) {
 	return service.repository.GetAllAvailableAppointments()
 }

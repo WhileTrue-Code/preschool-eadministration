@@ -12,7 +12,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCheckboxModule } from '@angular/material/checkbox';
-import {MatDatepickerModule} from '@angular/material/';
+import {MatDatepickerModule} from '@angular/material/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,7 +31,6 @@ import { CompetitionAddComponent } from './components/competitions/competition-a
 import { CompetitionItemComponent } from './components/competitions/competition-item/competition-item.component';
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
 import { RegisterAprComponent } from './components/register-apr/register-apr.component';
-import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -59,8 +58,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule,
     MatToolbarModule,
+    AppRoutingModule,
     FormsModule,
     HttpClientModule,
     ReactiveFormsModule,
@@ -77,7 +76,6 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     MatCheckboxModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSnackBarModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

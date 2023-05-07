@@ -12,15 +12,20 @@
     font-size: 30px;
 }
 
-.input-title {
+.date-pick {
+    margin-left: 200px;
+    margin-right: 200px;
+    margin-bottom: 30px;
+}
+
+.already-exists {
     text-align: center;
+    color: red;
     font-size: 20px;
 }
 
-.date-pick {
-    margin-left: 150px;
-    margin-right: 150px;
-    margin-bottom: 30px;
+.time-display {
+    text-align: center;
 }
 
 .btn-primary {
