@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AddAppointment } from 'src/app/dto/addAppointment';
-import { Appointment } from 'src/app/models/appointment.mode';
 import { AppointmentService } from 'src/app/services/appointment.service';
 
 @Component({
@@ -16,6 +15,11 @@ export class AppointmentAddComponent implements OnInit {
     dayOfAppointment: new FormControl(''),
     startOfAppointment: new FormControl(''),
     endOfAppointment: new FormControl('')
+  });
+
+  dateRange = new FormGroup({
+    start: new FormControl(),
+    end: new FormControl()
   });
 
   constructor(private appointmentService: AppointmentService,
@@ -38,34 +42,33 @@ export class AppointmentAddComponent implements OnInit {
   }
 
   onSubmit() {
-    this.submitted = true;
+    console.log("sent")
+    // this.submitted = true;
 
-    if (this.appointmentFormGroup.invalid) {
-      return;
-    }
+    // if (this.appointmentFormGroup.invalid) {
+    //   return;
+    // }
 
-    let addAppointment: AddAppointment = new AddAppointment();
+    // let addAppointment: AddAppointment = new AddAppointment();
 
-    var DayOfAppointment: Date = new Date(this.appointmentFormGroup.get('dayOfAppointment')?.value)
-    var StartOfAppointment: Date = new Date(this.appointmentFormGroup.get('startOfAppointment')?.value)
-    var EndOfAppointment: Date = new Date(this.appointmentFormGroup.get('endOfAppointment')?.value)
+    // var DayOfAppointment: Date = new Date(this.appointmentFormGroup.get('dayOfAppointment')?.value)
+    // var StartOfAppointment: Date = new Date(this.appointmentFormGroup.get('startOfAppointment')?.value)
+    // var EndOfAppointment: Date = new Date(this.appointmentFormGroup.get('endOfAppointment')?.value)
 
-    addAppointment.dayOfAppointment = Number(DayOfAppointment.getTime()) / 1000
-    addAppointment.startOfAppointment = Number(StartOfAppointment.getTime()) / 1000
-    addAppointment.endOfAppointment = Number(EndOfAppointment.getTime()) / 1000
+    // addAppointment.dayOfAppointment = Number(DayOfAppointment.getTime()) / 1000
+    // addAppointment.startOfAppointment = Number(StartOfAppointment.getTime()) / 1000
+    // addAppointment.endOfAppointment = Number(EndOfAppointment.getTime()) / 1000
 
-    this.appointmentService.AddAppointment(addAppointment)
-      .subscribe({
-        next: (data) => {
-          this.router.navigate(['/Appointments']);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-        complete: () => {
-          this.router.navigate(['/Appointments'])
-        }
-      })
+    // this.appointmentService.AddAppointment(addAppointment)
+    //   .subscribe({
+    //     next: (data) => {
+    //       console.log("sent")
+    //       this.router.navigate(['/Appointments']);
+    //     },
+    //     error: (error) => {
+    //       console.log(error);
+    //     }
+    //   })
 
   }
 

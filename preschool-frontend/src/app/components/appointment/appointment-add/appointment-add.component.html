@@ -5,7 +5,22 @@
             <div class="form-group">
                 <form [formGroup]="appointmentFormGroup">
 
-                    <mat-card-title class="input-title">Dan Pregleda</mat-card-title>
+                    <!-- <h2>Angular Date Range Picker Demo</h2>
+                    <mat-form-field appearance="legacy">
+                    <mat-label>Choose Date Range</mat-label>
+                    <mat-date-range-input [rangePicker]="picker" [formGroup]="dateRange">
+                        <input matStartDate formControlName="start" placeholder="Start Date">
+                        <input matEndDate formControlName="end" placeholder="End Date">
+                    </mat-date-range-input>
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+                    <h2>
+                    Start: {{dateRange.value.start | date}}
+                    End: {{dateRange.value.end | date}}
+                    </h2> -->
+
+                    <!-- <mat-card-title class="input-title">Dan Pregleda</mat-card-title>
                     <div class="date-pick">
                         <input type="date" min="2023-05-04" max="2023-05-31" formControlName="dayOfAppointment" class="form-control"
                         [ngClass]="{ 'is-invalid': submitted && appointmentGroup['dayOfAppointment'].errors }">
@@ -30,7 +45,7 @@
                         <div *ngIf="submitted && appointmentGroup['endOfAppointment'].errors" class="invalid-feedback">
                             <div *ngIf="appointmentGroup['endOfAppointment'].errors['required']">Datum je obavezan.</div>
                         </div>
-                    </div>
+                    </div> -->
 
                     <div class="form-group form-check">
                         <button type="submit" class="btn btn-primary" (click)="onSubmit()">Dodaj</button>

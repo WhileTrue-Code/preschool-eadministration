@@ -9,6 +9,8 @@ import { RegisterAprComponent } from './components/register-apr/register-apr.com
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { AppointmentAddComponent } from './components/appointment/appointment-add/appointment-add.component';
+import { AppointmentViewComponent } from './components/appointment/appointment-view/appointment-view.component';
 
 const routes: Routes = [
   {
@@ -22,6 +24,14 @@ const routes: Routes = [
   {
     path: "Appointments",
     component: AppointmentsComponent
+  },
+  {
+    path: "Appointment-Add",
+    component: AppointmentAddComponent
+  },
+  {
+    path: "Appointment-View/:id",
+    component: AppointmentViewComponent
   },
   {
     path: "Competitions",
