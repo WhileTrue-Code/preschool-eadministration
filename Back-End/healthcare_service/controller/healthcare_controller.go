@@ -37,6 +37,8 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 
 	router.HandleFunc("/allAppointments", controller.GetAllAppointments).Methods("GET")
 	router.HandleFunc("/myAppointmentsDoctor", controller.GetMyAppointmentsDoctor).Methods("GET")
+	router.HandleFunc("/myAvailableAppointmentsDoctor", controller.GetMyAvailableAppointmentsDoctor).Methods("GET")
+	router.HandleFunc("/myTakenAppointmentsDoctor", controller.GetMyTakenAppointmentsDoctor).Methods("GET")
 	router.HandleFunc("/allAvailableAppointments", controller.GetAllAvailableAppointments).Methods("GET")
 	router.HandleFunc("/getAppointmentByID/{id}", controller.GetAppointmentByID).Methods("GET")
 	router.HandleFunc("/getMe", controller.GetMe).Methods("GET")
@@ -79,6 +81,60 @@ func (controller *HealthcareController) GetMyAppointmentsDoctor(writer http.Resp
 	jmbg := claims["jmbg"]
 
 	appointments, err := controller.service.GetMyAppointmentsDoctor(jmbg)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	jsonResponse(appointments, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetMyAvailableAppointmentsDoctor(writer http.ResponseWriter, req *http.Request) {
+	bearer := req.Header.Get("Authorization")
+	bearerToken := strings.Split(bearer, "Bearer ")
+	tokenString := bearerToken[1]
+
+	token, err := jwt.Parse([]byte(tokenString), verifier)
+
+	if err != nil {
+		log.Println(err)
+		http.Error(writer, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims := authorization.GetMapClaims(token.Bytes())
+	jmbg := claims["jmbg"]
+
+	appointments, err := controller.service.GetMyAvailableAppointmentsDoctor(jmbg)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	jsonResponse(appointments, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetMyTakenAppointmentsDoctor(writer http.ResponseWriter, req *http.Request) {
+	bearer := req.Header.Get("Authorization")
+	bearerToken := strings.Split(bearer, "Bearer ")
+	tokenString := bearerToken[1]
+
+	token, err := jwt.Parse([]byte(tokenString), verifier)
+
+	if err != nil {
+		log.Println(err)
+		http.Error(writer, "unauthorized", http.StatusUnauthorized)
+		return
+	}
+
+	claims := authorization.GetMapClaims(token.Bytes())
+	jmbg := claims["jmbg"]
+
+	appointments, err := controller.service.GetMyTakenAppointmentsDoctor(jmbg)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		log.Println(err)

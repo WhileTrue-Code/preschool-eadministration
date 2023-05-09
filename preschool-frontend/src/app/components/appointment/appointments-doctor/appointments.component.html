@@ -1,0 +1,13 @@
+<h1 class="welcome">Moji Pregledi</h1>
+<div class="search">
+    <h3 class="search-h3">Tip Pregleda</h3>
+    <mat-form-field appearance="outline">
+        <mat-select (selectionChange)="search($event.value)">
+            <mat-option  style="font-size: 15px; text-align: center" *ngFor="let option of options" [value]="option">
+            {{option}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+<a routerLink="/Appointment-Add"><button class="btn btn-success">Dodavanje Pregleda</button></a>
+<app-appointment-list [appointments]="appointments"></app-appointment-list>

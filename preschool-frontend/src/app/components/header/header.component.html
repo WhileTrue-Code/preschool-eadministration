@@ -10,8 +10,12 @@
             <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/MyAprs">
                 <span>Moj APR</span>
             </button>
-            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments">
-                <span>Pregledi</span>
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments-Doctor">
+                <span>Pregledi(Doctor)</span>
+            </button>
+
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments-Regular">
+                <span>Pregledi(Regular)</span>
             </button>
             <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Competitions">
                 <span>Konkursi</span>

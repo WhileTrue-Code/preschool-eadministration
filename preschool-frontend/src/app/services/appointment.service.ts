@@ -17,6 +17,10 @@ export class AppointmentService {
         return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/allAppointments`);
     }
 
+    public GetAllAvailableAppointments(): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/allAvailableAppointments`);
+    }
+
     public GetMe(): Observable<User> {
         return this.http.get<User>(`${environment.baseApiUrl}/${this.url}/getMe`);
     }
@@ -27,6 +31,14 @@ export class AppointmentService {
 
     public GetMyAppointmentsDoctor(): Observable<Appointment[]> {
         return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/myAppointmentsDoctor`);
+    }
+
+    public GetMyAvailableAppointmentsDoctor(): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/myAvailableAppointmentsDoctor`);
+    }
+
+    public GetMyTakenAppointmentsDoctor(): Observable<Appointment[]> {
+        return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/myTakenAppointmentsDoctor`);
     }
 
     public AddAppointment(addAppointment: AddAppointment): Observable<AddAppointment> {
