@@ -11,7 +11,7 @@ import { AppointmentAddComponent } from './components/appointment/appointment-ad
 import { AppointmentItemComponent } from './components/appointment/appointment-item/appointment-item.component';
 import { AppointmentListComponent } from './components/appointment/appointment-list/appointment-list.component';
 import { AppointmentViewComponent } from './components/appointment/appointment-view/appointment-view.component';
-import { AppointmentsComponent } from './components/appointment/appointments/appointments.component';
+import { AppointmentsDoctorComponent } from './components/appointment/appointments-doctor/appointments.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { CompetitionsComponent } from './components/competitions/competitions/competitions.component';
@@ -23,6 +23,7 @@ import { RegisterAprComponent } from './components/register-apr/register-apr.com
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { AppointmentsRegularComponent } from './components/appointment/appointments-regular/appointments-regular.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     AppointmentItemComponent,
     AppointmentListComponent,
     AppointmentViewComponent,
-    AppointmentsComponent,
+    AppointmentsDoctorComponent,
     RegisterComponent,
     LoginComponent,
     CompetitionsComponent,
@@ -43,7 +44,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     RegisterAprComponent,
     MyAprsComponent,
     AprListItemComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    AppointmentsRegularComponent
   ],
   imports: [
     BrowserModule,

@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
-import { AppointmentsComponent } from './components/appointment/appointments/appointments.component';
+import { AppointmentsDoctorComponent } from './components/appointment/appointments-doctor/appointments.component';
 import { CompetitionsComponent } from './components/competitions/competitions/competitions.component';
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
 import { RegisterAprComponent } from './components/register-apr/register-apr.component';
@@ -11,6 +11,7 @@ import { CompetitionAddComponent } from './components/competitions/competition-a
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AppointmentAddComponent } from './components/appointment/appointment-add/appointment-add.component';
 import { AppointmentViewComponent } from './components/appointment/appointment-view/appointment-view.component';
+import { AppointmentsRegularComponent } from './components/appointment/appointments-regular/appointments-regular.component';
 
 const routes: Routes = [
   {
@@ -22,8 +23,8 @@ const routes: Routes = [
     component: RegisterComponent
   },
   {
-    path: "Appointments",
-    component: AppointmentsComponent
+    path: "Appointments-Doctor",
+    component: AppointmentsDoctorComponent
   },
   {
     path: "Appointment-Add",
@@ -32,6 +33,10 @@ const routes: Routes = [
   {
     path: "Appointment-View/:id",
     component: AppointmentViewComponent
+  },
+  { 
+    path: "Appointments-Regular",
+    component: AppointmentsRegularComponent
   },
   {
     path: "Competitions",
