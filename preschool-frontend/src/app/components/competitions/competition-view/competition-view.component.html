@@ -1,15 +1,25 @@
 <mat-card class="competition-card">
-    <mat-card-title >
-      Konkurs
-    </mat-card-title>
-    <mat-card-content>
-      <p class="competition-datumObjave">Datum objave: {{competition.datum_objave * 1000 | date:"medium"}}</p>
-      <p class="competition-pocetakKonkursa">Pocetak konkursa: {{competition.pocetak_konkursa * 1000 | date:"medium" }}</p>
-      <p class="competition-krajKonkursa">Kraj konkursa: {{competition.kraj_konkursa * 1000 | date:"medium"}}</p>
-      <p class="competition-grad">Grad: {{competition.grad}}</p>
-      <p class="competition-opstina">Opstina: {{competition.opstina}}</p>
-      <p class="competition-uzrast">Uzrast: {{competition.uzrast}}</p>
-      <p class="competition-brojDece">Broj dece: {{competition.broj_dece}}</p>
-  
-    </mat-card-content>
-  </mat-card>
+  <mat-card-title class="competition-title">
+    Konkurs se odrzava u gradu {{competition.grad}}, opstina {{competition.opstina}}.
+  </mat-card-title>
+  <br>
+  <mat-card-content class="competition-p">
+    <p class="competition-datumObjave">Datum objave: {{competition.datum_objave * 1000 | date:"medium"}}</p>
+    <br>
+    <p class="competition-pocetakKonkursa">Pocetak konkursa: {{competition.pocetak_konkursa * 1000 | date:"medium" }}
+    </p>
+    <br>
+    <p class="competition-krajKonkursa">Kraj konkursa: {{competition.kraj_konkursa * 1000 | date:"medium"}}</p>
+    <br>
+    <p class="competition-grad">Grad: {{competition.grad}}</p>
+    <br>
+    <p class="competition-opstina">Opstina: {{competition.opstina}}</p>
+    <br>
+    <p class="competition-uzrast">Uzrast: {{competition.uzrast}}</p>
+    <br>
+    <p class="competition-brojDece">Broj dece: {{competition.broj_dece}}</p>
+    
+      <button type="submit" class="btn btn-success">Prijava na konkurs</button>
+
+  </mat-card-content>
+</mat-card>

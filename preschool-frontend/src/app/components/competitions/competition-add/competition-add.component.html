@@ -19,18 +19,36 @@
           </div>
 
           <div class="mb-3">
-            <label>Grad</label>
-            <input type="text" class="form-control" id="" formControlName="grad">
+                <mat-label>Grad</mat-label>
+                <select matNativeControl required class="form-control" id="" formControlName="grad" >
+                  <option value="arandjelovac">Arandjelovac</option>
+                  <option value="beograd">Beograd</option>
+                  <option value="vranje">Vranje</option>
+                  <option value="novi-sad">Novi Sad</option>
+                  <option value="zrenjanin">Zrenjanin</option>
+                  <option value="subotica">Subotica</option>
+                </select>
         </div>
 
         <div class="mb-3">
-          <label>Opstina</label>
-          <input type="text" class="form-control" id="" formControlName="opstina">
+            <mat-label>Opstina</mat-label>
+            <select matNativeControl required class="form-control" id="" formControlName="opstina" >
+              <option value="karaburma">Karaburma</option>
+              <option value="vracar">Vracar</option>
+              <option value="dorcol">Dorcol</option>
+              <option value="novi-sad">Novi Sad</option>
+              <option value="zrenjanin">Zrenjanin</option>
+            </select>
       </div>
 
       <div class="mb-3">
-        <label>Uzrast</label>
-        <input type="text" class="form-control" id="" formControlName="uzrast">
+        <mat-label>Uzrast</mat-label>
+        <select matNativeControl required class="form-control" id="" formControlName="uzrast" >
+          <option value="jaslice">Jaslice</option>
+          <option value="predskolsko">Predskolsko</option>
+          <option value="mesovita">Mesovita grupa</option>
+
+        </select>
     </div>
 
     <div class="mb-3">

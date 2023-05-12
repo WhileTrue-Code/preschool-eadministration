@@ -1,6 +1,6 @@
 <mat-card class="competition-card">
   <mat-card-title class="competition-title" [routerLink]="['/Competition-View', competition.id]">
-    Konkurs
+    Konkurs se odrzava u gradu {{competition.grad}}, opstina {{competition.opstina}}. Rok za prijavu je {{competition.kraj_konkursa * 1000 | date:'dd/MM/yyyy hh:mm a'}}
   </mat-card-title>
   <mat-card-content>
     <p class="competition-datumObjave">Datum objave: {{competition.datum_objave * 1000 | date:"medium"}}</p>
