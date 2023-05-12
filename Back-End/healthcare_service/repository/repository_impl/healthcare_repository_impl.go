@@ -113,11 +113,58 @@ func (repository *HealthcareRepositoryImpl) GetAllVaccinations() ([]*model.Vacci
 	return repository.filterVaccinations(filter)
 }
 
-func (repository *HealthcareRepositoryImpl) CreateNewVaccination(vaccination model.Vaccination) error {
+func (repository *HealthcareRepositoryImpl) GetMyVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error) {
+	filter := bson.M{"doctor._id": id}
+	return repository.filterVaccinations(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) GetMyAvailableVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error) {
+	filter := bson.M{"doctor._id": id, "user": nil}
+	return repository.filterVaccinations(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) GetMyTakenVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error) {
+	filter := bson.M{"doctor._id": id, "user": bson.M{"$ne": nil}}
+	return repository.filterVaccinations(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) GetAllAvailableVaccinations() ([]*model.Vaccination, error) {
+	filter := bson.M{"user": nil}
+	return repository.filterVaccinations(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) GetVaccinationByID(id primitive.ObjectID) (*model.Vaccination, error) {
+	filter := bson.M{"_id": id}
+	return repository.filterOneVaccination(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) CreateNewVaccination(vaccination *model.Vaccination) error {
 	_, err := repository.vaccination.InsertOne(context.Background(), vaccination)
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (repository *HealthcareRepositoryImpl) SetVaccination(vaccination *model.Vaccination) error {
+	filter := bson.M{"_id": vaccination.ID}
+	update := bson.D{{"$set", vaccination}}
+	_, err := repository.vaccination.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		log.Println("Updating Vaccination Error MongoDB", err.Error())
+		return err
+	}
+
+	return nil
+}
+
+func (repository *HealthcareRepositoryImpl) DeleteVaccinationByID(id primitive.ObjectID) error {
+	filter := bson.M{"_id": id}
+	_, err := repository.vaccination.DeleteOne(context.Background(), filter)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -132,8 +179,8 @@ func (repository *HealthcareRepositoryImpl) filterVaccinations(filter interface{
 	return decodeVaccination(cursor)
 }
 
-func (repository *HealthcareRepositoryImpl) filterOneVaccination(filter interface{}) (appointment *model.Appointment, err error) {
-	result := repository.appointment.FindOne(context.Background(), filter)
+func (repository *HealthcareRepositoryImpl) filterOneVaccination(filter interface{}) (appointment *model.Vaccination, err error) {
+	result := repository.vaccination.FindOne(context.Background(), filter)
 	err = result.Decode(&appointment)
 	return
 }

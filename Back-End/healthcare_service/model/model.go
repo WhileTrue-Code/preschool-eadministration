@@ -14,12 +14,11 @@ type Appointment struct {
 
 type Vaccination struct {
 	ID                 primitive.ObjectID `json:"id" bson:"_id"`
-	DayOfVaccination   primitive.DateTime `json:"dayOfVaccination" bson:"dayOfVaccination"`
-	StartOfVaccination primitive.ObjectID `json:"startOfVaccination" bson:"startOfVaccination"`
-	EndOfVaccination   primitive.DateTime `json:"endOfVaccination" bson:"endOfVaccination"`
+	StartOfVaccination int64              `json:"startOfVaccination" bson:"startOfVaccination"`
+	EndOfVaccination   int64              `json:"endOfVaccination" bson:"endOfVaccination"`
 	VaccineType        VaccineType        `json:"vaccineType" bson:"vaccineType"`
-	User               User               `json:"user" bson:"user"`
-	Doctor             User               `json:"doctor" bson:"doctor"`
+	User               *User              `json:"user" bson:"user"`
+	Doctor             *User              `json:"doctor" bson:"doctor"`
 }
 
 type User struct {

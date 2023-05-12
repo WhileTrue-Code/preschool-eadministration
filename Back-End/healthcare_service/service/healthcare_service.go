@@ -124,10 +124,6 @@ func (service *HealthcareService) CreateNewAppointment(appointment *model.Appoin
 		if (existingAppointment.StartOfAppointment >= appointment.StartOfAppointment && existingAppointment.StartOfAppointment <= appointment.EndOfAppointment) ||
 			(existingAppointment.EndOfAppointment >= appointment.StartOfAppointment && existingAppointment.EndOfAppointment <= appointment.EndOfAppointment) ||
 			(existingAppointment.StartOfAppointment >= appointment.StartOfAppointment && existingAppointment.EndOfAppointment <= appointment.EndOfAppointment) {
-			log.Println(appointment.StartOfAppointment)
-			log.Println(existingAppointment.StartOfAppointment)
-			log.Println(appointment.EndOfAppointment)
-			log.Println(existingAppointment.EndOfAppointment)
 			return 1, nil
 		}
 	}
@@ -196,4 +192,149 @@ func (service *HealthcareService) DeleteAppointmentByID(id primitive.ObjectID) e
 
 func (service *HealthcareService) GetAllVaccinations() ([]*model.Vaccination, error) {
 	return service.repository.GetAllVaccinations()
+}
+
+func (service *HealthcareService) GetMyVaccinationsDoctor(jmbg string) ([]*model.Vaccination, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var doctor model.User
+	err = json.Unmarshal(response.Data, &doctor)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return nil, err
+	}
+
+	doctorID := doctor.ID
+
+	return service.repository.GetMyVaccinationsDoctor(doctorID)
+}
+
+func (service *HealthcareService) GetMyAvailableVaccinationsDoctor(jmbg string) ([]*model.Vaccination, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var doctor model.User
+	err = json.Unmarshal(response.Data, &doctor)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return nil, err
+	}
+
+	doctorID := doctor.ID
+
+	return service.repository.GetMyAvailableVaccinationsDoctor(doctorID)
+}
+
+func (service *HealthcareService) GetMyTakenVaccinationsDoctor(jmbg string) ([]*model.Vaccination, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var doctor model.User
+	err = json.Unmarshal(response.Data, &doctor)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return nil, err
+	}
+
+	doctorID := doctor.ID
+
+	return service.repository.GetMyTakenVaccinationsDoctor(doctorID)
+}
+
+func (service *HealthcareService) GetAllAvailableVaccinations() ([]*model.Vaccination, error) {
+	return service.repository.GetAllAvailableVaccinations()
+}
+
+func (service *HealthcareService) GetVaccinationByID(id primitive.ObjectID) (*model.Vaccination, error) {
+	return service.repository.GetVaccinationByID(id)
+}
+
+func (service *HealthcareService) CreateNewVaccination(vaccination *model.Vaccination, jmbg string) (int, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	existingVaccinations, err := service.repository.GetAllVaccinations()
+	for _, existingVaccination := range existingVaccinations {
+		if (existingVaccination.StartOfVaccination >= vaccination.StartOfVaccination && existingVaccination.StartOfVaccination <= vaccination.EndOfVaccination) ||
+			(existingVaccination.EndOfVaccination >= vaccination.StartOfVaccination && existingVaccination.EndOfVaccination <= vaccination.EndOfVaccination) ||
+			(existingVaccination.StartOfVaccination >= vaccination.StartOfVaccination && existingVaccination.EndOfVaccination <= vaccination.EndOfVaccination) {
+			return 1, nil
+		}
+	}
+	if err != nil {
+		log.Println("Error getting All Vaccinations", err)
+		return 0, err
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var doctor model.User
+	err = json.Unmarshal(response.Data, &doctor)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return 0, err
+	}
+
+	vaccination.ID = primitive.NewObjectID()
+	vaccination.Doctor = &doctor
+	vaccination.User = nil
+
+	err = service.repository.CreateNewVaccination(vaccination)
+	if err != nil {
+		log.Println("Error in trying to save Vaccination")
+		return 0, err
+	}
+
+	return 0, nil
+}
+
+func (service *HealthcareService) SetVaccination(id primitive.ObjectID, jmbg string) error {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var user model.User
+	err = json.Unmarshal(response.Data, &user)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return err
+	}
+
+	vaccination, err := service.repository.GetVaccinationByID(id)
+	if err != nil {
+		log.Println("Error in finding Vaccination By ID")
+		return err
+	}
+
+	vaccination.User = &user
+
+	err = service.repository.SetVaccination(vaccination)
+	if err != nil {
+		log.Println("Error in Updating Vaccination")
+		return err
+	}
+
+	return nil
+}
+
+func (service *HealthcareService) DeleteVaccinationByID(id primitive.ObjectID) error {
+	return service.repository.DeleteVaccinationByID(id)
 }

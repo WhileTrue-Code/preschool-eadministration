@@ -17,5 +17,12 @@ type HealthcareRepository interface {
 	DeleteAppointmentByID(id primitive.ObjectID) error
 
 	GetAllVaccinations() ([]*model.Vaccination, error)
-	CreateNewVaccination(vaccination model.Vaccination) error
+	GetMyVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error)
+	GetMyAvailableVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error)
+	GetMyTakenVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error)
+	GetAllAvailableVaccinations() ([]*model.Vaccination, error)
+	GetVaccinationByID(id primitive.ObjectID) (*model.Vaccination, error)
+	CreateNewVaccination(vaccination *model.Vaccination) error
+	SetVaccination(vaccination *model.Vaccination) error
+	DeleteVaccinationByID(id primitive.ObjectID) error
 }

@@ -26,6 +26,10 @@ const routes: Routes = [
     path: "Appointments-Doctor",
     component: AppointmentsDoctorComponent
   },
+  { 
+    path: "Appointments-Regular",
+    component: AppointmentsRegularComponent
+  },
   {
     path: "Appointment-Add",
     component: AppointmentAddComponent
@@ -33,10 +37,6 @@ const routes: Routes = [
   {
     path: "Appointment-View/:id",
     component: AppointmentViewComponent
-  },
-  { 
-    path: "Appointments-Regular",
-    component: AppointmentsRegularComponent
   },
   {
     path: "Competitions",
