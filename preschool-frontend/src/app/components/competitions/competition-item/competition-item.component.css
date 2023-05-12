@@ -6,10 +6,16 @@
   }
   
   .competition-title {
-    font-size: 22px;
+    font-size: 18px;
     text-align: center;
-    color:blue;
+    color:black;
     margin-bottom: 20px;
+    transition: box-shadow .3s;
+    
+  }
+
+  .competition-title:hover {
+    box-shadow: 0 0 11px red; 
   }
   
   .competition-doctor {

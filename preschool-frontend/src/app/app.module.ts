@@ -24,6 +24,13 @@ import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AppointmentsRegularComponent } from './components/appointment/appointments-regular/appointments-regular.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatCardModule } from '@angular/material/card';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon'
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import {MatNativeDateModule} from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -53,7 +60,14 @@ import { AppointmentsRegularComponent } from './components/appointment/appointme
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    MatCardModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatIconModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
