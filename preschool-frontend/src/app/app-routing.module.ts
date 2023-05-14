@@ -12,6 +12,10 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AppointmentAddComponent } from './components/appointment/appointment-add/appointment-add.component';
 import { AppointmentViewComponent } from './components/appointment/appointment-view/appointment-view.component';
 import { AppointmentsRegularComponent } from './components/appointment/appointments-regular/appointments-regular.component';
+import { VaccinationsDoctorComponent } from './components/vaccination/vaccinations-doctor/vaccinations-doctor.component';
+import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
+import { VaccinationAddComponent } from './components/vaccination/vaccination-add/vaccination-add.component';
+import { VaccinationViewComponent } from './components/vaccination/vaccination-view/vaccination-view.component';
 
 const routes: Routes = [
   {
@@ -37,6 +41,22 @@ const routes: Routes = [
   {
     path: "Appointment-View/:id",
     component: AppointmentViewComponent
+  },
+  {
+    path: "Vaccinations-Doctor",
+    component: VaccinationsDoctorComponent
+  },
+  {
+    path: "Vaccinations-Regular",
+    component: VaccinationsRegularComponent
+  },
+  {
+    path: "Vaccination-Add",
+    component: VaccinationAddComponent
+  },
+  {
+    path: "Vaccination-View/:id",
+    component: VaccinationViewComponent
   },
   {
     path: "Competitions",

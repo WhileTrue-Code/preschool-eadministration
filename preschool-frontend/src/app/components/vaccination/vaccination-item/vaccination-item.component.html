@@ -1,0 +1,15 @@
+<mat-card class="vaccination-card">
+    <mat-card-title *ngIf="isTaken()" class="vaccination-title-taken" [routerLink]="['/Vaccination-View', vaccination.id]">
+      Zauzet Termin
+    </mat-card-title>
+    <mat-card-title *ngIf="!isTaken()" class="vaccination-title-available" [routerLink]="['/Vaccination-View', vaccination.id]">
+      Slobodan Termin
+    </mat-card-title>
+    <mat-card-title class="vaccination-doctor">Doktor: {{vaccination.doctor.ime + " " + vaccination.doctor.prezime}}</mat-card-title>
+    <mat-card-title *ngIf="isTaken()" class="vaccination-user">Pacijent: {{vaccination.user.ime + " " + vaccination.user.prezime}}</mat-card-title>
+    <mat-card-content>
+      <p class="vaccine-type">Tip Vakcine: {{vaccination.vaccineType}}</p>
+      <p class="vaccination-start">Početak: {{vaccination.startOfVaccination * 1000 | date: "longDate"}}</p>
+      <p class="vaccination-end">Kraj: {{vaccination.endOfVaccination * 1000 | date: "longDate"}}</p>
+    </mat-card-content>
+  </mat-card>

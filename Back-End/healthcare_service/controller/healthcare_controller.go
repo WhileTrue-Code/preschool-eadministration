@@ -6,7 +6,6 @@ import (
 	"github.com/casbin/casbin"
 	"github.com/cristalhq/jwt/v4"
 	"github.com/gorilla/mux"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"healthcare_service/model"
 	"healthcare_service/service"
 	"log"
@@ -125,20 +124,7 @@ func (controller *HealthcareController) GetAllAvailableAppointments(writer http.
 }
 
 func (controller *HealthcareController) GetAppointmentByID(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
 	appointment, err := controller.service.GetAppointmentByID(objectID)
 	if err != nil {
@@ -148,18 +134,6 @@ func (controller *HealthcareController) GetAppointmentByID(writer http.ResponseW
 	}
 
 	jsonResponse(appointment, writer)
-	writer.WriteHeader(http.StatusOK)
-}
-
-func (controller *HealthcareController) GetMe(writer http.ResponseWriter, req *http.Request) {
-	jmbg, err := extractJMBGFromClaims(writer, req)
-
-	user, err := controller.service.GetMe(jmbg)
-	if err != nil {
-		log.Println("Error getting User")
-	}
-
-	jsonResponse(user, writer)
 	writer.WriteHeader(http.StatusOK)
 }
 
@@ -190,22 +164,9 @@ func (controller *HealthcareController) CreateNewAppointment(writer http.Respons
 }
 
 func (controller *HealthcareController) SetAppointment(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
 	jmbg, err := extractJMBGFromClaims(writer, req)
 
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
 	err = controller.service.SetAppointment(objectID, jmbg)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -218,20 +179,7 @@ func (controller *HealthcareController) SetAppointment(writer http.ResponseWrite
 }
 
 func (controller *HealthcareController) DeleteAppointmentByID(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
 	err = controller.service.DeleteAppointmentByID(objectID)
 	if err != nil {
@@ -309,20 +257,7 @@ func (controller *HealthcareController) GetAllAvailableVaccinations(writer http.
 }
 
 func (controller *HealthcareController) GetVaccinationByID(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
 	vaccination, err := controller.service.GetVaccinationByID(objectID)
 	if err != nil {
@@ -362,22 +297,10 @@ func (controller *HealthcareController) CreateNewVaccination(writer http.Respons
 }
 
 func (controller *HealthcareController) SetVaccination(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
 	jmbg, err := extractJMBGFromClaims(writer, req)
 
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
 	err = controller.service.SetVaccination(objectID, jmbg)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
@@ -390,20 +313,7 @@ func (controller *HealthcareController) SetVaccination(writer http.ResponseWrite
 }
 
 func (controller *HealthcareController) DeleteVaccinationByID(writer http.ResponseWriter, req *http.Request) {
-	vars := mux.Vars(req)
-	id, ok := vars["id"]
-	if !ok {
-		log.Println("Get ID from req error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
-
-	objectID, err := primitive.ObjectIDFromHex(id)
-	if err != nil {
-		log.Println("Convert to Primitive error")
-		writer.WriteHeader(http.StatusBadRequest)
-		return
-	}
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
 	err = controller.service.DeleteVaccinationByID(objectID)
 	if err != nil {
@@ -414,4 +324,16 @@ func (controller *HealthcareController) DeleteVaccinationByID(writer http.Respon
 
 	writer.WriteHeader(http.StatusOK)
 	writer.Write([]byte("Deleted"))
+}
+
+func (controller *HealthcareController) GetMe(writer http.ResponseWriter, req *http.Request) {
+	jmbg, err := extractJMBGFromClaims(writer, req)
+
+	user, err := controller.service.GetMe(jmbg)
+	if err != nil {
+		log.Println("Error getting User")
+	}
+
+	jsonResponse(user, writer)
+	writer.WriteHeader(http.StatusOK)
 }

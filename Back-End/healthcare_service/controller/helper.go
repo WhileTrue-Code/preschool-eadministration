@@ -4,6 +4,8 @@ import (
 	"authorization"
 	"encoding/json"
 	"github.com/cristalhq/jwt/v4"
+	"github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"net/http"
 	"strings"
@@ -40,4 +42,18 @@ func extractJMBGFromClaims(writer http.ResponseWriter, req *http.Request) (strin
 	claims := authorization.GetMapClaims(token.Bytes())
 	jmbg := claims["jmbg"]
 	return jmbg, nil
+}
+
+func getIDFromReqAsPrimitive(writer http.ResponseWriter, req *http.Request) (primitive.ObjectID, error) {
+	vars := mux.Vars(req)
+	id := vars["id"]
+
+	objectID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		log.Println("Convert to Primitive error")
+		writer.WriteHeader(http.StatusBadRequest)
+		return primitive.NilObjectID, err
+	}
+
+	return objectID, nil
 }

@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { Appointment } from "../models/appointment.mode";
+import { Appointment } from "../models/appointment.model";
 import { AddAppointment } from "../dto/addAppointment";
 import { User } from "../models/user.model";
 
@@ -19,10 +19,6 @@ export class AppointmentService {
 
     public GetAllAvailableAppointments(): Observable<Appointment[]> {
         return this.http.get<Appointment[]>(`${environment.baseApiUrl}/${this.url}/allAvailableAppointments`);
-    }
-
-    public GetMe(): Observable<User> {
-        return this.http.get<User>(`${environment.baseApiUrl}/${this.url}/getMe`);
     }
 
     public GetSingleAppointment(appointment_id: string): Observable<Appointment> {
@@ -47,5 +43,9 @@ export class AppointmentService {
 
     public SetAppointment(id: string) {
         return this.http.put(`${environment.baseApiUrl}/${this.url}/setAppointment/` + id, null);
+    }
+
+    public GetMe(): Observable<User> {
+        return this.http.get<User>(`${environment.baseApiUrl}/${this.url}/getMe`);
     }
 }

@@ -31,6 +31,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon'
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
+import { VaccinationAddComponent } from './components/vaccination/vaccination-add/vaccination-add.component';
+import { VaccinationItemComponent } from './components/vaccination/vaccination-item/vaccination-item.component';
+import { VaccinationListComponent } from './components/vaccination/vaccination-list/vaccination-list.component';
+import { VaccinationViewComponent } from './components/vaccination/vaccination-view/vaccination-view.component';
+import { VaccinationsDoctorComponent } from './components/vaccination/vaccinations-doctor/vaccinations-doctor.component';
+import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +58,13 @@ import {MatNativeDateModule} from '@angular/material/core';
     MyAprsComponent,
     AprListItemComponent,
     WelcomeComponent,
-    AppointmentsRegularComponent
+    AppointmentsRegularComponent,
+    VaccinationAddComponent,
+    VaccinationItemComponent,
+    VaccinationListComponent,
+    VaccinationViewComponent,
+    VaccinationsDoctorComponent,
+    VaccinationsRegularComponent
   ],
   imports: [
     BrowserModule,
