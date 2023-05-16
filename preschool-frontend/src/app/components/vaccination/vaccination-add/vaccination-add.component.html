@@ -1,1 +1,55 @@
-<p>vaccination-add works!</p>
+<div>
+    <div>
+        <mat-card class="add-vaccine-card">
+            <mat-card-title class="card-title-main">Kreiranje Novog Pregleda</mat-card-title>
+            <div class="form-group">
+                <form [formGroup]="vaccinationFormGroup">
+
+                    <mat-form-field class="date-pick" appearance="outline">
+                        <mat-label>Početak i Kraj</mat-label>
+                            <mat-date-range-input [rangePicker]="picker">
+                                <input matStartDate formControlName="startOfVaccination" placeholder="Početak"
+                                [ngClass]="{ 'is-invalid': submitted && vaccinationGroup['startOfVaccination'].errors }">
+                                <div *ngIf="submitted && vaccinationGroup['startOfVaccination'].errors" class="invalid-feedback">
+                                    <div *ngIf="vaccinationGroup['startOfVaccination'].errors['required']">Početak je obavezan.</div>
+                                </div>
+
+                                <input matEndDate formControlName="endOfVaccination" placeholder="Kraj"
+                                [ngClass]="{ 'is-invalid': submitted && vaccinationGroup['endOfVaccination'].errors }">
+                                <div *ngIf="submitted && vaccinationGroup['endOfVaccination'].errors" class="invalid-feedback">
+                                    <div *ngIf="vaccinationGroup['endOfVaccination'].errors['required']">Kraj je obavezan.</div>
+                                </div>
+                            </mat-date-range-input>
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-date-range-picker #picker></mat-date-range-picker>
+                    </mat-form-field>
+
+                    <mat-form-field class="vaccine-pick" appearance="outline">
+                        <mat-label>Tip Vakcine</mat-label>
+                        <mat-select formControlName="vaccineType">
+                            <mat-option style="font-size: 15px; text-align: center" *ngFor="let vaccineType of vaccineTypes" [value]="vaccineType">
+                            {{vaccineType}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <h2 class="already-exists" *ngIf="alreadyExists">Pregled već postoji u datom vremenu
+                        <button mat-button (click)="removeError()">
+                            <mat-icon>remove_circle</mat-icon>
+                        </button>
+                    </h2>
+
+                    <h2 class="time-display">Početak: {{vaccinationFormGroup.value.startOfVaccination | date}}</h2>
+                    <h2 class="time-display">Kraj: {{vaccinationFormGroup.value.endOfVaccination | date}}</h2>
+                    <h2 class="vaccine-display">Tip Vakcine: {{vaccinationFormGroup.value.vaccineType}}</h2>
+                    
+                    <div class="form-group form-check">
+                        <button type="submit" class="btn btn-primary" (click)="onSubmit()">Dodaj</button>
+                    </div>
+
+                </form>
+            </div>
+        </mat-card>
+
+    </div>
+</div>

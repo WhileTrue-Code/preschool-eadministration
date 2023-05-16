@@ -246,13 +246,13 @@ func (controller *HealthcareController) GetMyTakenVaccinationsDoctor(writer http
 }
 
 func (controller *HealthcareController) GetAllAvailableVaccinations(writer http.ResponseWriter, req *http.Request) {
-	appointments, err := controller.service.GetAllAvailableAppointments()
+	vaccinations, err := controller.service.GetAllAvailableVaccinations()
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		return
 	}
 
-	jsonResponse(appointments, writer)
+	jsonResponse(vaccinations, writer)
 	writer.WriteHeader(http.StatusOK)
 }
 

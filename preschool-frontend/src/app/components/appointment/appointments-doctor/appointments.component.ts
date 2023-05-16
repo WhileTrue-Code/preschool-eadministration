@@ -11,8 +11,8 @@ import { AppointmentService } from 'src/app/services/appointment.service';
 })
 export class AppointmentsDoctorComponent implements OnInit {
 
-  appointments: Array<Appointment> = [];
-  user: User = new User();
+  appointments: Array<Appointment> = []
+  user: User = new User()
   options = ["Slobodni", "Zauzeti", "Svi"]
 
 
@@ -41,8 +41,6 @@ export class AppointmentsDoctorComponent implements OnInit {
   }
 
   search(search_option: string) {
-
-    console.log(search_option)
 
     if (search_option == "Slobodni") {
       this.appointmentService.GetMyAvailableAppointmentsDoctor()
@@ -80,24 +78,6 @@ export class AppointmentsDoctorComponent implements OnInit {
         })
     }
 
-  }
-
-  isLoggedIn(): boolean {
-    if (localStorage.getItem("authToken") != null) {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  notLoggedIn(): boolean {
-    if (localStorage.getItem("authToken") === null) {
-      return true
-    }
-    else {
-      return false
-    }
   }
 
 }

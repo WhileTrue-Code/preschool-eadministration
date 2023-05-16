@@ -18,8 +18,8 @@ export class AppointmentAddComponent implements OnInit {
 
   constructor(private appointmentService: AppointmentService,
               private router: Router,
-              private formBuilder: FormBuilder
-              ) { }
+              private formBuilder: FormBuilder) 
+              { }
 
   submitted = false;
   alreadyExists = false;
@@ -51,16 +51,13 @@ export class AppointmentAddComponent implements OnInit {
     var StartOfAppointment: Date = new Date(this.appointmentFormGroup.get('startOfAppointment')?.value)
     var EndOfAppointment: Date = new Date(this.appointmentFormGroup.get('endOfAppointment')?.value)
 
-    addAppointment.startOfAppointment = Number(StartOfAppointment.getTime()) / 1000
-    addAppointment.endOfAppointment = Number(EndOfAppointment.getTime()) / 1000
-
-    console.log(addAppointment.startOfAppointment)
+    addAppointment.startOfAppointment = Number(StartOfAppointment.getTime()) / 1000;
+    addAppointment.endOfAppointment = Number(EndOfAppointment.getTime()) / 1000;
 
     this.appointmentService.AddAppointment(addAppointment)
       .subscribe({
         next: (data) => {
-          console.log("sent")
-          this.router.navigate(['/Appointments']);
+          this.router.navigate(['/Appointments-Doctor']);
         },
         error: (error) => {
           console.log(error);

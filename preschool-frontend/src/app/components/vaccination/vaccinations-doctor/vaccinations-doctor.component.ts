@@ -10,12 +10,62 @@ import { VaccinationService } from 'src/app/services/vaccination.service';
 })
 export class VaccinationsDoctorComponent implements OnInit {
 
-  vaccinations: Array<Vaccination> = [];
-  user: User = new User();
+  vaccinations: Array<Vaccination> = []
+  user: User = new User()
+  options = ["Slobodni", "Zauzeti", "Svi"]
 
   constructor(private vaccinationService: VaccinationService) { }
 
   ngOnInit(): void {
+    this.vaccinationService.GetMyVaccinationsDoctor()
+      .subscribe({
+        next: (data) => {
+          this.vaccinations = data
+        },
+        error: (error) => {
+          console.log(error)
+        }
+      })
+  }
+
+  search(search_option: string) {
+    
+    if (search_option == "Slobodni") {
+      this.vaccinationService.GetMyAvailableVaccinationsDoctor()
+        .subscribe({
+          next: (data) => {
+            this.vaccinations = data;
+          },
+          error: (error) => {
+            console.log(error)
+          }
+        })
+    }
+
+    if (search_option == "Zauzeti") {
+      this.vaccinationService.GetMyTakenVaccinationsDoctor()
+        .subscribe({
+          next: (data) => {
+            this.vaccinations = data;
+          },
+          error: (error) => {
+            console.log(error)
+          }
+        })
+    }
+
+    if (search_option == "Svi") {
+      this.vaccinationService.GetMyVaccinationsDoctor()
+        .subscribe({
+          next: (data) => {
+            this.vaccinations = data;
+          },
+          error: (error) => {
+            console.log(error)
+          }
+        })
+    }
+
   }
 
 }

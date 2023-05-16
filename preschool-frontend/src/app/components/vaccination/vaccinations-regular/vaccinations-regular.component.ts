@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Vaccination } from 'src/app/models/vaccination.model';
+import { VaccinationService } from 'src/app/services/vaccination.service';
 
 @Component({
   selector: 'app-vaccinations-regular',
@@ -7,9 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class VaccinationsRegularComponent implements OnInit {
 
-  constructor() { }
+  vaccinations: Array<Vaccination> = []
+
+  constructor(private vaccinationService: VaccinationService) { }
 
   ngOnInit(): void {
+    this.vaccinationService.GetAllAvailableVaccinations()
+      .subscribe({
+        next: (data) => {
+          this.vaccinations = data
+        }, 
+        error: (error) => {
+          console.log(error)
+        }
+      })
   }
 
 }

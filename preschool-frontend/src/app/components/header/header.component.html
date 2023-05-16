@@ -13,7 +13,13 @@
             <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments-Doctor">
                 <span>Pregledi(Doctor)</span>
             </button>
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Vaccinations-Doctor">
+                <span>Vakcinacije(Doctor)</span>
+            </button>
 
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Vaccinations-Regular">
+                <span>Vakcinacije(Regular)</span>
+            </button>
             <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments-Regular">
                 <span>Pregledi(Regular)</span>
             </button>

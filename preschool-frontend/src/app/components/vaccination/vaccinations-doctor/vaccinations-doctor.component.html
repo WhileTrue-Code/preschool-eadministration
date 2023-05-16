@@ -1,6 +1,6 @@
 <h1 class="welcome">Moje Vakcinacije</h1>
-<!-- <div class="search">
-    <h3 class="search-h3">Tip Pregleda</h3>
+<div class="search">
+    <h3 class="search-h3">Tip Vakcinacije</h3>
     <mat-form-field appearance="outline">
         <mat-select (selectionChange)="search($event.value)">
             <mat-option  style="font-size: 15px; text-align: center" *ngFor="let option of options" [value]="option">
@@ -8,6 +8,6 @@
             </mat-option>
         </mat-select>
     </mat-form-field>
-</div> -->
+</div>
 <a routerLink="/Vaccination-Add"><button class="btn btn-success">Dodavanje Vakcinacije</button></a>
 <app-vaccination-list [vaccinations]="vaccinations"></app-vaccination-list>

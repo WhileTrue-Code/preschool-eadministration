@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Vaccination } from "../models/vaccination.model";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { AddVaccination } from "../dto/addVaccination";
 
 @Injectable({
     providedIn: 'root'
@@ -35,8 +36,8 @@ export class VaccinationService {
         return this.http.get<Vaccination[]>(`${environment.baseApiUrl}/${this.url}/myTakenVaccinationsDoctor`);
     }
 
-    public AddVaccination(addAppointment: Vaccination): Observable<Vaccination> {
-        return this.http.post<Vaccination>(`${environment.baseApiUrl}/${this.url}/newVaccination`, addAppointment);
+    public AddVaccination(addAppointment: AddVaccination): Observable<string> {
+        return this.http.post<string>(`${environment.baseApiUrl}/${this.url}/newVaccination`, addAppointment);
     }
 
     public SetVaccination(id: string) {
