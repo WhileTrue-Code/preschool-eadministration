@@ -18,6 +18,11 @@ type CompetitionRepo struct {
 	logger *log.Logger
 }
 
+type ApplyCompetitionRepo struct {
+	cli    *mongo.Client
+	logger *log.Logger
+}
+
 const (
 	DATABASE               = "competition"
 	CREDENTIALS_COLLECTION = "credentials"
@@ -28,6 +33,8 @@ type CompetitionRepoMongoDB struct {
 }
 
 type Competitions []*Competition
+
+type Prijave []*Prijava
 
 //type SmtpServer struct {
 //	host string
@@ -87,6 +94,43 @@ func (pr *CompetitionRepo) GetAll() (Competitions, error) {
 	return competitions, nil
 }
 
+func (pr *ApplyCompetitionRepo) GetAllApplyes() (Prijave, error) {
+	// Initialise context (after 5 seconds timeout, abort operation)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	competitionCollection := pr.getCollectionCompetitionApply()
+
+	var prijave Prijave
+	usersCursor, err := competitionCollection.Find(ctx, bson.M{})
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	if err = usersCursor.All(ctx, &prijave); err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	return prijave, nil
+}
+
+func (pr *ApplyCompetitionRepo) GetPrijavaById(id string) (*Prijava, error) {
+	// Initialise context (after 5 seconds timeout, abort operation)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	competitionCollection := pr.getCollectionCompetitionApply()
+
+	var prijava Prijava
+	objID, _ := primitive.ObjectIDFromHex(id)
+	err := competitionCollection.FindOne(ctx, bson.M{"_id": objID}).Decode(&prijava)
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	return &prijava, nil
+}
+
 func (pr *CompetitionRepo) GetById(id string) (*Competition, error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
@@ -111,6 +155,35 @@ func (pr *CompetitionRepo) PostCompetition(competition *Competition) error {
 	competition.ID = primitive.NewObjectID()
 
 	result, err := competitionsCollection.InsertOne(ctx, &competition)
+	if err != nil {
+		pr.logger.Println(err)
+		return err
+	}
+	pr.logger.Printf("Documents ID: %v\n", result.InsertedID)
+
+	return nil
+}
+
+func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijava *Prijava) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	competitionsCollection := pr.getCollectionCompetitionApply()
+
+	prijava.ID = primitive.NewObjectID()
+	prijava.CompetitionID, _ = primitive.ObjectIDFromHex(competitionID) //proveriti
+
+	//dete := Dete{
+	//	ID : primitive.NewObjectID(),
+	//	JMBG: prijava.Dete.JMBG,
+	//	DatumRodjenja: prijava.Dete.DatumRodjenja,
+	//	Ime: prijava.Dete.Ime,
+	//	Prezime: prijava.Dete.Prezime,
+	//	Opstina: prijava.Dete.Opstina,
+	//	Adresa: prijava.Dete.Adresa,
+	//	ZdravstvenoStanje: // ZOVEM MOG BRATA MILJUSA OVDEN
+	//}
+
+	result, err := competitionsCollection.InsertOne(ctx, &prijava)
 	if err != nil {
 		pr.logger.Println(err)
 		return err
@@ -151,5 +224,11 @@ func (pr *CompetitionRepo) Ping() {
 func (pr *CompetitionRepo) getCollection() *mongo.Collection {
 	competitionDatabase := pr.cli.Database("mongodb")
 	competitionsCollection := competitionDatabase.Collection("competitions")
+	return competitionsCollection
+}
+
+func (pr *ApplyCompetitionRepo) getCollectionCompetitionApply() *mongo.Collection {
+	competitionDatabase := pr.cli.Database("mongodb")
+	competitionsCollection := competitionDatabase.Collection("prijava")
 	return competitionsCollection
 }

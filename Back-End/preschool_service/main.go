@@ -1,6 +1,7 @@
 package main
 
 import (
+	"auth_service/client/registar_service"
 	"auth_service/data"
 	"auth_service/handlers"
 	"context"
@@ -32,7 +33,11 @@ func main() {
 
 	store.Ping()
 
+	registarServiceClient := registar_service.NewClient("registrar_service", "8001")
+
 	competitionsHandler := handlers.NewCompetitionsHandler(logger, store)
+	applyCompetitionsHandler := handlers.NewApplyCompetitionsHandler(logger, (*data.ApplyCompetitionRepo)(store), registarServiceClient)
+
 	router := mux.NewRouter()
 
 	getCompetitions := router.Methods(http.MethodGet).Subrouter()
@@ -44,6 +49,15 @@ func main() {
 
 	getCompetitionById := router.Methods(http.MethodGet).Subrouter()
 	getCompetitionById.HandleFunc("/competitions/getById/{id}", competitionsHandler.GetCompetitionById)
+
+	postApplyForCompetition := router.Methods(http.MethodPost).Subrouter()
+	postApplyForCompetition.HandleFunc("/competitions/{id}/apply", applyCompetitionsHandler.ApplyForCompetition)
+
+	getAllCompetitionsApplyes := router.Methods(http.MethodGet).Subrouter()
+	getAllCompetitionsApplyes.HandleFunc("/competitions/applyes", applyCompetitionsHandler.GetAllCompetitionApplyes)
+
+	getApplyByID := router.Methods(http.MethodGet).Subrouter()
+	getApplyByID.HandleFunc("/competitions/applyes/{id}", applyCompetitionsHandler.GetApplyById)
 
 	//cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"http://localhost:4200"}),
 	//	gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
