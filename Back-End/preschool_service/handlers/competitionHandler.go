@@ -18,10 +18,73 @@ type CompetitionsHandler struct {
 	repo   *data.CompetitionRepo
 }
 
+type ApplyCompetitionHandler struct {
+	logger *log.Logger
+	repo   *data.ApplyCompetitionRepo
+}
+
 var jwtKey = []byte(os.Getenv("SECRET_KEY"))
 
 func NewCompetitionsHandler(l *log.Logger, r *data.CompetitionRepo) *CompetitionsHandler {
 	return &CompetitionsHandler{l, r}
+}
+
+func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo) *ApplyCompetitionHandler {
+	return &ApplyCompetitionHandler{l, r}
+}
+
+func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h *http.Request) {
+	var insertComp data.Prijava
+	eerr := json.NewDecoder(h.Body).Decode(&insertComp)
+
+	if eerr != nil {
+		fmt.Println(eerr)
+		http.Error(rw, "Cannot unmarshal body", 500)
+		return
+	}
+
+	vars := mux.Vars(h)
+	competitionID := vars["id"]
+
+	err := p.repo.ApplyForCompetition(competitionID, &insertComp)
+	if err != nil {
+		rw.WriteHeader(http.StatusInternalServerError)
+	}
+
+	rw.WriteHeader(http.StatusCreated)
+}
+
+func (p *ApplyCompetitionHandler) GetAllCompetitionApplyes(rw http.ResponseWriter, h *http.Request) {
+	allCompetitions, err := p.repo.GetAllApplyes()
+	if err != nil {
+		http.Error(rw, "Database exception", http.StatusInternalServerError)
+		p.logger.Fatal("Database exception: ", err)
+	}
+
+	err = allCompetitions.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		p.logger.Fatal("Unable to convert to json :", err)
+		return
+	}
+}
+
+func (p *ApplyCompetitionHandler) GetPrijavaByID(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	allCompetitions, err := p.repo.GetPrijavaById(id)
+	if err != nil {
+		http.Error(rw, "Database exception", http.StatusInternalServerError)
+		p.logger.Fatal("Database exception: ", err)
+	}
+
+	err = allCompetitions.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		p.logger.Fatal("Unable to convert to json :", err)
+		return
+	}
 }
 
 func (p *CompetitionsHandler) GetAllCompetitions(rw http.ResponseWriter, h *http.Request) {
