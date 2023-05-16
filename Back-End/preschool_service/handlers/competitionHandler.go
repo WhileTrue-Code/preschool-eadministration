@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"auth_service/client/registar_service"
 	"auth_service/data"
 	"context"
 	"encoding/json"
@@ -19,8 +20,9 @@ type CompetitionsHandler struct {
 }
 
 type ApplyCompetitionHandler struct {
-	logger *log.Logger
-	repo   *data.ApplyCompetitionRepo
+	logger          *log.Logger
+	repo            *data.ApplyCompetitionRepo
+	registarService registar_service.Client
 }
 
 var jwtKey = []byte(os.Getenv("SECRET_KEY"))
@@ -29,8 +31,8 @@ func NewCompetitionsHandler(l *log.Logger, r *data.CompetitionRepo) *Competition
 	return &CompetitionsHandler{l, r}
 }
 
-func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo) *ApplyCompetitionHandler {
-	return &ApplyCompetitionHandler{l, r}
+func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo, registarService registar_service.Client) *ApplyCompetitionHandler {
+	return &ApplyCompetitionHandler{l, r, registarService}
 }
 
 func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h *http.Request) {
@@ -69,7 +71,7 @@ func (p *ApplyCompetitionHandler) GetAllCompetitionApplyes(rw http.ResponseWrite
 	}
 }
 
-func (p *ApplyCompetitionHandler) GetPrijavaByID(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) GetApplyById(rw http.ResponseWriter, h *http.Request) {
 	vars := mux.Vars(h)
 	id := vars["id"]
 

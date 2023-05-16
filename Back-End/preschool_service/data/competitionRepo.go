@@ -171,7 +171,17 @@ func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijav
 
 	prijava.ID = primitive.NewObjectID()
 	prijava.CompetitionID, _ = primitive.ObjectIDFromHex(competitionID) //proveriti
-	//prijava.Dete.ID = primitive.NewObjectID()
+
+	//dete := Dete{
+	//	ID : primitive.NewObjectID(),
+	//	JMBG: prijava.Dete.JMBG,
+	//	DatumRodjenja: prijava.Dete.DatumRodjenja,
+	//	Ime: prijava.Dete.Ime,
+	//	Prezime: prijava.Dete.Prezime,
+	//	Opstina: prijava.Dete.Opstina,
+	//	Adresa: prijava.Dete.Adresa,
+	//	ZdravstvenoStanje: // ZOVEM MOG BRATA MILJUSA OVDEN
+	//}
 
 	result, err := competitionsCollection.InsertOne(ctx, &prijava)
 	if err != nil {

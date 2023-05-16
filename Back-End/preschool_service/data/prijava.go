@@ -14,7 +14,7 @@ type Prijava struct {
 }
 
 type Dete struct {
-	//ID                primitive.ObjectID `json:"id" bson:"_id"`
+	ID                primitive.ObjectID `json:"id" bson:"_id"`
 	JMBG              string             `json:"jmbg" bson:"JMBG"`
 	DatumRodjenja     int64              `json:"datum_rodjenja" bson:"datumRodjenja"`
 	Ime               string             `json:"ime" bson:"ime"`
