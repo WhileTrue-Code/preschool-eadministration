@@ -8,6 +8,7 @@ import (
 	"registrar_service/model/entity"
 	"registrar_service/service"
 	"strconv"
+	"strings"
 
 	"github.com/casbin/casbin"
 	"github.com/gorilla/mux"
@@ -35,6 +36,7 @@ func (controller *RegistrarController) Init(router *mux.Router) {
 	router.HandleFunc("/children/{jmbg}", controller.GetChildren).Methods("GET")
 	router.HandleFunc("/certificate/{jmbg}/{typeOfCertificate}", controller.GetCertificate).Methods("GET")
 	router.HandleFunc("/marriage", controller.Marriage).Methods("POST")
+	router.HandleFunc("/isParent/{jmbg}", controller.IsParent).Methods("GET")
 	router.HandleFunc("/died", controller.UpdateCertificate).Methods("POST")
 	http.Handle("/", router)
 	log.Fatal(http.ListenAndServe(":8001", authorization.Authorizer(authEnforcer)(router)))
@@ -42,8 +44,6 @@ func (controller *RegistrarController) Init(router *mux.Router) {
 }
 
 func (controller *RegistrarController) CreateNewBirthCertificate(writer http.ResponseWriter, req *http.Request) {
-
-	log.Println("Hello Birth")
 
 	var user entity.User
 	err := json.NewDecoder(req.Body).Decode(&user)
@@ -167,6 +167,30 @@ func (controller *RegistrarController) GetCertificate(writer http.ResponseWriter
 	}
 
 	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *RegistrarController) IsParent(writer http.ResponseWriter, req *http.Request) {
+
+	authToken := req.Header.Get("Authorization")
+	splitted := strings.Split(authToken, " ")
+	claims := authorization.GetMapClaims([]byte(splitted[1]))
+
+	loggedInJMBG := claims["jmbg"]
+
+	vars := mux.Vars(req)
+	jmbgStr, _ := vars["jmbg"]
+
+	user := controller.service.FindOneUser(jmbgStr)
+
+	//dodati prvo proveru ussera
+
+	if user == nil {
+		writer.Write([]byte("user not found"))
+	} else if user.JMBGOca == loggedInJMBG || user.JMBGMajke == loggedInJMBG {
+		writer.Write([]byte("true"))
+	} else {
+		writer.Write([]byte("false"))
+	}
 }
 
 func (controller *RegistrarController) Test(writer http.ResponseWriter, req *http.Request) {
