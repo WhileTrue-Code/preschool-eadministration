@@ -1,7 +1,10 @@
 package registar_service
 
 import (
+	"encoding/json"
+	"errors"
 	"fmt"
+	"net/http"
 )
 
 type Client struct {
@@ -14,32 +17,30 @@ func NewClient(host, port string) Client {
 	}
 }
 
-//func (client Client) GetFollowers(jmbg string) ([]string, error) {
-//	requestURL := client.address + fmt.Sprintf("/followers/%s", username)
-//	httpReq, err := http.NewRequest(http.MethodGet, requestURL, nil)
-//
-//	if err != nil {
-//		return []string{}, errors.New("req err")
-//	}
-//
-//	res, err := http.DefaultClient.Do(httpReq)
-//
-//	if err != nil {
-//		return []string{}, errors.New("error getting info from social graph")
-//	}
-//	defer res.Body.Close()
-//
-//	var followers []data.User
-//	var usernames []string
-//
-//	err = json.NewDecoder(res.Body).Decode(&followers)
-//	if err != nil {
-//		return []string{}, errors.New("error decoding body")
-//	}
-//
-//	for _, user := range followers {
-//		usernames = append(usernames, user.Username)
-//	}
-//
-//	return usernames, nil
-//}
+func (client Client) GetIsParent(jmbg string) (bool, error) {
+	requestURL := client.address + fmt.Sprintf("/isParent/%s", jmbg)
+	httpReq, err := http.NewRequest(http.MethodGet, requestURL, nil)
+
+	if err != nil {
+		return false, errors.New("req err")
+	}
+
+	res, err := http.DefaultClient.Do(httpReq)
+
+	if err != nil {
+		return false, errors.New("error getting info")
+	}
+	defer res.Body.Close()
+
+	var isParent string
+	err = json.NewDecoder(res.Body).Decode(&isParent)
+	if err != nil {
+		return false, errors.New("error decoding body")
+	}
+
+	if isParent == "true" {
+		return true, nil
+	} else {
+		return false, nil
+	}
+}

@@ -5,3 +5,4 @@ p, NotLoggedIn, /test, GET
 p, Registrar, /certificate/*, GET
 p, NotLoggedIn, /children/*, GET
 p, Regular, /isParent/*, GET
+p, NotLoggedIn, /registry, POST

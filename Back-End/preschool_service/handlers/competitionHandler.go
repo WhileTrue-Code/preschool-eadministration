@@ -1,8 +1,6 @@
 package handlers
 
 import (
-	"auth_service/client/registar_service"
-	"auth_service/data"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -10,6 +8,8 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"preschool_service/client/registar_service"
+	"preschool_service/data"
 )
 
 type KeyCompetition struct{}
@@ -47,6 +47,17 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 
 	vars := mux.Vars(h)
 	competitionID := vars["id"]
+
+	isParent, errr := p.registarService.GetIsParent(insertComp.Dete.JMBG)
+	if errr != nil {
+		http.Error(rw, errr.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	if !isParent {
+		http.Error(rw, "You are not a parent", 403)
+		return
+	}
 
 	err := p.repo.ApplyForCompetition(competitionID, &insertComp)
 	if err != nil {

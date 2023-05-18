@@ -1,4 +1,4 @@
-module auth_service
+module preschool_service
 
 go 1.18
 
