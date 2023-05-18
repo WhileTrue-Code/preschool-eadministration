@@ -1,7 +1,7 @@
 <div>
     <div>
         <mat-card class="add-vaccine-card">
-            <mat-card-title class="card-title-main">Kreiranje Novog Pregleda</mat-card-title>
+            <mat-card-title class="card-title-main">Kreiranje Nove Vakcinacije</mat-card-title>
             <div class="form-group">
                 <form [formGroup]="vaccinationFormGroup">
 
@@ -33,7 +33,7 @@
                         </mat-select>
                     </mat-form-field>
 
-                    <h2 class="already-exists" *ngIf="alreadyExists">Pregled već postoji u datom vremenu
+                    <h2 class="already-exists" *ngIf="alreadyExists">Vakcinacija već postoji u datom vremenu
                         <button mat-button (click)="removeError()">
                             <mat-icon>remove_circle</mat-icon>
                         </button>

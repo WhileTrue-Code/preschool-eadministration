@@ -30,8 +30,7 @@ export class AppointmentViewComponent implements OnInit {
     this.appointmentService.SetAppointment(this.appointment_id)
       .subscribe({
         next: () => {
-          console.log("PUT")
-          this.router.navigate(['/Appointments'])
+          this.router.navigate(['/Appointments-Regular'])
         },
         error: (error) => {
           console.log(error);

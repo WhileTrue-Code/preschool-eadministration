@@ -159,23 +159,23 @@ func (controller *HealthcareController) CreateNewAppointment(writer http.Respons
 		return
 	}
 
+	jsonResponse(appointment, writer)
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Added"))
 }
 
 func (controller *HealthcareController) SetAppointment(writer http.ResponseWriter, req *http.Request) {
 	objectID, err := getIDFromReqAsPrimitive(writer, req)
 	jmbg, err := extractJMBGFromClaims(writer, req)
 
-	err = controller.service.SetAppointment(objectID, jmbg)
+	appointment, err := controller.service.SetAppointment(objectID, jmbg)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		writer.Write([]byte(err.Error()))
 		return
 	}
 
+	jsonResponse(appointment, writer)
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Updated"))
 }
 
 func (controller *HealthcareController) DeleteAppointmentByID(writer http.ResponseWriter, req *http.Request) {
@@ -292,8 +292,8 @@ func (controller *HealthcareController) CreateNewVaccination(writer http.Respons
 		return
 	}
 
+	jsonResponse(vaccination, writer)
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Added"))
 }
 
 func (controller *HealthcareController) SetVaccination(writer http.ResponseWriter, req *http.Request) {
@@ -301,15 +301,15 @@ func (controller *HealthcareController) SetVaccination(writer http.ResponseWrite
 
 	jmbg, err := extractJMBGFromClaims(writer, req)
 
-	err = controller.service.SetVaccination(objectID, jmbg)
+	vaccination, err := controller.service.SetVaccination(objectID, jmbg)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		writer.Write([]byte(err.Error()))
 		return
 	}
 
+	jsonResponse(vaccination, writer)
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Updated"))
 }
 
 func (controller *HealthcareController) DeleteVaccinationByID(writer http.ResponseWriter, req *http.Request) {

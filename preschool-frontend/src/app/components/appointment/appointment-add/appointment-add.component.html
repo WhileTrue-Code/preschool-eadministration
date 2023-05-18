@@ -23,6 +23,7 @@
                         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-date-range-picker #picker></mat-date-range-picker>
                     </mat-form-field>
+                    
                     <h2 class="already-exists" *ngIf="alreadyExists">Pregled već postoji u datom vremenu
                         <button mat-button (click)="removeError()">
                             <mat-icon>remove_circle</mat-icon>

@@ -154,7 +154,7 @@ func (service *HealthcareService) CreateNewAppointment(appointment *model.Appoin
 	return 0, nil
 }
 
-func (service *HealthcareService) SetAppointment(id primitive.ObjectID, jmbg string) error {
+func (service *HealthcareService) SetAppointment(id primitive.ObjectID, jmbg string) (*model.Appointment, error) {
 	dataToSend, err := json.Marshal(jmbg)
 	if err != nil {
 		log.Println("Error Marshaling JMBG")
@@ -166,13 +166,13 @@ func (service *HealthcareService) SetAppointment(id primitive.ObjectID, jmbg str
 	err = json.Unmarshal(response.Data, &user)
 	if err != nil {
 		log.Println("Error in Unmarshalling json")
-		return err
+		return nil, err
 	}
 
 	appointment, err := service.repository.GetAppointmentByID(id)
 	if err != nil {
 		log.Println("Error in finding Appointment By ID")
-		return err
+		return nil, err
 	}
 
 	appointment.User = &user
@@ -180,10 +180,10 @@ func (service *HealthcareService) SetAppointment(id primitive.ObjectID, jmbg str
 	err = service.repository.SetAppointment(appointment)
 	if err != nil {
 		log.Println("Error in Updating Appointment")
-		return err
+		return nil, err
 	}
 
-	return nil
+	return appointment, nil
 }
 
 func (service *HealthcareService) DeleteAppointmentByID(id primitive.ObjectID) error {
@@ -303,7 +303,7 @@ func (service *HealthcareService) CreateNewVaccination(vaccination *model.Vaccin
 	return 0, nil
 }
 
-func (service *HealthcareService) SetVaccination(id primitive.ObjectID, jmbg string) error {
+func (service *HealthcareService) SetVaccination(id primitive.ObjectID, jmbg string) (*model.Vaccination, error) {
 	dataToSend, err := json.Marshal(jmbg)
 	if err != nil {
 		log.Println("Error Marshaling JMBG")
@@ -315,13 +315,13 @@ func (service *HealthcareService) SetVaccination(id primitive.ObjectID, jmbg str
 	err = json.Unmarshal(response.Data, &user)
 	if err != nil {
 		log.Println("Error in Unmarshalling json")
-		return err
+		return nil, err
 	}
 
 	vaccination, err := service.repository.GetVaccinationByID(id)
 	if err != nil {
 		log.Println("Error in finding Vaccination By ID")
-		return err
+		return nil, err
 	}
 
 	vaccination.User = &user
@@ -329,10 +329,10 @@ func (service *HealthcareService) SetVaccination(id primitive.ObjectID, jmbg str
 	err = service.repository.SetVaccination(vaccination)
 	if err != nil {
 		log.Println("Error in Updating Vaccination")
-		return err
+		return nil, err
 	}
 
-	return nil
+	return vaccination, nil
 }
 
 func (service *HealthcareService) DeleteVaccinationByID(id primitive.ObjectID) error {

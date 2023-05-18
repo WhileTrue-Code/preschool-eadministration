@@ -1,3 +1,4 @@
+import { HttpResponse, HttpStatusCode } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -62,12 +63,13 @@ export class VaccinationAddComponent implements OnInit {
     this.vaccinationService.AddVaccination(addVaccination)
       .subscribe({
         next: (data) => {
-          if (data == "Added") {
             this.router.navigate(['/Vaccinations-Doctor'])
-          }
         },
         error: (error) => {
           console.log(error)
+          if (error.status = 406) {
+            this.alreadyExists = true
+          }
         }
       })
   }

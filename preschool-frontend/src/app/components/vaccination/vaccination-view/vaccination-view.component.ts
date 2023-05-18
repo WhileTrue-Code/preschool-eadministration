@@ -33,7 +33,6 @@ export class VaccinationViewComponent implements OnInit {
     this.vaccinationService.SetVaccination(this.vaccination_id)
       .subscribe({
         next: () => {
-          console.log("PUT")
           this.router.navigate(['/Vaccinations-Regular'])
         },
         error: (error) => {
