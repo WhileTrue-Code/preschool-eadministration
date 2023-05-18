@@ -1,15 +1,15 @@
 package main
 
 import (
-	"auth_service/client/registar_service"
-	"auth_service/data"
-	"auth_service/handlers"
 	"context"
 	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
+	"preschool_service/client/registar_service"
+	"preschool_service/data"
+	"preschool_service/handlers"
 	"time"
 )
 

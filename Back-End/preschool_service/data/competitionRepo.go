@@ -36,15 +36,6 @@ type Competitions []*Competition
 
 type Prijave []*Prijava
 
-//type SmtpServer struct {
-//	host string
-//	port string
-//}
-//
-//func (s *SmtpServer) ServerName() string {
-//	return s.host + ":" + s.port
-//}
-
 func New(ctx context.Context, logger *log.Logger) (*CompetitionRepo, error) {
 	db := os.Getenv("PRESCHOOL_DB_HOST")
 	dbport := os.Getenv("PRESCHOOL_DB_PORT")
@@ -65,14 +56,6 @@ func New(ctx context.Context, logger *log.Logger) (*CompetitionRepo, error) {
 		logger: logger,
 	}, nil
 }
-
-// GetOneUser TODO
-
-/*func (store *AuthRepoMongoDb) filterOne(filter interface{}) (user *User, err error) {
-	result := store.credentials.FindOne(context.TODO(), filter)
-	err = result.Decode(&user)
-	return
-}*/
 
 func (pr *CompetitionRepo) GetAll() (Competitions, error) {
 	// Initialise context (after 5 seconds timeout, abort operation)
@@ -169,19 +152,29 @@ func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijav
 	defer cancel()
 	competitionsCollection := pr.getCollectionCompetitionApply()
 
+	deteCollection := pr.getCollectionDete()
+
 	prijava.ID = primitive.NewObjectID()
 	prijava.CompetitionID, _ = primitive.ObjectIDFromHex(competitionID) //proveriti
 
-	//dete := Dete{
-	//	ID : primitive.NewObjectID(),
-	//	JMBG: prijava.Dete.JMBG,
-	//	DatumRodjenja: prijava.Dete.DatumRodjenja,
-	//	Ime: prijava.Dete.Ime,
-	//	Prezime: prijava.Dete.Prezime,
-	//	Opstina: prijava.Dete.Opstina,
-	//	Adresa: prijava.Dete.Adresa,
-	//	ZdravstvenoStanje: // ZOVEM MOG BRATA MILJUSA OVDEN
-	//}
+	//zdravstvenoStanje := client.getZS(jmbg)
+
+	dete := &Dete{
+		ID:                primitive.NewObjectID(),
+		JMBG:              prijava.Dete.JMBG,
+		DatumRodjenja:     prijava.Dete.DatumRodjenja,
+		Ime:               prijava.Dete.Ime,
+		Prezime:           prijava.Dete.Prezime,
+		Opstina:           prijava.Dete.Opstina,
+		Adresa:            prijava.Dete.Adresa,
+		ZdravstvenoStanje: nil,
+	}
+
+	result, eerr := deteCollection.InsertOne(ctx, dete)
+	if eerr != nil {
+		pr.logger.Println(eerr)
+		return eerr
+	}
 
 	result, err := competitionsCollection.InsertOne(ctx, &prijava)
 	if err != nil {
@@ -230,5 +223,11 @@ func (pr *CompetitionRepo) getCollection() *mongo.Collection {
 func (pr *ApplyCompetitionRepo) getCollectionCompetitionApply() *mongo.Collection {
 	competitionDatabase := pr.cli.Database("mongodb")
 	competitionsCollection := competitionDatabase.Collection("prijava")
+	return competitionsCollection
+}
+
+func (pr *ApplyCompetitionRepo) getCollectionDete() *mongo.Collection {
+	competitionDatabase := pr.cli.Database("mongodb")
+	competitionsCollection := competitionDatabase.Collection("dete")
 	return competitionsCollection
 }

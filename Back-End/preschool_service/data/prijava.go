@@ -22,6 +22,8 @@ type Dete struct {
 	Opstina           string             `json:"opstina" bson:"opstina"`
 	Adresa            string             `json:"adresa" bson:"adresa"`
 	ZdravstvenoStanje *ZdravstvenoStanje `json:"zdravstveno_stanje" bson:"zdravstvenoStanje"`
+	//JMBGOca           string             `json:"jmbg_oca" bson:"JMBGOca"`
+	//JMBGMajke         string             `json:"jmbg_majke" bson:"JMBGMajke"`
 }
 
 type ZdravstvenoStanje struct {
