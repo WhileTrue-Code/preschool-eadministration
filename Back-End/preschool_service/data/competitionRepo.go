@@ -156,11 +156,11 @@ func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijav
 
 	prijava.ID = primitive.NewObjectID()
 	prijava.CompetitionID, _ = primitive.ObjectIDFromHex(competitionID) //proveriti
-
 	//zdravstvenoStanje := client.getZS(jmbg)
+	prijava.Dete.ID = primitive.NewObjectID()
 
-	dete := &Dete{
-		ID:                primitive.NewObjectID(),
+	dete := Dete{
+		ID:                prijava.Dete.ID,
 		JMBG:              prijava.Dete.JMBG,
 		DatumRodjenja:     prijava.Dete.DatumRodjenja,
 		Ime:               prijava.Dete.Ime,
@@ -170,7 +170,7 @@ func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijav
 		ZdravstvenoStanje: nil,
 	}
 
-	result, eerr := deteCollection.InsertOne(ctx, dete)
+	result, eerr := deteCollection.InsertOne(ctx, &dete)
 	if eerr != nil {
 		pr.logger.Println(eerr)
 		return eerr

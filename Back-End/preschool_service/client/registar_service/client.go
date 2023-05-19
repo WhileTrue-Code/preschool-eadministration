@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 )
 
@@ -32,8 +33,10 @@ func (client Client) GetIsParent(jmbg string) (bool, error) {
 	}
 	defer res.Body.Close()
 
+	body, err := ioutil.ReadAll(res.Body)
 	var isParent string
-	err = json.NewDecoder(res.Body).Decode(&isParent)
+
+	json.Unmarshal(body, &isParent)
 	if err != nil {
 		return false, errors.New("error decoding body")
 	}
