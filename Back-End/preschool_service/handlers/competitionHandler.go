@@ -54,7 +54,7 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 		return
 	}
 
-	if !isParent {
+	if isParent {
 		http.Error(rw, "You are not a parent", 403)
 		return
 	}
