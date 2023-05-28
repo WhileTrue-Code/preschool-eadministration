@@ -18,6 +18,7 @@ import { VaccinationAddComponent } from './components/vaccination/vaccination-ad
 import { VaccinationViewComponent } from './components/vaccination/vaccination-view/vaccination-view.component';
 import {MarriageComponent} from "./components/marriage/marriage.component";
 import {ChooseServiceComponent} from "./components/choose-service/choose-service.component";
+import {RegularOrAdminComponent} from "./components/regular-or-admin/regular-or-admin.component";
 
 const routes: Routes = [
   {
@@ -89,8 +90,12 @@ const routes: Routes = [
     component: MarriageComponent
   },
   {
-    path: "pre-login",
+    path: "chose-service",
     component: ChooseServiceComponent
+  },
+  {
+    path: "regular-or-admin",
+    component: RegularOrAdminComponent
   }
 ];
 

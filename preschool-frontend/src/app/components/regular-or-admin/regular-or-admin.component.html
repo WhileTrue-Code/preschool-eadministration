@@ -1,0 +1,19 @@
+<mat-card class="choose-service-card">
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+      <div class="row">
+        <div class="col d-flex justify-content-center align-items-center mt-3">
+          <h1>Izaberite ulogu:</h1>
+        </div>
+      </div>
+      <div class="row mt-5 mb-5">
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-primary" (click)="setRole(this.storeService.getRoleFromToken())" routerLink="/Welcome">{{this.storeService.getRoleFromToken()}}</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-secondary" (click)="setRole('Regular')" routerLink="/Welcome">Regular</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

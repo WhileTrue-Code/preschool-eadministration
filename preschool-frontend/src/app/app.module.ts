@@ -39,6 +39,7 @@ import { VaccinationsDoctorComponent } from './components/vaccination/vaccinatio
 import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
 import { MarriageComponent } from './components/marriage/marriage.component';
 import { ChooseServiceComponent } from './components/choose-service/choose-service.component';
+import { RegularOrAdminComponent } from './components/regular-or-admin/regular-or-admin.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +69,8 @@ import { ChooseServiceComponent } from './components/choose-service/choose-servi
     VaccinationsDoctorComponent,
     VaccinationsRegularComponent,
     MarriageComponent,
-    ChooseServiceComponent
+    ChooseServiceComponent,
+    RegularOrAdminComponent
   ],
   imports: [
     BrowserModule,
