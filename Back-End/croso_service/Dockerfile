@@ -1,6 +1,6 @@
 FROM golang:latest as builder
 WORKDIR /app
-COPY ./apr_service/ .
+COPY ./croso_service/ .
 COPY ./authorization/ /authorization/
 COPY ./model/ /model/
 COPY ./nats/ /nats/
