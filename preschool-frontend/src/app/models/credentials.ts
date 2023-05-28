@@ -3,4 +3,6 @@ export class Credentials {
   jmbg: string = ""
   password: string = ""
   userType: string = ""
+  service: string = ""
+  is_regular: boolean = false
 }

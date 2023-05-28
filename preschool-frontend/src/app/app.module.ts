@@ -38,7 +38,6 @@ import { VaccinationViewComponent } from './components/vaccination/vaccination-v
 import { VaccinationsDoctorComponent } from './components/vaccination/vaccinations-doctor/vaccinations-doctor.component';
 import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
 import { MarriageComponent } from './components/marriage/marriage.component';
-import { ChoseServiceComponent } from './components/chose-service/chose-service.component';
 import { ChooseServiceComponent } from './components/choose-service/choose-service.component';
 
 @NgModule({
@@ -69,7 +68,6 @@ import { ChooseServiceComponent } from './components/choose-service/choose-servi
     VaccinationsDoctorComponent,
     VaccinationsRegularComponent,
     MarriageComponent,
-    ChoseServiceComponent,
     ChooseServiceComponent
   ],
   imports: [

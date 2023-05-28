@@ -84,24 +84,24 @@ func (controller *AuthController) Login(response http.ResponseWriter, request *h
 		return
 	}
 
-	token, value := controller.service.Login(credentials.JMBG, credentials.Password)
-	if value == 1 {
-		response.WriteHeader(http.StatusAccepted)
-		response.Write([]byte("JMBG not exist!"))
-		return
-	} else if value == 2 {
-		response.WriteHeader(http.StatusAccepted)
-		response.Write([]byte("Password doesn't match!"))
-		return
-	} else if value == 3 {
-		response.WriteHeader(http.StatusAccepted)
-		response.Write([]byte("Problem with generating token"))
-		return
-	}
+	fmt.Println(credentials)
 
-	log.Println(token)
+	//token, value := controller.service.Login(credentials.JMBG, credentials.Password)
+	//if value == 1 {
+	//	response.WriteHeader(http.StatusNotFound)
+	//	response.Write([]byte("JMBG not exist!"))
+	//	return
+	//} else if value == 2 {
+	//	response.WriteHeader(http.StatusAccepted)
+	//	response.Write([]byte("Password doesn't match!"))
+	//	return
+	//} else if value == 3 {
+	//	response.WriteHeader(http.StatusInternalServerError)
+	//	response.Write([]byte("Problem with generating token"))
+	//	return
+	//}
 
 	response.WriteHeader(http.StatusOK)
-	response.Write([]byte(token))
+	//response.Write([]byte(token))
 
 }

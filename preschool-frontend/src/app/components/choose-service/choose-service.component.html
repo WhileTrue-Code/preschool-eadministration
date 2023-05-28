@@ -1,1 +1,28 @@
-<p>choose-service works!</p>
+<mat-card class="choose-service-card">
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+      <div class="row">
+        <div class="col d-flex justify-content-center align-items-center mt-3">
+          <h1>Molimo izaberite servis:</h1>
+        </div>
+      </div>
+      <div class="row mt-5 mb-5">
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-primary" (click)="selectService('MATICAR', this.credentials)">eMaticar</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-secondary" (click)="selectService('VRTIC', this.credentials)">eVrtic</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-success" (click)="selectService('ZDRAVSTVO', this.credentials)">eZdravstvo</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-warning" (click)="selectService('APR', this.credentials)">APR</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-danger" (click)="selectService('CROSO', this.credentials)">CROSO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

@@ -94,8 +94,6 @@ func (service *AuthService) Login(jmbg string, password string) (string, int) {
 		return "", 2
 	}
 
-	log.Println(credentials.UserType)
-
 	tokenString, err := GenerateJWT(credentials)
 	if err != nil {
 		return "", 3
