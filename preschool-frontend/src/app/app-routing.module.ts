@@ -16,6 +16,8 @@ import { VaccinationsDoctorComponent } from './components/vaccination/vaccinatio
 import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
 import { VaccinationAddComponent } from './components/vaccination/vaccination-add/vaccination-add.component';
 import { VaccinationViewComponent } from './components/vaccination/vaccination-view/vaccination-view.component';
+import {MarriageComponent} from "./components/marriage/marriage.component";
+import {ChooseServiceComponent} from "./components/choose-service/choose-service.component";
 
 const routes: Routes = [
   {
@@ -30,7 +32,7 @@ const routes: Routes = [
     path: "Appointments-Doctor",
     component: AppointmentsDoctorComponent
   },
-  { 
+  {
     path: "Appointments-Regular",
     component: AppointmentsRegularComponent
   },
@@ -81,6 +83,14 @@ const routes: Routes = [
   {
     path: "Welcome",
     component: WelcomeComponent
+  },
+  {
+    path: "Marriage",
+    component: MarriageComponent
+  },
+  {
+    path: "pre-login",
+    component: ChooseServiceComponent
   }
 ];
 
