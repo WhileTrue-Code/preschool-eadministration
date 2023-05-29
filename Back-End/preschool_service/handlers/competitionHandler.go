@@ -117,6 +117,21 @@ func (p *CompetitionsHandler) GetAllCompetitions(rw http.ResponseWriter, h *http
 	}
 }
 
+func (p *CompetitionsHandler) GetAllVrtici(rw http.ResponseWriter, h *http.Request) {
+	vrtici, err := p.repo.GetAllVrtici()
+	if err != nil {
+		http.Error(rw, "Database exception", http.StatusInternalServerError)
+		p.logger.Fatal("Database exception: ", err)
+	}
+
+	err = vrtici.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		p.logger.Fatal("Unable to convert to json :", err)
+		return
+	}
+}
+
 func (p *CompetitionsHandler) GetCompetitionById(rw http.ResponseWriter, h *http.Request) {
 	vars := mux.Vars(h)
 	id := vars["id"]
@@ -140,6 +155,29 @@ func (p *CompetitionsHandler) GetCompetitionById(rw http.ResponseWriter, h *http
 	}
 }
 
+func (p *CompetitionsHandler) GetVrticById(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	vrtic, err := p.repo.GetVrticById(id)
+	if err != nil {
+		p.logger.Print("Database exception: ", err)
+	}
+
+	if vrtic == nil {
+		http.Error(rw, "Vrtic with given id not found", http.StatusNotFound)
+		p.logger.Printf("Vrtic with id: '%s' not found", id)
+		return
+	}
+
+	err = vrtic.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		p.logger.Fatal("Unable to convert to json :", err)
+		return
+	}
+}
+
 func (p *CompetitionsHandler) PostCompetition(rw http.ResponseWriter, h *http.Request) {
 	var insertComp data.Competition
 	eerr := json.NewDecoder(h.Body).Decode(&insertComp)
@@ -150,7 +188,28 @@ func (p *CompetitionsHandler) PostCompetition(rw http.ResponseWriter, h *http.Re
 		return
 	}
 
-	err := p.repo.PostCompetition(&insertComp)
+	vars := mux.Vars(h)
+	vrticID := vars["id"]
+
+	err := p.repo.PostCompetition(vrticID, &insertComp)
+	if err != nil {
+		rw.WriteHeader(http.StatusInternalServerError)
+	}
+
+	rw.WriteHeader(http.StatusCreated)
+}
+
+func (p *CompetitionsHandler) PostVrtic(rw http.ResponseWriter, h *http.Request) {
+	var insertComp data.Vrtic
+	eerr := json.NewDecoder(h.Body).Decode(&insertComp)
+
+	if eerr != nil {
+		fmt.Println(eerr)
+		http.Error(rw, "Cannot unmarshal body", 500)
+		return
+	}
+
+	err := p.repo.PostVrtic(&insertComp)
 	if err != nil {
 		rw.WriteHeader(http.StatusInternalServerError)
 	}
