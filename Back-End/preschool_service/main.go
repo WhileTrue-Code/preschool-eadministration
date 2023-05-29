@@ -44,8 +44,17 @@ func main() {
 	getCompetitions.HandleFunc("/competitions/all", competitionsHandler.GetAllCompetitions)
 
 	postCompetition := router.Methods(http.MethodPost).Subrouter()
-	postCompetition.HandleFunc("/competitions/add", competitionsHandler.PostCompetition)
+	postCompetition.HandleFunc("/vrtic/{id}/competitions/add", competitionsHandler.PostCompetition)
 	//postCompetition.Use(competitionsHandler.MiddlewareCompetitionDeserialization)
+
+	postVrtic := router.Methods(http.MethodPost).Subrouter()
+	postVrtic.HandleFunc("/vrtic/add", competitionsHandler.PostVrtic)
+
+	getVrticById := router.Methods(http.MethodGet).Subrouter()
+	getVrticById.HandleFunc("/vrtic/{id}", competitionsHandler.GetVrticById)
+
+	getAllVrtici := router.Methods(http.MethodGet).Subrouter()
+	getAllVrtici.HandleFunc("/vrtici/all", competitionsHandler.GetAllVrtici)
 
 	getCompetitionById := router.Methods(http.MethodGet).Subrouter()
 	getCompetitionById.HandleFunc("/competitions/getById/{id}", competitionsHandler.GetCompetitionById)

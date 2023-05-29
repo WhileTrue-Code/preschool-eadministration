@@ -34,6 +34,8 @@ type CompetitionRepoMongoDB struct {
 
 type Competitions []*Competition
 
+type Vrtici []*Vrtic
+
 type Prijave []*Prijava
 
 func New(ctx context.Context, logger *log.Logger) (*CompetitionRepo, error) {
@@ -75,6 +77,26 @@ func (pr *CompetitionRepo) GetAll() (Competitions, error) {
 		return nil, err
 	}
 	return competitions, nil
+}
+
+func (pr *CompetitionRepo) GetAllVrtici() (Vrtici, error) {
+	// Initialise context (after 5 seconds timeout, abort operation)
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	vrticiCollection := pr.getCollectionVrtic()
+
+	var vrtici Vrtici
+	usersCursor, err := vrticiCollection.Find(ctx, bson.M{})
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	if err = usersCursor.All(ctx, &vrtici); err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	return vrtici, nil
 }
 
 func (pr *ApplyCompetitionRepo) GetAllApplyes() (Prijave, error) {
@@ -130,14 +152,48 @@ func (pr *CompetitionRepo) GetById(id string) (*Competition, error) {
 	return &competition, nil
 }
 
-func (pr *CompetitionRepo) PostCompetition(competition *Competition) error {
+func (pr *CompetitionRepo) GetVrticById(id string) (*Vrtic, error) {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+
+	vrticCollection := pr.getCollectionVrtic()
+
+	var vrtic Vrtic
+	objID, _ := primitive.ObjectIDFromHex(id)
+	err := vrticCollection.FindOne(ctx, bson.M{"_id": objID}).Decode(&vrtic)
+	if err != nil {
+		pr.logger.Println(err)
+		return nil, err
+	}
+	return &vrtic, nil
+}
+
+func (pr *CompetitionRepo) PostCompetition(vrticID string, competition *Competition) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 	competitionsCollection := pr.getCollection()
 
 	competition.ID = primitive.NewObjectID()
+	competition.Vrtic, _ = pr.GetVrticById(vrticID)
 
 	result, err := competitionsCollection.InsertOne(ctx, &competition)
+	if err != nil {
+		pr.logger.Println(err)
+		return err
+	}
+	pr.logger.Printf("Documents ID: %v\n", result.InsertedID)
+
+	return nil
+}
+
+func (pr *CompetitionRepo) PostVrtic(vrtic *Vrtic) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	vrticCollection := pr.getCollectionVrtic()
+
+	vrtic.ID = primitive.NewObjectID()
+
+	result, err := vrticCollection.InsertOne(ctx, &vrtic)
 	if err != nil {
 		pr.logger.Println(err)
 		return err
@@ -216,6 +272,12 @@ func (pr *CompetitionRepo) Ping() {
 func (pr *CompetitionRepo) getCollection() *mongo.Collection {
 	competitionDatabase := pr.cli.Database("mongodb")
 	competitionsCollection := competitionDatabase.Collection("competitions")
+	return competitionsCollection
+}
+
+func (pr *CompetitionRepo) getCollectionVrtic() *mongo.Collection {
+	competitionDatabase := pr.cli.Database("mongodb")
+	competitionsCollection := competitionDatabase.Collection("vrtic")
 	return competitionsCollection
 }
 
