@@ -1,0 +1,28 @@
+<mat-card class="choose-service-card">
+  <div class="container d-flex justify-content-center align-items-center">
+    <div class="row">
+      <div class="row">
+        <div class="col d-flex justify-content-center align-items-center mt-3">
+          <h1>Molimo izaberite servis:</h1>
+        </div>
+      </div>
+      <div class="row mt-5 mb-5">
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-primary" (click)="selectService('Registrar', 'eMaticar')">eMaticar</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-secondary" (click)="selectService('Admin', 'eVrtic')">eVrtic</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-success" (click)="selectService('Doctor', 'eZdravstvo')">eZdravstvo</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-warning" (click)="selectService('Admin', 'APR')">APR</button>
+        </div>
+        <div class="col d-flex justify-content-center align-items-center">
+          <button class="btn btn-danger" (click)="selectService('Admin', 'CROSO')">CROSO</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-card>

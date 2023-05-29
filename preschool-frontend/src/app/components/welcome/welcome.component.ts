@@ -1,5 +1,6 @@
 import { getLocaleNumberSymbol } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
+import {StoreServiceService} from "../../services/store-service.service";
 
 @Component({
   selector: 'app-welcome',
@@ -8,7 +9,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WelcomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private storeService: StoreServiceService,
+  ) { }
 
   ngOnInit(): void {
   }

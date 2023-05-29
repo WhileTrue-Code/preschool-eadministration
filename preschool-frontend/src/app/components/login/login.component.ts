@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {Credentials} from "../../models/credentials";
 import {AuthService} from "../../services/auth.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import { Router } from '@angular/router';
+import {StoreServiceService} from "../../services/store-service.service";
 
 @Component({
   selector: 'app-login',
@@ -15,8 +15,11 @@ export class LoginComponent implements OnInit {
   constructor(
     private authService: AuthService,
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private storeService: StoreServiceService
   ) { }
+
+  credentials = new Credentials();
 
   formGroup: FormGroup = new FormGroup({
     jmbg: new FormControl(''),
@@ -25,6 +28,7 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
+
     this.formGroup = this.formBuilder.group({
       jmbg: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30), Validators.pattern('[-_a-zA-Z0-9]*')]],
       password: ['', [Validators.required, Validators.minLength(3), Validators.pattern('[-0-9]*')]]
@@ -32,25 +36,21 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    const credentials = new Credentials();
-    credentials._id = 0
-    credentials.jmbg  = this.formGroup.get('jmbg')?.value
-    credentials.password =  this.formGroup.get('password')?.value
-    credentials.userType = ""
-    this.authService.Login(credentials).subscribe(
+    this.credentials.jmbg  = this.formGroup.get('jmbg')?.value
+    this.credentials.password =  this.formGroup.get('password')?.value
+    this.authService.Login(this.credentials).subscribe(
       ({
         next: (response) => {
           if (response != null){
-            console.log(response)
             if (response == "JMBG not exist!"){
               localStorage.clear()
             }else if (response == "Password doesn't match!"){
               localStorage.clear()
             }else{
               localStorage.setItem('authToken', response)
+              this.router.navigate(['/chose-service']).then();
             }
           }
-          this.router.navigate(['/Welcome']);
         },
         error: (error) => {
           localStorage.clear()
@@ -60,6 +60,4 @@ export class LoginComponent implements OnInit {
       })
     );
   }
-
-
 }

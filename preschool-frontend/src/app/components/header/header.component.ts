@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {StoreServiceService} from "../../services/store-service.service";
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,11 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    public storeService: StoreServiceService
+
+  ) { }
 
   isLoggedIn(): boolean {
     if (localStorage.getItem("authToken") != null) {
@@ -21,7 +26,7 @@ export class HeaderComponent {
 
   logout() {
     localStorage.clear();
-    this.router.navigate(['/Login']);
+    this.router.navigate(['/Login']).then();
   }
 
 }

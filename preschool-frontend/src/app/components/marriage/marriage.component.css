@@ -1,0 +1,11 @@
+.marriage-component {
+  border-radius: 10px;
+}
+
+input {
+  border-radius: 5px;
+}
+
+.invalid-field {
+  border: 1px solid red;
+}

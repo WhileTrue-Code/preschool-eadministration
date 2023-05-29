@@ -83,14 +83,30 @@ func (controller *RegistrarController) Marriage(writer http.ResponseWriter, req 
 	//find Svedok1 i Svedok2
 	var svedok1 *entity.User
 	var svedok2 *entity.User
+	var mladozenja *entity.User
+	var mlada *entity.User
 
+	mladozenja = controller.service.FindOneUser(marriage.JMBGMladozenje)
+	mlada = controller.service.FindOneUser(marriage.JMBGMlade)
 	svedok1 = controller.service.FindOneUser(marriage.Svedok1.JMBG)
 	svedok2 = controller.service.FindOneUser(marriage.Svedok2.JMBG)
 
 	//kreiranje vencanja je moguce samo ukoliko postoje oba svedoka u bazi
-	if svedok1 == nil || svedok2 == nil {
+	if mladozenja == nil {
 		writer.WriteHeader(http.StatusAccepted)
-		writer.Write([]byte("Ne postoji jedan od svedoka u sistemu"))
+		writer.Write([]byte("Ne postoji mladozenja u sistemu"))
+		return
+	} else if mlada == nil {
+		writer.WriteHeader(http.StatusAccepted)
+		writer.Write([]byte("Ne postoji mlada u sistemu"))
+		return
+	} else if svedok1 == nil {
+		writer.WriteHeader(http.StatusAccepted)
+		writer.Write([]byte("Ne postoji prvi svedok u sistemu"))
+		return
+	} else if svedok2 == nil {
+		writer.WriteHeader(http.StatusAccepted)
+		writer.Write([]byte("Ne postoji drugi svedok u sistemu"))
 		return
 	}
 
@@ -98,9 +114,6 @@ func (controller *RegistrarController) Marriage(writer http.ResponseWriter, req 
 	marriage.Svedok2 = *svedok2
 
 	controller.service.CreateNewMarriage(marriage)
-	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Okej"))
-	//jsonResponse(token, writer)
 }
 
 func (controller *RegistrarController) UpdateCertificate(writer http.ResponseWriter, req *http.Request) {

@@ -37,6 +37,10 @@ import { VaccinationListComponent } from './components/vaccination/vaccination-l
 import { VaccinationViewComponent } from './components/vaccination/vaccination-view/vaccination-view.component';
 import { VaccinationsDoctorComponent } from './components/vaccination/vaccinations-doctor/vaccinations-doctor.component';
 import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
+import { MarriageComponent } from './components/marriage/marriage.component';
+import { ChooseServiceComponent } from './components/choose-service/choose-service.component';
+import { RegularOrAdminComponent } from './components/regular-or-admin/regular-or-admin.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -64,7 +68,10 @@ import { VaccinationsRegularComponent } from './components/vaccination/vaccinati
     VaccinationListComponent,
     VaccinationViewComponent,
     VaccinationsDoctorComponent,
-    VaccinationsRegularComponent
+    VaccinationsRegularComponent,
+    MarriageComponent,
+    ChooseServiceComponent,
+    RegularOrAdminComponent
   ],
   imports: [
     BrowserModule,
@@ -80,6 +87,7 @@ import { VaccinationsRegularComponent } from './components/vaccination/vaccinati
     MatNativeDateModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

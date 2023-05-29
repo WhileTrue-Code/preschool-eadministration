@@ -6,11 +6,10 @@ import (
 	"authorization"
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
-
 	"github.com/casbin/casbin"
 	"github.com/gorilla/mux"
+	"log"
+	"net/http"
 )
 
 type AuthController struct {
@@ -86,7 +85,7 @@ func (controller *AuthController) Login(response http.ResponseWriter, request *h
 
 	token, value := controller.service.Login(credentials.JMBG, credentials.Password)
 	if value == 1 {
-		response.WriteHeader(http.StatusAccepted)
+		response.WriteHeader(http.StatusNotFound)
 		response.Write([]byte("JMBG not exist!"))
 		return
 	} else if value == 2 {
@@ -94,12 +93,10 @@ func (controller *AuthController) Login(response http.ResponseWriter, request *h
 		response.Write([]byte("Password doesn't match!"))
 		return
 	} else if value == 3 {
-		response.WriteHeader(http.StatusAccepted)
+		response.WriteHeader(http.StatusInternalServerError)
 		response.Write([]byte("Problem with generating token"))
 		return
 	}
-
-	log.Println(token)
 
 	response.WriteHeader(http.StatusOK)
 	response.Write([]byte(token))
