@@ -19,12 +19,10 @@ type User struct {
 }
 
 type Credentials struct {
-	ID        primitive.ObjectID `bson:"_id" json:"id"`
-	JMBG      string             `bson:"jmbg" json:"jmbg" validate:"onlyCharAndNum,required"`
-	Password  string             `bson:"password" json:"password" validate:"onlyCharAndNum,required"`
-	UserType  UserType           `bson:"userType" json:"userType" validate:"onlyChar"`
-	Service   string             `json:"service"`
-	IsRegular bool               `json:"is_regular"`
+	ID       primitive.ObjectID `bson:"_id" json:"id"`
+	JMBG     string             `bson:"jmbg" json:"jmbg" validate:"onlyCharAndNum,required"`
+	Password string             `bson:"password" json:"password" validate:"onlyCharAndNum,required"`
+	UserType UserType           `bson:"userType" json:"userType" validate:"onlyChar"`
 }
 
 type UserType string

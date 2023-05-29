@@ -40,6 +40,7 @@ import { VaccinationsRegularComponent } from './components/vaccination/vaccinati
 import { MarriageComponent } from './components/marriage/marriage.component';
 import { ChooseServiceComponent } from './components/choose-service/choose-service.component';
 import { RegularOrAdminComponent } from './components/regular-or-admin/regular-or-admin.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import { RegularOrAdminComponent } from './components/regular-or-admin/regular-o
     MatNativeDateModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
