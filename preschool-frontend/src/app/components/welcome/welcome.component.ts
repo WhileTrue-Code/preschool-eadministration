@@ -1,6 +1,5 @@
-import { getLocaleNumberSymbol } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import {StoreServiceService} from "../../services/store-service.service";
+import { StoreServiceService } from "../../services/store-service.service";
 
 @Component({
   selector: 'app-welcome',
