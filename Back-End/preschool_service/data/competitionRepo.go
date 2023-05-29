@@ -160,14 +160,13 @@ func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijav
 	prijava.Dete.ID = primitive.NewObjectID()
 
 	dete := Dete{
-		ID:                prijava.Dete.ID,
-		JMBG:              prijava.Dete.JMBG,
-		DatumRodjenja:     prijava.Dete.DatumRodjenja,
-		Ime:               prijava.Dete.Ime,
-		Prezime:           prijava.Dete.Prezime,
-		Opstina:           prijava.Dete.Opstina,
-		Adresa:            prijava.Dete.Adresa,
-		ZdravstvenoStanje: nil,
+		ID:            prijava.Dete.ID,
+		JMBG:          prijava.Dete.JMBG,
+		DatumRodjenja: prijava.Dete.DatumRodjenja,
+		Ime:           prijava.Dete.Ime,
+		Prezime:       prijava.Dete.Prezime,
+		Opstina:       prijava.Dete.Opstina,
+		Adresa:        prijava.Dete.Adresa,
 	}
 
 	result, eerr := deteCollection.InsertOne(ctx, &dete)

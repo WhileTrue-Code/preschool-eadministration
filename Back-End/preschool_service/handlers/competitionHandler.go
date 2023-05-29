@@ -36,6 +36,8 @@ func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo, re
 }
 
 func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h *http.Request) {
+	authToken := h.Header.Get("Authorization")
+
 	var insertComp data.Prijava
 	eerr := json.NewDecoder(h.Body).Decode(&insertComp)
 
@@ -48,14 +50,14 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	vars := mux.Vars(h)
 	competitionID := vars["id"]
 
-	isParent, errr := p.registarService.GetIsParent(insertComp.Dete.JMBG)
+	isParent, errr := p.registarService.GetIsParent(insertComp.Dete.JMBG, authToken)
 	if errr != nil {
 		http.Error(rw, errr.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	if isParent {
-		http.Error(rw, "You are not a parent", 403)
+	if !isParent {
+		http.Error(rw, "You are not a parent "+insertComp.Dete.JMBG, 403)
 		return
 	}
 
