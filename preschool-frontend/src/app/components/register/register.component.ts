@@ -7,8 +7,8 @@ import {
 } from "@angular/forms";
 import {Credentials} from "../../models/credentials";
 import {AuthService} from "../../services/auth.service";
-import {compareSegments} from "@angular/compiler-cli/src/ngtsc/sourcemaps/src/segment_marker";
 import { Router } from '@angular/router';
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-register',
@@ -20,7 +20,8 @@ export class RegisterComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private _snackBar: MatSnackBar,
   ) {
   }
 
@@ -44,16 +45,23 @@ export class RegisterComponent implements OnInit {
     credentials.jmbg  = this.formGroup.get('jmbg')?.value
     credentials.password =  this.formGroup.get('password')?.value
     credentials.userType = "Regular"
-    console.log(JSON.stringify(credentials))
-    console.log(credentials.userType + this.formGroup.get('repeatPassword')?.value)
-    this.authService.Registration(credentials).subscribe(
-      response => {
-        console.log(response)
-        this.router.navigate(["/Login"])
-      }, error => {
-        this.router.navigate(["/Login"])
-      }
-    )
+    if(this.formGroup.get('password')?.value == this.formGroup.get('repeatPassword')?.value){
+      this.authService.Registration(credentials).subscribe(
+        {
+          next: (response) => {
+            console.log(response)
+            this.openSnackBar("Uspesno ste se registrovali", "OK")
+            this.router.navigate(['Login']).then()
+          },
+          error: (error) => {
+            console.log(JSON.stringify(error?.error?.text))
+            this.openSnackBar(error?.error?.text, "OK")
+          }
+        }
+      )
+    }else {
+      this.openSnackBar("Sifre se ne poklapaju", "OK")
+    }
   }
 
   get registerForm(): { [key: string]: AbstractControl } {
@@ -61,4 +69,11 @@ export class RegisterComponent implements OnInit {
   }
 
   submitted = false;
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action,  {
+      duration: 3500,
+      verticalPosition: "top",
+    });
+  }
 }

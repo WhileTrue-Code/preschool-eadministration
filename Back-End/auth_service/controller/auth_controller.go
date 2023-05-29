@@ -58,19 +58,16 @@ func (controller *AuthController) SignUp(response http.ResponseWriter, request *
 		response.WriteHeader(http.StatusInternalServerError)
 		return
 	}
+	fmt.Println(value)
 	if value == -1 {
 		response.WriteHeader(http.StatusAccepted)
-		response.Write([]byte("JMBG already exist"))
+		response.Write([]byte("JMBG je vec registrovan!"))
 		return
 	} else if value == -2 {
 		response.WriteHeader(http.StatusCreated)
-		response.Write([]byte("Sorry but that JMBG not exist in NewBornRegistry!"))
+		response.Write([]byte("JMBG nije pronadjen u izvodima rodjenih lica!"))
 		return
 	}
-
-	response.WriteHeader(http.StatusOK)
-	response.Write([]byte("Okej registracija"))
-
 }
 
 func (controller *AuthController) Login(response http.ResponseWriter, request *http.Request) {
