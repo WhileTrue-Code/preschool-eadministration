@@ -185,11 +185,11 @@ func (controller *RegistrarController) IsParent(writer http.ResponseWriter, req 
 	//dodati prvo proveru ussera
 
 	if user == nil {
-		writer.Write([]byte("user not found"))
+		jsonResponse(false, writer)
 	} else if user.JMBGOca == loggedInJMBG || user.JMBGMajke == loggedInJMBG {
-		writer.Write([]byte("true"))
+		jsonResponse(true, writer)
 	} else {
-		writer.Write([]byte("false"))
+		jsonResponse(false, writer)
 	}
 }
 
