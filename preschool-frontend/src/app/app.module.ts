@@ -41,6 +41,13 @@ import { MarriageComponent } from './components/marriage/marriage.component';
 import { ChooseServiceComponent } from './components/choose-service/choose-service.component';
 import { RegularOrAdminComponent } from './components/regular-or-admin/regular-or-admin.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { VrticAddComponent } from './components/preschool/vrtic-add/vrtic-add.component';
+import { VrticListComponent } from './components/preschool/vrtic-list/vrtic-list.component';
+import { VrticViewComponent } from './components/preschool/vrtic-view/vrtic-view.component';
+import { VrticPocetnaComponent } from './components/preschool/vrtic-pocetna/vrtic-pocetna.component';
+import { VrticItemComponent } from './components/preschool/vrtic-item/vrtic-item.component';
+import { PrijavaComponent } from './components/preschool/prijava/prijava.component';
+
 
 @NgModule({
   declarations: [
@@ -71,7 +78,13 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     VaccinationsRegularComponent,
     MarriageComponent,
     ChooseServiceComponent,
-    RegularOrAdminComponent
+    RegularOrAdminComponent,
+    VrticAddComponent,
+    VrticListComponent,
+    VrticViewComponent,
+    VrticPocetnaComponent,
+    VrticItemComponent,
+    PrijavaComponent,
   ],
   imports: [
     BrowserModule,

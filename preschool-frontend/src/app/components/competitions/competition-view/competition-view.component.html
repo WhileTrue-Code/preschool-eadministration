@@ -1,25 +1,35 @@
 <mat-card class="competition-card">
-  <mat-card-title class="competition-title">
-    Konkurs se odrzava u gradu {{competition.grad}}, opstina {{competition.opstina}}.
+  <mat-card-title class="">
+    Prijava za konkurs u vrticu {{competition.vrtic.naziv}}
   </mat-card-title>
   <br>
   <mat-card-content class="competition-p">
-    <p class="competition-datumObjave">Datum objave: {{competition.datum_objave * 1000 | date:"medium"}}</p>
-    <br>
-    <p class="competition-pocetakKonkursa">Pocetak konkursa: {{competition.pocetak_konkursa * 1000 | date:"medium" }}
-    </p>
-    <br>
-    <p class="competition-krajKonkursa">Kraj konkursa: {{competition.kraj_konkursa * 1000 | date:"medium"}}</p>
-    <br>
-    <p class="competition-grad">Grad: {{competition.grad}}</p>
-    <br>
-    <p class="competition-opstina">Opstina: {{competition.opstina}}</p>
-    <br>
-    <p class="competition-uzrast">Uzrast: {{competition.uzrast}}</p>
-    <br>
-    <p class="competition-brojDece">Broj dece: {{competition.broj_dece}}</p>
-    
-      <button type="submit" class="btn btn-success">Prijava na konkurs</button>
+    <h1><b>Podaci o konkursu:</b></h1>
+    <p class="competition-datumObjave"><b>Datum objave:</b> {{competition.datum_objave * 1000 | date:"medium"}}</p>
+    <p class="competition-pocetakKonkursa"><b>Pocetak konkursa:</b> {{competition.pocetak_konkursa * 1000 |
+      date:"medium" }}</p>
+    <p class="competition-krajKonkursa"><b>Kraj konkursa:</b> {{competition.kraj_konkursa * 1000 | date:"medium"}}</p>
+    <p class="competition-uzrast"><b>Uzrast:</b> {{competition.uzrast}}</p>
+    <p class="competition-brojDece"><b>Broj dece:</b> {{competition.broj_dece}}</p>
 
+    <br>
+    <div *ngIf="competition.vrtic != null">
+      <h1><b>Podaci o vrticu:</b></h1>
+      <p><b>Naziv:</b> {{competition.vrtic.naziv}}</p>
+      <p><b>Grad:</b> {{competition.vrtic.grad}}</p>
+      <p><b>Opstina:</b> {{competition.vrtic.opstina}}</p>
+      <p><b>Adresa:</b> {{competition.vrtic.adresa}}</p>
+      <p><b>Telefon:</b> {{competition.vrtic.telefon}}</p>
+      <p><b>Email:</b> {{competition.vrtic.email}}</p>
+
+      <br>
+      <button type="submit" class="btn btn-success" [routerLink]="['/Prijava', competition.id]">Prijava na
+        konkurs</button>
+
+        <br>
+      <button type="submit" class="btn btn-danger">Zavrsi
+        konkurs</button>
+
+    </div>
   </mat-card-content>
 </mat-card>

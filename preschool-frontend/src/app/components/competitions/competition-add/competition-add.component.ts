@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Competition } from 'src/app/models/competition.model';
 import { CompetitionService } from 'src/app/services/competition.service';
 
@@ -14,7 +14,8 @@ export class CompetitionAddComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private competitionService: CompetitionService,
-    private router: Router) { }
+    private router: Router,
+    private route: ActivatedRoute) { }
 
     competitionForm: FormGroup = new FormGroup({
       datum_objave: new FormControl(''),
@@ -42,24 +43,27 @@ export class CompetitionAddComponent implements OnInit {
       dodajCompetition.datum_objave = Number(DatumObjave.getTime()) / 1000
       dodajCompetition.pocetak_konkursa = Number(PocetakKonkursa.getTime()) / 1000
       dodajCompetition.kraj_konkursa = Number(KrajKonkursa.getTime()) / 1000
-      dodajCompetition.grad = this.competitionForm.get("grad")?.value;
-      dodajCompetition.opstina = this.competitionForm.get("opstina")?.value;
       dodajCompetition.uzrast = this.competitionForm.get("uzrast")?.value;
       dodajCompetition.broj_dece = this.competitionForm.get("broj_dece")?.value;
   
-      this.competitionService.AddCompetition(dodajCompetition)
-      .subscribe({
-        next: (data) => {
-          this.router.navigate(['/Competitions']);
-        },
-        error: (error) => {
-          console.log(error);
-        },
-        complete: () => {
-          this.router.navigate(['/Competitions'])
-        }
+
+      this.route.params.subscribe(params => {
+
+        const vrtic_id = params['id']
+        this.competitionService.AddCompetition(dodajCompetition, vrtic_id)
+        .subscribe({
+          next: (data) => {
+            this.router.navigate(['/Competitions']);
+          },
+          error: (error) => {
+            console.log(error);
+          },
+          complete: () => {
+            this.router.navigate(['/Competitions'])
+          }
+        })
+
       })
-      
   
     }
   
