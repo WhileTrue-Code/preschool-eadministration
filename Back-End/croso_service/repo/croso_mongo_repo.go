@@ -99,3 +99,22 @@ func (repo *CrosoMongoRepo) UpdateEmployee(employee *domain.Employee) (err error
 	_, err = repo.CollectionEmployees.UpdateByID(context.Background(), employee.ID, bson.M{"$set": employee})
 	return
 }
+
+func (repo *CrosoMongoRepo) FindEmployeesWithCompanyID(companyID string) (employees []domain.Employee, err error) {
+	cursor, err := repo.CollectionEmployees.Find(context.Background(), bson.D{{Key: "companyID", Value: companyID}})
+	if err != nil {
+		repo.Logger.Error("error in finding employees with companyID",
+			zap.Error(err),
+		)
+		return
+	}
+
+	err = cursor.Decode(&employees)
+	if err != nil {
+		repo.Logger.Error("error in decoding cursor into slice of struct",
+			zap.Error(err),
+		)
+	}
+
+	return
+}

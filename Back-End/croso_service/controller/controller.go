@@ -158,3 +158,25 @@ func (controller *CrosoController) PatchEmployeeRegistrationStatus(writer http.R
 	writer.Write(resBytes)
 
 }
+
+func (controller *CrosoController) GetCompanyEmployees(writer http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+
+	companyID, ok := vars["companyID"]
+	if !ok {
+		http.Error(writer, errors.ERR_BAD_REQUEST_CHECK_DATA, http.StatusBadRequest)
+		return
+	}
+
+	employees, err := controller.Service.GetEmployeesByCompanyID(companyID)
+	if err != nil {
+		controller.Logger.Error("error in getting employees by companyID",
+			zap.Error(err),
+			zap.String("companyID", companyID),
+		)
+	}
+	var employeesRes interface{} = employees
+	bytes, _ := json.Marshal(employeesRes)
+	writer.Write(bytes)
+
+}

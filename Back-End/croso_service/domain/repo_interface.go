@@ -8,4 +8,5 @@ type CrosoRepository interface {
 	SaveEmployee(request *Employee) error
 	GetEmployee(filter bson.M) (employee *Employee)
 	UpdateEmployee(request *Employee) (err error)
+	FindEmployeesWithCompanyID(companyID string) (employees []Employee, err error)
 }

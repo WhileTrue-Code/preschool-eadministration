@@ -81,3 +81,7 @@ func (service *CrosoServiceImpl) ResolveRequestRegisterEmployee(request *domain.
 
 	return
 }
+
+func (service *CrosoServiceImpl) GetEmployeesByCompanyID(companyID string) (employees []domain.Employee, err error) {
+	return service.Repo.FindEmployeesWithCompanyID(companyID)
+}
