@@ -13,6 +13,10 @@ services:
     depends_on:
       - registrar_service
       - auth_service
+      - healthcare_service
+      - preschool_service
+      - apr_service
+      # - croso_service
     networks:
       - network
 
@@ -105,12 +109,36 @@ services:
       DB_PORT: ${APR_DB_PORT}
       SECRET_KEY: ${SECRET_KEY}
       NATS_URI: ${NATS_URI}
-      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
+      COMPANY_GET_BY_FOUNDER_COMPANY_ID: ${COMPANY_GET_BY_FOUNDER_COMPANY_ID}
     networks:
       - network
     depends_on:
-      - auth_db
+      - apr_db
       - nats
+
+  croso_service:
+    image: croso_service
+    container_name: croso_service
+    build:
+      context: .
+      dockerfile: ./croso_service/Dockerfile
+    restart: always
+    ports:
+      - ${CROSO_SERVICE_PORT}:${CROSO_SERVICE_PORT}
+    environment:
+      SERVICE_HOST: ${CROSO_SERVICE_HOST}
+      SERVICE_PORT: ${CROSO_SERVICE_PORT}
+      DB_HOST: ${CROSO_DB_HOST}
+      DB_PORT: ${CROSO_DB_PORT}
+      SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
+      COMPANY_GET_BY_FOUNDER_COMPANY_ID: ${COMPANY_GET_BY_FOUNDER_COMPANY_ID}
+    networks:
+      - network
+    depends_on:
+      - croso_db
+      - nats
+
 
   preschool_service:
     build: preschool_service
@@ -167,6 +195,15 @@ services:
     volumes:
      - apr_db:/data/db
 
+  croso_db:
+    image: mongo
+    container_name: croso_db
+    restart: on-failure
+    networks:
+      - network
+    volumes:
+     - croso_db:/data/db
+
   nats:
     image: nats
     container_name: nats
@@ -190,6 +227,7 @@ volumes:
   registrar_db:
   apr_db:
   healthcare_db:
+  croso_db:
 
 networks:
   network:

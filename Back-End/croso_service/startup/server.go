@@ -1,15 +1,15 @@
 package startup
 
 import (
-	"apr_service/controller"
-	"apr_service/domain"
-	"apr_service/repo"
-	"apr_service/service"
-	"apr_service/startup/config"
 	"context"
+	"croso_service/controller"
+	"croso_service/domain"
+	"croso_service/repo"
+	"croso_service/service"
+	"croso_service/startup/config"
 	"fmt"
 	"log"
-	"nats"
+	natsBroker "nats"
 	"net/http"
 	"os"
 	"os/signal"
@@ -17,6 +17,7 @@ import (
 	"time"
 
 	"github.com/gorilla/mux"
+	"github.com/nats-io/nats.go"
 	"go.uber.org/zap"
 )
 
@@ -41,21 +42,22 @@ func NewServer() *Server {
 }
 
 func (server *Server) Start() {
-	natsConn := nats.Conn()
-	defer natsConn.Close()
+	natsConnection := natsBroker.Conn()
+	defer natsConnection.Close()
 
-	repository := server.initAprRepository()
-	service := server.initAprService(repository)
+	server.Logger.Info("LOG AFTER CONNECTION FROM NATS GOT")
+
+	repository := server.initCrosoRepository()
+	service := server.initCrosoService(repository, natsConnection)
 	controller := server.initController(service)
-
-	service.SubscribeToNats(natsConn)
 
 	server.start(controller)
 }
 
-func (server *Server) initAprRepository() domain.AprRepository {
+func (server *Server) initCrosoRepository() domain.CrosoRepository {
 	cli := repo.GetMongoClient(server.Config.DB_HOST, server.Config.DB_PORT, server.Logger)
-	repoLogger := server.Logger.Named("[APR / REPOSITORY]")
+
+	repoLogger := server.Logger.Named("[CROSO / REPOSITORY]")
 	if cli == nil {
 		repoLogger.Error("MongoDB cli is null, shutting down...")
 		os.Exit(1)
@@ -64,17 +66,18 @@ func (server *Server) initAprRepository() domain.AprRepository {
 	return repo.NewMongoRepo(cli, repoLogger)
 }
 
-func (server *Server) initAprService(repo domain.AprRepository) domain.AprService {
-	return service.NewAprService(repo, server.Logger.Named("[APR / SERVICE]"))
+func (server *Server) initCrosoService(repo domain.CrosoRepository, nats *nats.Conn) domain.CrosoService {
+	return service.NewAprService(repo, nats, server.Logger.Named("[CROSO / SERVICE]"))
 }
 
-func (server *Server) initController(service domain.AprService) *controller.AprController {
-	return controller.NewController(service, server.Logger.Named("[APR / CONTROLLER]"))
+func (server *Server) initController(service domain.CrosoService) *controller.CrosoController {
+	return controller.NewController(service, server.Logger.Named("[CROSO / CONTROLLER]"))
 }
 
-func (server *Server) start(controller *controller.AprController) {
+func (server *Server) start(controller *controller.CrosoController) {
 	router := mux.NewRouter()
 	controller.Init(router)
+	log := server.Logger.Named("[CROSO / SERVER]")
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", server.Config.SERVICE_PORT),
@@ -83,7 +86,7 @@ func (server *Server) start(controller *controller.AprController) {
 
 	go func() {
 		if err := srv.ListenAndServe(); err != nil {
-			server.Logger.Info("Server served and started listening")
+			log.Info("Server served and started listening")
 		}
 	}()
 
@@ -100,8 +103,8 @@ func (server *Server) start(controller *controller.AprController) {
 	defer cancel()
 
 	if err := srv.Shutdown(ctx); err != nil {
-		server.Logger.Error("Error on shutting down server.")
+		log.Error("Error on shutting down server.")
 	}
 
-	server.Logger.Info("Gracefully shutdown executed.")
+	log.Info("Gracefully shutdown executed.")
 }
