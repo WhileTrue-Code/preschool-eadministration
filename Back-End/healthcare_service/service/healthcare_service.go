@@ -338,3 +338,9 @@ func (service *HealthcareService) SetVaccination(id primitive.ObjectID, jmbg str
 func (service *HealthcareService) DeleteVaccinationByID(id primitive.ObjectID) error {
 	return service.repository.DeleteVaccinationByID(id)
 }
+
+func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.User, error) {
+	user.ID = primitive.NewObjectID()
+
+	return user, nil
+}

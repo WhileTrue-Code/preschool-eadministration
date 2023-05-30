@@ -39,6 +39,7 @@ p, Doctor, /deleteVaccinationByID/*, DELETE
 p, Doctor, /getMe, GET
 p, Regular, /getMe, GET
 
+p, Doctor, /addPersonToRegistry, POST
 
 
 
