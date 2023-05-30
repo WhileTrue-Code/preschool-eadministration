@@ -1,0 +1,54 @@
+<p>prijava works!</p>
+
+
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <form class="p-5" [formGroup]="vrticForm">
+            <h1>Prijava na konkurs, molim unesite podatke.</h1>
+
+            <h2>Opsti podaci o upisu deteta:</h2>
+            <div class="mb-3">
+                <label class="form-label">JMBG deteta</label>
+                <input type="text" class="form-control" id="" formControlName="jmbg">
+            </div>
+
+            <div class="mb-3">
+                <label>Datum rodjenja</label>
+                <input type="datetime-local" class="form-control" id="" formControlName="datum_rodjenja">
+            </div>
+
+            <div class="mb-3">
+                <label>Ime</label>
+                <input type="text" class="form-control" id="" formControlName="ime">
+            </div>
+
+            <div class="mb-3">
+                <label>Prezime</label>
+                <input type="text" class="form-control" id="" formControlName="prezime">
+            </div>
+            <div class="mb-3">
+                <label>Opstina</label>
+                <input type="text" class="form-control" id="" formControlName="opstina">
+            </div>
+            <div class="mb-3">
+                <label>Adresa</label>
+                <input type="text" class="form-control" id="" formControlName="adresa">
+            </div>
+
+            <div class="mb-3">
+                <label>Zdravstveno stanje - todo next</label>
+                <input type="" class="form-control" id="" >
+            </div>
+
+
+            <div class="button-box col-lg-12">
+                <button type="submit" class="btn btn-primary me-2" (click)="onSubmit()">Potvrda unetih podataka</button>
+                <a routerLink="/PocetnaVrtic"><button class="btn btn-danger">Povratak na pocetnu</button></a>
+            </div>
+
+
+        </form>
+
+    </div>
+</div>
+<div>

@@ -65,6 +65,9 @@ func main() {
 	getAllCompetitionsApplyes := router.Methods(http.MethodGet).Subrouter()
 	getAllCompetitionsApplyes.HandleFunc("/competitions/applyes", applyCompetitionsHandler.GetAllCompetitionApplyes)
 
+	//getAllApplyesForOneCompetition := router.Methods(http.MethodGet).Subrouter()
+	//getAllApplyesForOneCompetition.HandleFunc("/competitions/{id}/applyes", applyCompetitionsHandler.GetAllApplyesForOneCompetition)
+
 	getApplyByID := router.Methods(http.MethodGet).Subrouter()
 	getApplyByID.HandleFunc("/competitions/applyes/{id}", applyCompetitionsHandler.GetApplyById)
 
