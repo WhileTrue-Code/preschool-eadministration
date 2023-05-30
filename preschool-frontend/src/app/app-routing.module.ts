@@ -19,6 +19,10 @@ import { VaccinationViewComponent } from './components/vaccination/vaccination-v
 import {MarriageComponent} from "./components/marriage/marriage.component";
 import {ChooseServiceComponent} from "./components/choose-service/choose-service.component";
 import {RegularOrAdminComponent} from "./components/regular-or-admin/regular-or-admin.component";
+import { VrticPocetnaComponent } from './components/preschool/vrtic-pocetna/vrtic-pocetna.component';
+import { VrticAddComponent } from './components/preschool/vrtic-add/vrtic-add.component';
+import { VrticViewComponent } from './components/preschool/vrtic-view/vrtic-view.component';
+import { PrijavaComponent } from './components/preschool/prijava/prijava.component';
 
 const routes: Routes = [
   {
@@ -66,11 +70,27 @@ const routes: Routes = [
     component: CompetitionsComponent
   },
   {
+    path: "PocetnaVrtic",
+    component: VrticPocetnaComponent
+  },
+  {
+    path: "Vrtic-Add",
+    component: VrticAddComponent
+  },
+  {
+    path: "Vrtic-View/:id",
+    component: VrticViewComponent
+  },
+  {
     path: "Competition-View/:id",
     component: CompetitionViewComponent
   },
   {
-    path: "Competition-Add",
+    path: "Prijava/:id",
+    component: PrijavaComponent
+  },
+  {
+    path: "Competition-Add/:id",
     component: CompetitionAddComponent
   },
   {

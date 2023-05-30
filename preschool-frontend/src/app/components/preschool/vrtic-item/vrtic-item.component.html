@@ -1,0 +1,15 @@
+<mat-card class="vrtic-card">
+    <mat-card-title class="competition-title" [routerLink]="['/Vrtic-View', vrtic.id]">
+      Vrtic sa imenom "{{vrtic.naziv}}"
+    </mat-card-title>
+    <mat-card-content>
+      <p class="">Naziv: {{vrtic.naziv}}</p>
+      <p class="">Adresa: {{vrtic.adresa}}</p>
+      <p class="">Telefon: {{vrtic.telefon}}</p>
+      <p class="">Email: {{vrtic.email}}</p>
+      <p class="">Grad: {{vrtic.grad}}</p>
+      <p class="">Opstina: {{vrtic.opstina}}</p>
+
+  
+    </mat-card-content>
+  </mat-card>

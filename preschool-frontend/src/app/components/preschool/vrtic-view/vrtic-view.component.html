@@ -1,0 +1,18 @@
+<mat-card class="vrtic-card">
+    <mat-card-title class="competition-title">
+      Vrtic sa imenommm "{{vrtic.naziv}}"
+    </mat-card-title>
+    <mat-card-content>
+      <p class="">Naziv: {{vrtic.naziv}}</p>
+      <p class="">Adresa: {{vrtic.adresa}}</p>
+      <p class="">Telefon: {{vrtic.telefon}}</p>
+      <p class="">Email: {{vrtic.email}}</p>
+      <p class="">Grad: {{vrtic.grad}}</p>
+      <p class="">Opstina: {{vrtic.opstina}}</p>
+
+      <a  [routerLink]="['/Competition-Add', vrtic.id]" *ngIf="isAdmin()" ><button class="btn btn-success">Napravi konkurs</button></a>
+      <a *ngIf="isAdmin()" ><button class="btn btn-success">Pregled prijava</button></a>
+
+  
+    </mat-card-content>
+  </mat-card>

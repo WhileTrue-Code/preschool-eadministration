@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-md-6 mx-auto">
+        <form class="p-5" [formGroup]="vrticForm">
+            <h2>Dodaj vrtic</h2>
+
+            <div class="mb-3">
+                <label class="form-label">Naziv</label>
+                <input type="text" class="form-control" id="" formControlName="naziv">
+            </div>
+
+            <div class="mb-3">
+                <label>Adresa</label>
+                <input type="text" class="form-control" id="" formControlName="adresa">
+            </div>
+
+            <div class="mb-3">
+              <label>Telefon</label>
+              <input type="text" class="form-control" id="" formControlName="telefon">
+          </div>
+
+          <div class="mb-3">
+            <label>Email</label>
+            <input type="email" class="form-control" id="" formControlName="email">
+        </div>
+
+          <div class="mb-3">
+                <mat-label>Grad</mat-label>
+                <select matNativeControl required class="form-control" id="" formControlName="grad" >
+                  <option value="arandjelovac">Arandjelovac</option>
+                  <option value="beograd">Beograd</option>
+                  <option value="vranje">Vranje</option>
+                  <option value="novi-sad">Novi Sad</option>
+                  <option value="zrenjanin">Zrenjanin</option>
+                  <option value="subotica">Subotica</option>
+                </select>
+        </div>
+
+        <div class="mb-3">
+            <mat-label>Opstina</mat-label>
+            <select matNativeControl required class="form-control" id="" formControlName="opstina" >
+              <option value="karaburma">Karaburma</option>
+              <option value="vracar">Vracar</option>
+              <option value="dorcol">Dorcol</option>
+              <option value="novi-sad">Novi Sad</option>
+              <option value="zrenjanin">Zrenjanin</option>
+            </select>
+      </div>
+
+        
+            <div class="button-box col-lg-12">
+                <button type="submit" class="btn btn-primary me-2" (click)="onSubmit()">Dodaj vrtic</button>
+                <a routerLink="/PocetnaVrtic"><button class="btn btn-danger">Povratak na pocetnu</button></a>
+            </div>
+            
+
+        </form>
+
+    </div>
+</div>
+<div>
