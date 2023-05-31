@@ -47,6 +47,9 @@ import { VrticViewComponent } from './components/preschool/vrtic-view/vrtic-view
 import { VrticPocetnaComponent } from './components/preschool/vrtic-pocetna/vrtic-pocetna.component';
 import { VrticItemComponent } from './components/preschool/vrtic-item/vrtic-item.component';
 import { PrijavaComponent } from './components/preschool/prijava/prijava.component';
+import { PrijavaListComponent } from './components/preschool/prijava-list/prijava-list.component';
+import { PrijavaItemComponent } from './components/preschool/prijava-item/prijava-item.component';
+import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
 
 
 @NgModule({
@@ -85,6 +88,9 @@ import { PrijavaComponent } from './components/preschool/prijava/prijava.compone
     VrticPocetnaComponent,
     VrticItemComponent,
     PrijavaComponent,
+    PrijavaListComponent,
+    PrijavaItemComponent,
+    PrijavaMainComponent,
   ],
   imports: [
     BrowserModule,
