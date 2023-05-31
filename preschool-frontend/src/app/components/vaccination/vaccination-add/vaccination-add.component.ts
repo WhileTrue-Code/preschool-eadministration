@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AddVaccination } from 'src/app/dto/addVaccination';
-import { VaccinationService } from 'src/app/services/vaccination.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-vaccination-add',
@@ -18,7 +18,7 @@ export class VaccinationAddComponent implements OnInit {
     vaccineType: new FormControl('')
   });
 
-  constructor(private vaccinationService: VaccinationService,
+  constructor(private healthcareService: HealthcareService,
               private router: Router,
               private formBuilder: FormBuilder) 
               { }
@@ -60,7 +60,7 @@ export class VaccinationAddComponent implements OnInit {
     addVaccination.endOfVaccination = Number(EndOfVaccination.getTime()) / 1000
     addVaccination.vaccineType = VaccineType
 
-    this.vaccinationService.AddVaccination(addVaccination)
+    this.healthcareService.AddVaccination(addVaccination)
       .subscribe({
         next: (data) => {
             this.router.navigate(['/Vaccinations-Doctor'])

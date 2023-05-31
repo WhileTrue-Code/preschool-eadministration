@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   credentials = new Credentials();
+  notFound = false
 
   formGroup: FormGroup = new FormGroup({
     jmbg: new FormControl(''),
@@ -56,6 +57,9 @@ export class LoginComponent implements OnInit {
           localStorage.clear()
           console.log(error.status)
           console.error(error)
+          if (error.status = 403) {
+            this.notFound = true;
+          }
         }
       })
     );

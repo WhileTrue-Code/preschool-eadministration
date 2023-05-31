@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from '@angular/forms';
 import { Appointment } from 'src/app/models/appointment.model';
 import { User } from 'src/app/models/user.model';
-import { AppointmentService } from 'src/app/services/appointment.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-appointments',
@@ -16,10 +16,10 @@ export class AppointmentsDoctorComponent implements OnInit {
   options = ["Slobodni", "Zauzeti", "Svi"]
 
 
-  constructor(private appointmentService: AppointmentService) { }
+  constructor(private healthcareService: HealthcareService) { }
 
   ngOnInit(): void {
-    this.appointmentService.GetMyAppointmentsDoctor()
+    this.healthcareService.GetMyAppointmentsDoctor()
       .subscribe({
         next: (data) => {
           this.appointments = data;
@@ -29,7 +29,7 @@ export class AppointmentsDoctorComponent implements OnInit {
         }
       })
 
-    this.appointmentService.GetMe()
+    this.healthcareService.GetMe()
       .subscribe({
         next: (data) => {
           this.user = data;
@@ -43,7 +43,7 @@ export class AppointmentsDoctorComponent implements OnInit {
   search(search_option: string) {
 
     if (search_option == "Slobodni") {
-      this.appointmentService.GetMyAvailableAppointmentsDoctor()
+      this.healthcareService.GetMyAvailableAppointmentsDoctor()
         .subscribe({
           next: (data) => {
             this.appointments = data;
@@ -55,7 +55,7 @@ export class AppointmentsDoctorComponent implements OnInit {
     }
 
     if (search_option == "Zauzeti") {
-      this.appointmentService.GetMyTakenAppointmentsDoctor()
+      this.healthcareService.GetMyTakenAppointmentsDoctor()
         .subscribe({
           next: (data) => {
             this.appointments = data;
@@ -67,7 +67,7 @@ export class AppointmentsDoctorComponent implements OnInit {
     }
 
     if (search_option == "Svi") {
-      this.appointmentService.GetMyAppointmentsDoctor()
+      this.healthcareService.GetMyAppointmentsDoctor()
         .subscribe({
           next: (data) => {
             this.appointments = data;

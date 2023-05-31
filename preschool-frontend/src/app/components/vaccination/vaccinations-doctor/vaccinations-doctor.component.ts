@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from 'src/app/models/user.model';
 import { Vaccination } from 'src/app/models/vaccination.model';
-import { VaccinationService } from 'src/app/services/vaccination.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-vaccinations-doctor',
@@ -14,10 +14,10 @@ export class VaccinationsDoctorComponent implements OnInit {
   user: User = new User()
   options = ["Slobodni", "Zauzeti", "Svi"]
 
-  constructor(private vaccinationService: VaccinationService) { }
+  constructor(private healthcareService: HealthcareService) { }
 
   ngOnInit(): void {
-    this.vaccinationService.GetMyVaccinationsDoctor()
+    this.healthcareService.GetMyVaccinationsDoctor()
       .subscribe({
         next: (data) => {
           this.vaccinations = data
@@ -31,7 +31,7 @@ export class VaccinationsDoctorComponent implements OnInit {
   search(search_option: string) {
     
     if (search_option == "Slobodni") {
-      this.vaccinationService.GetMyAvailableVaccinationsDoctor()
+      this.healthcareService.GetMyAvailableVaccinationsDoctor()
         .subscribe({
           next: (data) => {
             this.vaccinations = data;
@@ -43,7 +43,7 @@ export class VaccinationsDoctorComponent implements OnInit {
     }
 
     if (search_option == "Zauzeti") {
-      this.vaccinationService.GetMyTakenVaccinationsDoctor()
+      this.healthcareService.GetMyTakenVaccinationsDoctor()
         .subscribe({
           next: (data) => {
             this.vaccinations = data;
@@ -55,7 +55,7 @@ export class VaccinationsDoctorComponent implements OnInit {
     }
 
     if (search_option == "Svi") {
-      this.vaccinationService.GetMyVaccinationsDoctor()
+      this.healthcareService.GetMyVaccinationsDoctor()
         .subscribe({
           next: (data) => {
             this.vaccinations = data;
