@@ -177,7 +177,7 @@ services:
   preschool_db:
     image: mongo
     container_name: preschool_db
-    restart: always
+    restart: on-failure
     networks:
       - network
     volumes:

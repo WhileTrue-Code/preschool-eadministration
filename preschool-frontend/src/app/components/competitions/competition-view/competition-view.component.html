@@ -27,8 +27,10 @@
         konkurs</button>
 
         <br>
-      <button type="submit" class="btn btn-danger">Zavrsi
+      <button type="submit" class="btn btn-danger" (click)="deleteCompetition(competition.id)">Zavrsi
         konkurs</button>
+        
+        <button type="submit" class="btn btn-success" [routerLink]="['/PregledPrijava', competition.id]">Pregled prijava</button>
 
     </div>
   </mat-card-content>
