@@ -1,15 +1,19 @@
 package handlers
 
 import (
+	"authorization"
 	"context"
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/nats-io/nats.go"
 	"log"
 	"net/http"
 	"os"
 	"preschool_service/client/registar_service"
 	"preschool_service/data"
+	"strings"
+	"time"
 )
 
 type KeyCompetition struct{}
@@ -18,12 +22,13 @@ type ApplyCompetitionHandler struct {
 	logger          *log.Logger
 	repo            *data.ApplyCompetitionRepo
 	registarService registar_service.Client
+	nats            *nats.Conn
 }
 
 var jwtKey = []byte(os.Getenv("SECRET_KEY"))
 
-func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo, registarService registar_service.Client) *ApplyCompetitionHandler {
-	return &ApplyCompetitionHandler{l, r, registarService}
+func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo, registarService registar_service.Client, nats *nats.Conn) *ApplyCompetitionHandler {
+	return &ApplyCompetitionHandler{l, r, registarService, nats}
 }
 
 func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h *http.Request) {
@@ -52,7 +57,31 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 		return
 	}
 
-	err := p.repo.ApplyForCompetition(competitionID, &insertComp)
+	splitted := strings.Split(authToken, " ")
+	claims := authorization.GetMapClaims([]byte(splitted[1]))
+
+	request := map[string]string{
+		"employeeID": claims["jmbg"],
+	}
+
+	requestBytes, err := json.Marshal(request)
+
+	msg, err := p.nats.Request(os.Getenv("GET_EMPLOYEE_STATUS_BY_ID"), requestBytes, 5*time.Second)
+	if err != nil {
+		log.Println(err)
+		println("eror pri preuzimanju req")
+	}
+	var response map[string]bool
+	err = json.Unmarshal(msg.Data, &response)
+
+	if response["employed"] {
+		insertComp.Bodovi = 1
+	}
+
+	println(request)
+	println(response)
+
+	err = p.repo.ApplyForCompetition(competitionID, &insertComp)
 	if err != nil {
 		rw.WriteHeader(http.StatusInternalServerError)
 	}

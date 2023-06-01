@@ -142,8 +142,11 @@ services:
 
 
   preschool_service:
-    build: preschool_service
+    image: preschool_service
     container_name: preschool_service
+    build:
+      context: .
+      dockerfile: ./preschool_service/Dockerfile
     restart: always
     ports:
       - "8003:8003"
@@ -155,7 +158,9 @@ services:
       PRESCHOOL_SERVICE_HOST: ${PRESCHOOL_SERVICE_HOST}
       GET_EMPLOYEE_STATUS_BY_ID: ${GET_EMPLOYEE_STATUS_BY_ID}
       SECRET_KEY: ${SECRET_KEY}
+      NATS_URI: ${NATS_URI}
     depends_on:
+      - nats
       - preschool_db
     networks:
       - network
