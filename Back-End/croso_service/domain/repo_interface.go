@@ -7,6 +7,7 @@ type CrosoRepository interface {
 	FindCrosoAccountsByFounderID(founderID string) ([]CrosoAccount, error)
 	SaveEmployee(request *Employee) error
 	GetEmployee(filter bson.M) (employee *Employee)
+	GetEmployees(filter bson.D) (employees []Employee)
 	UpdateEmployee(request *Employee) (err error)
 	FindEmployeesWithCompanyID(companyID string) (employees []Employee, err error)
 }

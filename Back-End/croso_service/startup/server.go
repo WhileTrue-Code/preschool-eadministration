@@ -48,10 +48,10 @@ func (server *Server) Start() {
 	server.Logger.Info("LOG AFTER CONNECTION FROM NATS GOT")
 
 	repository := server.initCrosoRepository()
-	service := server.initCrosoService(repository, natsConnection)
-	controller := server.initController(service)
+	serviceInstance := server.initCrosoService(repository, natsConnection)
+	controllerInstance := server.initController(serviceInstance)
 
-	server.start(controller)
+	server.start(controllerInstance)
 }
 
 func (server *Server) initCrosoRepository() domain.CrosoRepository {

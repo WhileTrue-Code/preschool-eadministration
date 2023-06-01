@@ -81,7 +81,7 @@ func (repo *CrosoMongoRepo) GetEmployee(filter bson.M) (employee *domain.Employe
 		)
 		return
 	}
-	var employeeDecode domain.Employee
+	employeeDecode := domain.Employee{}
 	err := result.Decode(&employeeDecode)
 	if err != nil {
 		repo.Logger.Error("error in decoding result into struct Employee",
@@ -91,6 +91,22 @@ func (repo *CrosoMongoRepo) GetEmployee(filter bson.M) (employee *domain.Employe
 	}
 
 	employee = &employeeDecode
+
+	return
+}
+
+func (repo *CrosoMongoRepo) GetEmployees(filter bson.D) (employees []domain.Employee) {
+	results, err := repo.CollectionEmployees.Find(context.Background(), filter)
+
+	employees = make([]domain.Employee, 0)
+
+	err = results.Decode(&employees)
+	if err != nil {
+		repo.Logger.Error("error in decoding cursor results to []domain.Employee",
+			zap.Error(err),
+		)
+		return
+	}
 
 	return
 }

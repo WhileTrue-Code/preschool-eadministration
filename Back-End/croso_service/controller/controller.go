@@ -29,6 +29,7 @@ func (controller *CrosoController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterCrosoCompany).Methods("POST")
 	router.HandleFunc("/employee/register", controller.RequestEmployeeRegistration).Methods("POST")
 	router.HandleFunc("/employee/status", controller.PatchEmployeeRegistrationStatus).Methods("PATCH")
+	router.HandleFunc("/{companyID}/employees", controller.GetCompanyEmployees).Methods("GET")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
 }
@@ -62,6 +63,7 @@ func (controller *CrosoController) RegisterCrosoCompany(writer http.ResponseWrit
 	claims := authorization.GetMapClaims([]byte(splitted[1]))
 
 	request.FounderID = claims["jmbg"]
+	controller.Logger.Info("data request", zap.Any("req", request))
 
 	err = controller.Service.RegisterCrosoAccount(&request)
 	if err != nil {
