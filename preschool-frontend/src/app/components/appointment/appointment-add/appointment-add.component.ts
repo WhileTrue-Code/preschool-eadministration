@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AddAppointment } from 'src/app/dto/addAppointment';
-import { AppointmentService } from 'src/app/services/appointment.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-appointment-add',
@@ -16,7 +16,7 @@ export class AppointmentAddComponent implements OnInit {
     endOfAppointment: new FormControl('')
   });
 
-  constructor(private appointmentService: AppointmentService,
+  constructor(private healthcareService: HealthcareService,
               private router: Router,
               private formBuilder: FormBuilder) 
               { }
@@ -54,7 +54,7 @@ export class AppointmentAddComponent implements OnInit {
     addAppointment.startOfAppointment = Number(StartOfAppointment.getTime()) / 1000;
     addAppointment.endOfAppointment = Number(EndOfAppointment.getTime()) / 1000;
 
-    this.appointmentService.AddAppointment(addAppointment)
+    this.healthcareService.AddAppointment(addAppointment)
       .subscribe({
         next: (data) => {
           this.router.navigate(['/Appointments-Doctor']);

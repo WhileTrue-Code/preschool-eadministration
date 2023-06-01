@@ -25,6 +25,12 @@
 
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
+            && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/New-Person">
+                <span>Dodavanje Osobe</span>
+            </button>
+
+            <button *ngIf="isLoggedIn()
+            && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/Vaccinations-Regular">
                 <span>Vakcinacije(Regular)</span>
             </button>

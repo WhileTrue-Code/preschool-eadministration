@@ -14,11 +14,6 @@ import (
 
 type KeyCompetition struct{}
 
-type CompetitionsHandler struct {
-	logger *log.Logger
-	repo   *data.CompetitionRepo
-}
-
 type ApplyCompetitionHandler struct {
 	logger          *log.Logger
 	repo            *data.ApplyCompetitionRepo
@@ -26,10 +21,6 @@ type ApplyCompetitionHandler struct {
 }
 
 var jwtKey = []byte(os.Getenv("SECRET_KEY"))
-
-func NewCompetitionsHandler(l *log.Logger, r *data.CompetitionRepo) *CompetitionsHandler {
-	return &CompetitionsHandler{l, r}
-}
 
 func NewApplyCompetitionsHandler(l *log.Logger, r *data.ApplyCompetitionRepo, registarService registar_service.Client) *ApplyCompetitionHandler {
 	return &ApplyCompetitionHandler{l, r, registarService}
@@ -102,7 +93,25 @@ func (p *ApplyCompetitionHandler) GetApplyById(rw http.ResponseWriter, h *http.R
 	}
 }
 
-func (p *CompetitionsHandler) GetAllCompetitions(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) GetAllApplyesForOneCompetition(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	allCompetitions, err := p.repo.GetAllApplyesForOneCompetition(id)
+	if err != nil {
+		http.Error(rw, "Database exception", http.StatusInternalServerError)
+		p.logger.Fatal("Database exception: ", err)
+	}
+
+	err = allCompetitions.ToJSON(rw)
+	if err != nil {
+		http.Error(rw, "Unable to convert to json", http.StatusInternalServerError)
+		p.logger.Fatal("Unable to convert to json :", err)
+		return
+	}
+}
+
+func (p *ApplyCompetitionHandler) GetAllCompetitions(rw http.ResponseWriter, h *http.Request) {
 	allCompetitions, err := p.repo.GetAll()
 	if err != nil {
 		http.Error(rw, "Database exception", http.StatusInternalServerError)
@@ -117,7 +126,7 @@ func (p *CompetitionsHandler) GetAllCompetitions(rw http.ResponseWriter, h *http
 	}
 }
 
-func (p *CompetitionsHandler) GetAllVrtici(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) GetAllVrtici(rw http.ResponseWriter, h *http.Request) {
 	vrtici, err := p.repo.GetAllVrtici()
 	if err != nil {
 		http.Error(rw, "Database exception", http.StatusInternalServerError)
@@ -132,7 +141,7 @@ func (p *CompetitionsHandler) GetAllVrtici(rw http.ResponseWriter, h *http.Reque
 	}
 }
 
-func (p *CompetitionsHandler) GetCompetitionById(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) GetCompetitionById(rw http.ResponseWriter, h *http.Request) {
 	vars := mux.Vars(h)
 	id := vars["id"]
 
@@ -155,7 +164,7 @@ func (p *CompetitionsHandler) GetCompetitionById(rw http.ResponseWriter, h *http
 	}
 }
 
-func (p *CompetitionsHandler) GetVrticById(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) GetVrticById(rw http.ResponseWriter, h *http.Request) {
 	vars := mux.Vars(h)
 	id := vars["id"]
 
@@ -178,7 +187,7 @@ func (p *CompetitionsHandler) GetVrticById(rw http.ResponseWriter, h *http.Reque
 	}
 }
 
-func (p *CompetitionsHandler) PostCompetition(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) PostCompetition(rw http.ResponseWriter, h *http.Request) {
 	var insertComp data.Competition
 	eerr := json.NewDecoder(h.Body).Decode(&insertComp)
 
@@ -199,7 +208,7 @@ func (p *CompetitionsHandler) PostCompetition(rw http.ResponseWriter, h *http.Re
 	rw.WriteHeader(http.StatusCreated)
 }
 
-func (p *CompetitionsHandler) PostVrtic(rw http.ResponseWriter, h *http.Request) {
+func (p *ApplyCompetitionHandler) PostVrtic(rw http.ResponseWriter, h *http.Request) {
 	var insertComp data.Vrtic
 	eerr := json.NewDecoder(h.Body).Decode(&insertComp)
 
@@ -217,15 +226,30 @@ func (p *CompetitionsHandler) PostVrtic(rw http.ResponseWriter, h *http.Request)
 	rw.WriteHeader(http.StatusCreated)
 }
 
-//func (p *CompetitionsHandler) PostCompetition(rw http.ResponseWriter, h *http.Request) {
-//	usr := h.Context().Value(KeyCompetition{}).(*data.Competition)
-//	err := p.repo.PostCompetition(usr)
-//	if err != nil {
-//		rw.WriteHeader(http.StatusInternalServerError)
+//func (p *ApplyCompetitionHandler) PatchStatusCompetition(rw http.ResponseWriter, h *http.Request) {
+//	vars := mux.Vars(h)
+//	id := vars["id"]
+//
+//	var patchCompStatus data.Competition
+//	eerr := json.NewDecoder(h.Body).Decode(&patchCompStatus)
+//
+//	if eerr != nil {
+//		fmt.Println(eerr)
+//		http.Error(rw, "Cannot unmarshal body", 500)
+//		return
 //	}
 //
-//	rw.WriteHeader(http.StatusCreated)
+//	p.repo.UpdateCompetitionStatus(id, patchCompStatus)
+//	rw.WriteHeader(http.StatusOK)
 //}
+
+func (p *ApplyCompetitionHandler) DeleteCompetition(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	p.repo.Delete(id)
+	rw.WriteHeader(http.StatusNoContent)
+}
 
 func jsonResponse(object interface{}, w http.ResponseWriter) {
 	resp, err := json.Marshal(object)
@@ -242,7 +266,7 @@ func jsonResponse(object interface{}, w http.ResponseWriter) {
 	}
 }
 
-func (p *CompetitionsHandler) MiddlewareCompetitionDeserialization(next http.Handler) http.Handler {
+func (p *ApplyCompetitionHandler) MiddlewareCompetitionDeserialization(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(rw http.ResponseWriter, h *http.Request) {
 		competition := &data.Competition{}
 		err := competition.FromJSON(h.Body)
