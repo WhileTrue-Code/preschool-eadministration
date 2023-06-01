@@ -16,7 +16,8 @@ export class AddPersonRegistryComponent implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router) { }
 
-  submitted = false;
+  submitted = false
+  userAlreadyExists = false
 
   formGroup: FormGroup = new FormGroup({
     ime: new FormControl(''),
@@ -42,7 +43,7 @@ export class AddPersonRegistryComponent implements OnInit {
       jmbg_majke: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
       datum_rodjenja: ['', [Validators.required]],
       mesto_rodjenja: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      jmbg: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
+      jmbg: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
       pol: ['', [Validators.required]],
       drzava: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
     })
@@ -62,38 +63,52 @@ export class AddPersonRegistryComponent implements OnInit {
     let user = new User()
 
     let ime = this.formGroup.get("ime")?.value
-    console.log(ime)
 
     let prezime = this.formGroup.get("prezime")?.value
-    console.log(prezime)
 
     let ime_oca = this.formGroup.get("ime_oca")?.value
-    console.log(ime_oca)
 
     let jmbg_oca = this.formGroup.get("jmbg_oca")?.value
-    console.log(jmbg_oca)
 
     let ime_majke = this.formGroup.get("ime_majke")?.value
-    console.log(ime_majke)
 
     let jmbg_majke = this.formGroup.get("jmbg_majke")?.value
-    console.log(jmbg_majke)
 
     var datum: Date = new Date(this.formGroup.get('datum_rodjenja')?.value)
     let datum_rodjenja = Number(datum.getTime()) / 1000
-    console.log(datum_rodjenja)
 
     let mesto_rodjenja = this.formGroup.get("mesto_rodjenja")?.value
-    console.log(mesto_rodjenja)
 
     let jmbg = this.formGroup.get("jmbg")?.value
-    console.log(jmbg)
 
     let pol = this.formGroup.get("pol")?.value
-    console.log(pol)
 
     let drzava = this.formGroup.get("drzava")?.value
-    console.log(drzava)
+
+    user.ime = ime
+    user.prezime = prezime
+    user.ime_oca = ime_oca
+    user.jmbg_oca = jmbg_oca
+    user.ime_majke = ime_majke
+    user.jmbg_majke = jmbg_majke
+    user.datum_rodjenja = datum_rodjenja
+    user.mesto_rodjenja = mesto_rodjenja
+    user.jmbg = jmbg
+    user.pol = pol
+    user.drzava = drzava
+
+    this.healthcareService.AddPersonToRegistry(user)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/Appointments-Doctor'])
+        },
+        error: (error) => {
+          console.log(error)
+          if (error.status == 202) {
+            this.userAlreadyExists = true
+          }
+        }
+      })
   }
 
   drzave = new Array("Srbija", "Austrija", "Hrvatska", "Bosna", "Makedonija", "Bugarska", "Rumunija", "Crna Gora")

@@ -82,4 +82,8 @@ export class HealthcareService {
     public SetVaccination(id: string) {
         return this.http.put(`${environment.baseApiUrl}/${this.url}/setVaccination/` + id, null);
     }
+
+    public AddPersonToRegistry(user: User): Observable<User> {
+        return this.http.post<User>(`${environment.baseApiUrl}/${this.url}/addPersonToRegistry`, user)
+    }
 }

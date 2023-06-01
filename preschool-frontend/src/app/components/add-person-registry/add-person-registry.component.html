@@ -91,17 +91,29 @@
                   </div>
                   
                   <div class="form-outline mb-4">
-                    <select id="pol" class="form-control form-control-lg" formControlName="pol">
+                    <select id="pol" class="form-control form-control-lg" formControlName="pol"
+                    [ngClass]="{ 'is-invalid': submitted && group['pol'].errors }">
                       <option [value]="pol" *ngFor="let pol of polovi">{{pol}}</option>
                     </select>
+                    <div *ngIf="submitted && group['pol'].errors" class="invalid-feedback">
+                      <div *ngIf="group['pol'].errors['required']">Pol je obavezan.</div>
+                    </div>
                     <label class="form-label" for="pol">Pol</label>
                   </div>
   
                   <div class="form-outline mb-4">
-                    <select id="drzava" class="form-control form-control-lg" formControlName="drzava">
+                    <select id="drzava" class="form-control form-control-lg" formControlName="drzava"
+                    [ngClass]="{ 'is-invalid': submitted && group['drzava'].errors }">
                       <option [value]="drzava" *ngFor="let drzava of drzave">{{drzava}}</option>
                     </select>
+                    <div *ngIf="submitted && group['drzava'].errors" class="invalid-feedback">
+                      <div *ngIf="group['drzava'].errors['required']">Država je obavezna.</div>
+                    </div>
                     <label class="form-label" for="drzava">Država</label>
+                  </div>
+
+                  <div *ngIf="userAlreadyExists">
+                    <h1 class="user-exists">Korisnik već postoji</h1>
                   </div>
   
                   <div class="d-flex justify-content-center">
