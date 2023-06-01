@@ -57,6 +57,7 @@ services:
       NATS_URI: ${NATS_URI}
       CHECK_USER_JMBG: ${CHECK_USER_JMBG}
       GET_USER_BY_JMBG: ${GET_USER_BY_JMBG}
+      CREATE_USER: ${CREATE_USER}
     networks:
       - network
     depends_on:
@@ -80,6 +81,7 @@ services:
       SECRET_KEY: ${SECRET_KEY}
       CHECK_USER_JMBG: ${CHECK_USER_JMBG}
       GET_USER_BY_JMBG: ${GET_USER_BY_JMBG}
+      CREATE_USER: ${CREATE_USER}
       NATS_URI: ${NATS_URI}
     networks:
       - network

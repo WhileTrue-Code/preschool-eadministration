@@ -140,7 +140,7 @@ func (service *RegistrarService) CreateNewMarriage(marriage entity.ExcerptFromTh
 
 func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 
-	_, err := natsConnection.QueueSubscribe(os.Getenv("CHECK_USER_JMBG"), "queue-group", func(message *nats.Msg) {
+	_, err := natsConnection.QueueSubscribe(os.Getenv("CHECK_USER_JMBG"), "queue-registrar-group", func(message *nats.Msg) {
 
 		var credentials entity.Credentials
 		err := json.Unmarshal(message.Data, &credentials)
@@ -171,7 +171,7 @@ func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 
 	log.Printf("Subscribed to channel: %s", os.Getenv("CHECK_USER_JMBG"))
 
-	_, err = natsConnection.QueueSubscribe(os.Getenv("GET_USER_BY_JMBG"), "queue-group", func(message *nats.Msg) {
+	_, err = natsConnection.QueueSubscribe(os.Getenv("GET_USER_BY_JMBG"), "queue-registrar-group", func(message *nats.Msg) {
 		var jmbg string
 		err := json.Unmarshal(message.Data, &jmbg)
 		if err != nil {
@@ -199,6 +199,43 @@ func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 	}
 
 	log.Printf("Subscribed to channel: %s", os.Getenv("GET_USER_BY_JMBG"))
+
+	_, err = natsConnection.QueueSubscribe(os.Getenv("CREATE_USER"), "queue-registrar-group", func(message *nats.Msg) {
+		var user entity.User
+		err := json.Unmarshal(message.Data, &user)
+		if err != nil {
+			log.Println("Error in unmarshal JSON!")
+			return
+		}
+
+		err = service.store.CreateNewBirthCertificate(user)
+		if err != nil {
+			log.Println("Error")
+			err := natsConnection.Publish(message.Reply, []byte(err.Error()))
+			if err != nil {
+				log.Println("Error in publishing message")
+			}
+			return
+		}
+
+		dataToSend, err := json.Marshal(user)
+		if err != nil {
+			log.Println("Error in marshaling json")
+			return
+		}
+		reply := dataToSend
+		err = natsConnection.Publish(message.Reply, reply)
+		if err != nil {
+			log.Printf("Error in publish response: %s", err.Error())
+			return
+		}
+
+	})
+	if err != nil {
+		log.Println("Error in receiving message: %s", err.Error())
+	}
+
+	log.Printf("Subscribed to channel: %s", os.Getenv("CREATE_USER"))
 
 }
 

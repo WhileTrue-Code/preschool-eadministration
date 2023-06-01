@@ -50,6 +50,8 @@ import { PrijavaComponent } from './components/preschool/prijava/prijava.compone
 import { PrijavaListComponent } from './components/preschool/prijava-list/prijava-list.component';
 import { PrijavaItemComponent } from './components/preschool/prijava-item/prijava-item.component';
 import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
+import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
+
 
 
 @NgModule({
@@ -91,6 +93,8 @@ import { PrijavaMainComponent } from './components/preschool/prijava-main/prijav
     PrijavaListComponent,
     PrijavaItemComponent,
     PrijavaMainComponent,
+    AddPersonRegistryComponent,
+
   ],
   imports: [
     BrowserModule,

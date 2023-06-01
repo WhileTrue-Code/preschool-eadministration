@@ -52,6 +52,7 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 	router.HandleFunc("/setVaccination/{id}", controller.SetVaccination).Methods("PUT")
 	router.HandleFunc("/deleteVaccinationByID/{id}", controller.DeleteVaccinationByID).Methods("DELETE")
 
+	router.HandleFunc("/addPersonToRegistry", controller.AddPersonToRegistry).Methods("POST")
 	router.HandleFunc("/getMe", controller.GetMe).Methods("GET")
 
 	http.Handle("/", router)
@@ -335,5 +336,25 @@ func (controller *HealthcareController) GetMe(writer http.ResponseWriter, req *h
 	}
 
 	jsonResponse(user, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) AddPersonToRegistry(writer http.ResponseWriter, req *http.Request) {
+	var user model.User
+	err := json.NewDecoder(req.Body).Decode(&user)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("There is a problem in decoding JSON"))
+		return
+	}
+
+	newUser, err := controller.service.AddPersonToRegistry(&user)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("Error adding person to Registry in Service"))
+		return
+	}
+
+	jsonResponse(newUser, writer)
 	writer.WriteHeader(http.StatusOK)
 }
