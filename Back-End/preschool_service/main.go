@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gorilla/mux"
 	"log"
+	natsBroker "nats"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,6 +15,10 @@ import (
 )
 
 func main() {
+
+	natsConnection := natsBroker.Conn()
+	defer natsConnection.Close()
+
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = "8003"
@@ -40,7 +45,7 @@ func main() {
 
 	registarServiceClient := registar_service.NewClient("registrar_service", "8001")
 
-	applyCompetitionsHandler := handlers.NewApplyCompetitionsHandler(logger, store, registarServiceClient)
+	applyCompetitionsHandler := handlers.NewApplyCompetitionsHandler(logger, store, registarServiceClient, natsConnection)
 
 	router := mux.NewRouter()
 
@@ -82,20 +87,18 @@ func main() {
 	getApplyByID.HandleFunc("/competitions/applyes/{id}", applyCompetitionsHandler.GetApplyById)
 
 	server := http.Server{
-		Addr:         ":" + port,
-		Handler:      router,
-		IdleTimeout:  120 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
+		Addr:    ":" + port,
+		Handler: router,
+		//IdleTimeout:  120 * time.Second,
+		//ReadTimeout:  1 * time.Second,
+		//WriteTimeout: 1 * time.Second,
 	}
 
 	logger.Println("Server listening on port", port)
 	go func() {
 
-		err := server.ListenAndServe()
-
-		if err != nil {
-			logger.Fatal(err)
+		if err := server.ListenAndServe(); err != nil {
+			log.Println("Server served and started listening")
 		}
 	}()
 

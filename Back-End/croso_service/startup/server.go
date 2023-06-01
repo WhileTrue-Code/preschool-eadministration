@@ -49,6 +49,8 @@ func (server *Server) Start() {
 
 	repository := server.initCrosoRepository()
 	serviceInstance := server.initCrosoService(repository, natsConnection)
+	serviceInstance.SubscribeToNats(natsConnection)
+
 	controllerInstance := server.initController(serviceInstance)
 
 	server.start(controllerInstance)
