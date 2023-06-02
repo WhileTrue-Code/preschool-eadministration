@@ -9,8 +9,8 @@ import (
 type Prijava struct {
 	ID            primitive.ObjectID `json:"id" bson:"_id"`
 	CompetitionID primitive.ObjectID `json:"competition_id" bson:"_idCompetition"`
-	Bodovi        string             `json:"bodovi" bson:"bodovi"`
-	Dete          *Dete              `json:"dete" bson:"dete"`
+	Bodovi        int                `json:"bodovi" bson:"bodovi"`
+	Dete          Dete               `json:"dete" bson:"dete"`
 }
 
 type Dete struct {

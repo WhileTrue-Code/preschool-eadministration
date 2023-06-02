@@ -9,6 +9,7 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"nats"
 	"net/http"
 	"os"
 	"os/signal"
@@ -40,28 +41,35 @@ func NewServer() *Server {
 }
 
 func (server *Server) Start() {
+	natsConn := nats.Conn()
+	defer natsConn.Close()
+
 	repository := server.initAprRepository()
 	service := server.initAprService(repository)
 	controller := server.initController(service)
+
+	service.SubscribeToNats(natsConn)
+
 	server.start(controller)
 }
 
 func (server *Server) initAprRepository() domain.AprRepository {
 	cli := repo.GetMongoClient(server.Config.DB_HOST, server.Config.DB_PORT, server.Logger)
+	repoLogger := server.Logger.Named("[APR / REPOSITORY]")
 	if cli == nil {
-		server.Logger.Error("MongoDB cli is null, shutting down...")
+		repoLogger.Error("MongoDB cli is null, shutting down...")
 		os.Exit(1)
 	}
 
-	return repo.NewMongoRepo(cli, server.Logger)
+	return repo.NewMongoRepo(cli, repoLogger)
 }
 
 func (server *Server) initAprService(repo domain.AprRepository) domain.AprService {
-	return service.NewAprService(repo, server.Logger)
+	return service.NewAprService(repo, server.Logger.Named("[APR / SERVICE]"))
 }
 
 func (server *Server) initController(service domain.AprService) *controller.AprController {
-	return controller.NewController(service, server.Logger)
+	return controller.NewController(service, server.Logger.Named("[APR / CONTROLLER]"))
 }
 
 func (server *Server) start(controller *controller.AprController) {

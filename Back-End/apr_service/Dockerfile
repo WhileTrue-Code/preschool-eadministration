@@ -2,6 +2,7 @@ FROM golang:latest as builder
 WORKDIR /app
 COPY ./apr_service/ .
 COPY ./authorization/ /authorization/
+COPY ./model/ /model/
 COPY ./nats/ /nats/
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .

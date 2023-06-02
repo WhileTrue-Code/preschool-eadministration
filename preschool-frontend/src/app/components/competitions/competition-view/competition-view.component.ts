@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Route } from '@angular/router';
+import { FormBuilder } from '@angular/forms';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Competition } from 'src/app/models/competition.model';
 import { CompetitionService } from 'src/app/services/competition.service';
 
@@ -11,7 +12,7 @@ import { CompetitionService } from 'src/app/services/competition.service';
 export class CompetitionViewComponent implements OnInit {
 
 
-  constructor(private route:ActivatedRoute, private competitionService:CompetitionService) { }
+  constructor(private router:Router,private route:ActivatedRoute, private competitionService:CompetitionService, private fb: FormBuilder) { }
 
   competition_id = String(this.route.snapshot.paramMap.get("id"))
   competition:Competition = new Competition;
@@ -28,5 +29,31 @@ export class CompetitionViewComponent implements OnInit {
 
     })
   }
+
+  izmenaCompetitionForm = this.fb.group({
+    status: ['']
+  });
+
+  deleteCompetition(competition_id: string){
+    this.competitionService.DeleteCompetition(competition_id).subscribe((data) =>{
+      console.log(data)
+      
+    })
+    
+  }
+
+  // changeStatus(){
+  //   let izmeniCompetition: any = {};
+  //   this.route.params.subscribe(params =>{
+  //     const compID = params['id']
+  //     izmeniCompetition.status = this.izmenaCompetitionForm.get("status")?.value;
+  //     this.competitionService.PromeniStatus(compID, izmeniCompetition).subscribe(data =>{
+  //       if(data){
+  //         this.router.navigate(["/Competitions"])
+  //       }
+  //     })
+  //   })
+
+  // }
 
 }
