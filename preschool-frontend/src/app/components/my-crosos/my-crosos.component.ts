@@ -2,31 +2,23 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Company } from 'src/app/models/aprAccount.model';
-import { AprService } from 'src/app/services/apr.service';
+import { CrosoService } from 'src/app/services/croso.service';
 
 @Component({
-  selector: 'app-my-aprs',
-  templateUrl: './my-aprs.component.html',
-  styleUrls: ['./my-aprs.component.css']
+  selector: 'app-my-crosos',
+  templateUrl: './my-crosos.component.html',
+  styleUrls: ['./my-crosos.component.css']
 })
-export class MyAprsComponent implements OnInit {
-
+export class MyCrososComponent implements OnInit {
   companies: Company[] = []
   permissionErr: string = ""
-
-  constructor(private aprService: AprService,
+  constructor(private crosoService: CrosoService,
               private router: Router) { }
+  
 
   ngOnInit(): void {
-    
-
-    if (!this.permission()) {
-      this.permissionErr = "Nemate prava pristupa ovoj stranici."
-      return
-    }
-
-    this.aprService.GetAprCompaniesByFounderID()
-    .subscribe({
+    this.crosoService.GetCrosoCompaniesByFounderID().
+    subscribe({
       next: (response: Company[]) => {
         console.log(response)
         this.companies = response

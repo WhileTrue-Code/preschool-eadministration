@@ -47,6 +47,13 @@ import { VrticViewComponent } from './components/preschool/vrtic-view/vrtic-view
 import { VrticPocetnaComponent } from './components/preschool/vrtic-pocetna/vrtic-pocetna.component';
 import { VrticItemComponent } from './components/preschool/vrtic-item/vrtic-item.component';
 import { PrijavaComponent } from './components/preschool/prijava/prijava.component';
+import { RegisterCrosoComponent } from './components/register-croso/register-croso.component';
+import { MyCrososComponent } from './components/my-crosos/my-crosos.component';
+import { CrosoListItemComponent } from './components/croso-list-item/croso-list-item.component';
+import { RegisterEmployeeComponent } from './components/register-employee/register-employee.component';
+import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
+import { EmployeeListItemComponent } from './components/employee-list-item/employee-list-item.component';
+
 
 
 @NgModule({
@@ -85,6 +92,13 @@ import { PrijavaComponent } from './components/preschool/prijava/prijava.compone
     VrticPocetnaComponent,
     VrticItemComponent,
     PrijavaComponent,
+    RegisterCrosoComponent,
+    MyCrososComponent,
+    CrosoListItemComponent,
+    RegisterEmployeeComponent,
+    CompanyEmployeesComponent,
+    EmployeeListItemComponent
+
   ],
   imports: [
     BrowserModule,

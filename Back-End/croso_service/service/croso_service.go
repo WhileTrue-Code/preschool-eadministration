@@ -59,9 +59,14 @@ func (service *CrosoServiceImpl) RegisterCrosoAccount(request *domain.RequestFor
 	return service.Repo.SaveCrosoAccount(&account)
 }
 
+func (service *CrosoServiceImpl) GetMyCrosos(founderID string) []domain.CrosoAccount {
+
+	return service.Repo.FindCrosoAccountsByFounderID(founderID)
+}
+
 func (service *CrosoServiceImpl) RequestRegisterEmployee(employee *domain.Employee) error {
 	employee.ID = primitive.NewObjectID()
-	employee.RegistrationStatus = domain.PENDING
+	employee.RegistrationStatus = domain.ACCEPTED
 	employee.RegistrationTimestamp = time.Now().Unix()
 	return service.Repo.SaveEmployee(employee)
 }

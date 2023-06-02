@@ -1,0 +1,13 @@
+<h2 class="mt-3" style="text-align: center; color:red;">{{this.permissionErr}}</h2>
+<div *ngIf="permission()" class="mt-3" style="width: 60%; margin: auto;">
+    <h1 style="text-align: center;">Moj CROSO</h1>
+    <div style="text-align: center;">
+        <button type="submit" class="btn btn-primary" (click)="redirectToRegister()">Registruj firmu na CROSO</button>
+    </div>
+    <h2 class="mt-3" style="text-align: center; color:red;" *ngIf="companies.length == 0">Nemate registrovane firme u sistemu CROSO-a!</h2>
+    <div *ngFor="let company of companies">
+        <div class="mb-5">
+            <app-croso-list-item [croso]="company"></app-croso-list-item>
+        </div>
+    </div>
+</div>

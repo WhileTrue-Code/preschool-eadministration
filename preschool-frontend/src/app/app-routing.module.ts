@@ -23,6 +23,13 @@ import { VrticPocetnaComponent } from './components/preschool/vrtic-pocetna/vrti
 import { VrticAddComponent } from './components/preschool/vrtic-add/vrtic-add.component';
 import { VrticViewComponent } from './components/preschool/vrtic-view/vrtic-view.component';
 import { PrijavaComponent } from './components/preschool/prijava/prijava.component';
+// import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
+// import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
+import { RegisterCrosoComponent } from './components/register-croso/register-croso.component';
+import { MyCrososComponent } from './components/my-crosos/my-crosos.component';
+import { RegisterEmployeeComponent } from './components/register-employee/register-employee.component';
+import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
+
 
 const routes: Routes = [
   {
@@ -116,7 +123,24 @@ const routes: Routes = [
   {
     path: "regular-or-admin",
     component: RegularOrAdminComponent
-  }
+  },
+  {
+    path:"RegisterCroso",
+    component: RegisterCrosoComponent
+  },
+  {
+    path: "MyCrosos",
+    component: MyCrososComponent
+  },  
+  {
+    path: "RegisterEmployee",
+    component: RegisterEmployeeComponent
+  },
+  {
+    path: "CompanyEmployees",
+    component: CompanyEmployeesComponent
+  },
+
 ];
 
 @NgModule({

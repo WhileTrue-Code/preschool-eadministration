@@ -1,4 +1,4 @@
-export class AprCompany {
+export class Company {
     id: string = "";
 	companyID: number = 0;
     name: string = "";
@@ -7,7 +7,7 @@ export class AprCompany {
     authorizedPersonFirstName: string = "";
     authorizedPersonLastName: string = "";
 
-    AprCompany(id: string, companyID: number, name: string, address: string, startCapital: number, 
+    Company(id: string, companyID: number, name: string, address: string, startCapital: number, 
         authorizedPersonFirstName: string, authorizedPersonLastName: string) {
         this.id = id;
         this.companyID = companyID;

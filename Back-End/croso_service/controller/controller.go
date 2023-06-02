@@ -27,9 +27,10 @@ func NewController(crosoService domain.CrosoService, logger *zap.Logger) *CrosoC
 
 func (controller *CrosoController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterCrosoCompany).Methods("POST")
+	router.HandleFunc("/company", controller.GetMyCrosos).Methods("GET")
 	router.HandleFunc("/employee/register", controller.RequestEmployeeRegistration).Methods("POST")
 	router.HandleFunc("/employee/status", controller.PatchEmployeeRegistrationStatus).Methods("PATCH")
-	router.HandleFunc("/{companyID}/employees", controller.GetCompanyEmployees).Methods("GET")
+	router.HandleFunc("/employees/{companyID}", controller.GetCompanyEmployees).Methods("GET")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
 }
@@ -74,11 +75,28 @@ func (controller *CrosoController) RegisterCrosoCompany(writer http.ResponseWrit
 	controller.Logger.Info("CROSO account registered successfully.",
 		zap.Any("request", request),
 	)
-	// writer.WriteHeader(http.StatusCreated)
-	var response any = "Registration was successfully."
+	var response any = "Registracija firme na CROSO servisu uspesna."
 	stringResp, _ := json.Marshal(response)
 	writer.Write([]byte(stringResp))
 
+}
+
+func (controller *CrosoController) GetMyCrosos(writer http.ResponseWriter, req *http.Request) {
+	authToken := req.Header.Get("Authorization")
+	token := strings.Split(authToken, " ")[1]
+
+	claims := authorization.GetMapClaims([]byte(token))
+
+	founderID, ok := claims["jmbg"]
+	if !ok {
+		http.Error(writer, "bad request. (jmbg not presented in token)", http.StatusBadRequest)
+		return
+	}
+
+	myCrosos := controller.Service.GetMyCrosos(founderID)
+
+	responseBytes, _ := json.Marshal(myCrosos)
+	writer.Write(responseBytes)
 }
 
 func (controller *CrosoController) RequestEmployeeRegistration(writer http.ResponseWriter, req *http.Request) {

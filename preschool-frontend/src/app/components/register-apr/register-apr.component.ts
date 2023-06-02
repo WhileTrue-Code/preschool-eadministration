@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { AprCompany } from 'src/app/models/aprAccount.model';
+import { Company } from 'src/app/models/aprAccount.model';
 import { AprService } from 'src/app/services/apr.service';
 
 @Component({
@@ -49,7 +49,7 @@ export class RegisterAprComponent implements OnInit {
       return;
     }
 
-    let aprCompany: AprCompany = new AprCompany();
+    let aprCompany: Company = new Company();
 
     aprCompany.name = this.formGroup.get("name")?.value
     aprCompany.address = this.formGroup.get("address")?.value
