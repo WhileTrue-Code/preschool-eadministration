@@ -42,4 +42,14 @@ export class CompetitionsComponent implements OnInit {
       return false
     }
   }
+
+  
+  isAdmin(): boolean {
+    if (localStorage.getItem("customRole") == "Admin") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 }

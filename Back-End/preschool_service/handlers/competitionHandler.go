@@ -78,9 +78,6 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 		insertComp.Bodovi = 1
 	}
 
-	println(request)
-	println(response)
-
 	err = p.repo.ApplyForCompetition(competitionID, &insertComp)
 	if err != nil {
 		rw.WriteHeader(http.StatusInternalServerError)

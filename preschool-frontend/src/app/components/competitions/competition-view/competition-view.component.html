@@ -23,14 +23,14 @@
       <p><b>Email:</b> {{competition.vrtic.email}}</p>
 
       <br>
-      <button type="submit" class="btn btn-success" [routerLink]="['/Prijava', competition.id]">Prijava na
+      <button type="submit" class="btn btn-success" [routerLink]="['/Prijava', competition.id]" *ngIf="isRegularUser()">Prijava na
         konkurs</button>
 
         <br>
-      <button type="submit" class="btn btn-danger" (click)="deleteCompetition(competition.id)">Zavrsi
+      <button type="submit" class="btn btn-danger" (click)="deleteCompetition(competition.id)" *ngIf="isAdmin()">Zavrsi
         konkurs</button>
         
-        <button type="submit" class="btn btn-success" [routerLink]="['/PregledPrijava', competition.id]">Pregled prijava</button>
+        <button type="submit"  class="btn btn-success" [routerLink]="['/PregledPrijava', competition.id]" *ngIf="isAdmin()">Pregled prijava</button>
 
     </div>
   </mat-card-content>

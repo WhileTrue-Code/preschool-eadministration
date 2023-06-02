@@ -42,6 +42,27 @@ export class CompetitionViewComponent implements OnInit {
     
   }
 
+  isAdmin(): boolean {
+    if (localStorage.getItem("customRole") == "Admin") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  isRegularUser(): boolean {
+    if (localStorage.getItem("customRole") == "Regular") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+
+
+
   // changeStatus(){
   //   let izmeniCompetition: any = {};
   //   this.route.params.subscribe(params =>{
