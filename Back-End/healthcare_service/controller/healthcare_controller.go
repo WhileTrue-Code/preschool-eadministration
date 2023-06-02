@@ -348,10 +348,10 @@ func (controller *HealthcareController) AddPersonToRegistry(writer http.Response
 		return
 	}
 
-	newUser, err := controller.service.AddPersonToRegistry(&user)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		writer.Write([]byte("Error adding person to Registry in Service"))
+	newUser, value := controller.service.AddPersonToRegistry(&user)
+	if value == 1 {
+		writer.WriteHeader(http.StatusAccepted)
+		writer.Write([]byte("User already exists in database"))
 		return
 	}
 

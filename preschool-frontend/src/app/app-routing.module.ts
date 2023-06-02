@@ -23,12 +23,13 @@ import { VrticPocetnaComponent } from './components/preschool/vrtic-pocetna/vrti
 import { VrticAddComponent } from './components/preschool/vrtic-add/vrtic-add.component';
 import { VrticViewComponent } from './components/preschool/vrtic-view/vrtic-view.component';
 import { PrijavaComponent } from './components/preschool/prijava/prijava.component';
-// import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
-// import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
+import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
+import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
 import { RegisterCrosoComponent } from './components/register-croso/register-croso.component';
 import { MyCrososComponent } from './components/my-crosos/my-crosos.component';
 import { RegisterEmployeeComponent } from './components/register-employee/register-employee.component';
 import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
+
 
 
 const routes: Routes = [
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: "Register",
     component: RegisterComponent
+  },
+  {
+    path: "New-Person",
+    component: AddPersonRegistryComponent
   },
   {
     path: "Appointments-Doctor",
@@ -95,6 +100,10 @@ const routes: Routes = [
   {
     path: "Prijava/:id",
     component: PrijavaComponent
+  },
+  {
+    path: "PregledPrijava/:id",
+    component: PrijavaMainComponent
   },
   {
     path: "Competition-Add/:id",

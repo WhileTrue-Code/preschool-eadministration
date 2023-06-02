@@ -53,6 +53,11 @@ import { CrosoListItemComponent } from './components/croso-list-item/croso-list-
 import { RegisterEmployeeComponent } from './components/register-employee/register-employee.component';
 import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
 import { EmployeeListItemComponent } from './components/employee-list-item/employee-list-item.component';
+import { PrijavaListComponent } from './components/preschool/prijava-list/prijava-list.component';
+import { PrijavaItemComponent } from './components/preschool/prijava-item/prijava-item.component';
+import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
+import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
+
 
 
 
@@ -92,12 +97,18 @@ import { EmployeeListItemComponent } from './components/employee-list-item/emplo
     VrticPocetnaComponent,
     VrticItemComponent,
     PrijavaComponent,
+    PrijavaListComponent,
+    PrijavaItemComponent,
+    PrijavaMainComponent,
+    AddPersonRegistryComponent,
     RegisterCrosoComponent,
     MyCrososComponent,
     CrosoListItemComponent,
     RegisterEmployeeComponent,
     CompanyEmployeesComponent,
-    EmployeeListItemComponent
+    EmployeeListItemComponent,
+
+
 
   ],
   imports: [

@@ -4,6 +4,7 @@ import (
 	"context"
 	"github.com/gorilla/mux"
 	"log"
+	natsBroker "nats"
 	"net/http"
 	"os"
 	"os/signal"
@@ -14,6 +15,10 @@ import (
 )
 
 func main() {
+
+	natsConnection := natsBroker.Conn()
+	defer natsConnection.Close()
+
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		port = "8003"
@@ -33,31 +38,41 @@ func main() {
 
 	store.Ping()
 
+	//
+	//applyCompetitionRepo, _ := data.NewApplyCompetitionRepo(logger)
+	//
+	//applyCompetitionsHandler := handlers.NewApplyCompetitionsHandler(logger, applyCompetitionRepo, registarServiceClient)
+
 	registarServiceClient := registar_service.NewClient("registrar_service", "8001")
 
-	competitionsHandler := handlers.NewCompetitionsHandler(logger, store)
-	applyCompetitionsHandler := handlers.NewApplyCompetitionsHandler(logger, (*data.ApplyCompetitionRepo)(store), registarServiceClient)
+	applyCompetitionsHandler := handlers.NewApplyCompetitionsHandler(logger, store, registarServiceClient, natsConnection)
 
 	router := mux.NewRouter()
 
 	getCompetitions := router.Methods(http.MethodGet).Subrouter()
-	getCompetitions.HandleFunc("/competitions/all", competitionsHandler.GetAllCompetitions)
+	getCompetitions.HandleFunc("/competitions/all", applyCompetitionsHandler.GetAllCompetitions)
 
 	postCompetition := router.Methods(http.MethodPost).Subrouter()
-	postCompetition.HandleFunc("/vrtic/{id}/competitions/add", competitionsHandler.PostCompetition)
+	postCompetition.HandleFunc("/vrtic/{id}/competitions/add", applyCompetitionsHandler.PostCompetition)
 	//postCompetition.Use(competitionsHandler.MiddlewareCompetitionDeserialization)
 
+	//patchRouter := router.Methods(http.MethodPut).Subrouter()
+	//patchRouter.HandleFunc("/competitions/{id}/changeStatus", applyCompetitionsHandler.PatchStatusCompetition)
+
+	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
+	deleteRouter.HandleFunc("/competitions/{id}", applyCompetitionsHandler.DeleteCompetition)
+
 	postVrtic := router.Methods(http.MethodPost).Subrouter()
-	postVrtic.HandleFunc("/vrtic/add", competitionsHandler.PostVrtic)
+	postVrtic.HandleFunc("/vrtic/add", applyCompetitionsHandler.PostVrtic)
 
 	getVrticById := router.Methods(http.MethodGet).Subrouter()
-	getVrticById.HandleFunc("/vrtic/{id}", competitionsHandler.GetVrticById)
+	getVrticById.HandleFunc("/vrtic/{id}", applyCompetitionsHandler.GetVrticById)
 
 	getAllVrtici := router.Methods(http.MethodGet).Subrouter()
-	getAllVrtici.HandleFunc("/vrtici/all", competitionsHandler.GetAllVrtici)
+	getAllVrtici.HandleFunc("/vrtici/all", applyCompetitionsHandler.GetAllVrtici)
 
 	getCompetitionById := router.Methods(http.MethodGet).Subrouter()
-	getCompetitionById.HandleFunc("/competitions/getById/{id}", competitionsHandler.GetCompetitionById)
+	getCompetitionById.HandleFunc("/competitions/getById/{id}", applyCompetitionsHandler.GetCompetitionById)
 
 	postApplyForCompetition := router.Methods(http.MethodPost).Subrouter()
 	postApplyForCompetition.HandleFunc("/competitions/{id}/apply", applyCompetitionsHandler.ApplyForCompetition)
@@ -65,36 +80,25 @@ func main() {
 	getAllCompetitionsApplyes := router.Methods(http.MethodGet).Subrouter()
 	getAllCompetitionsApplyes.HandleFunc("/competitions/applyes", applyCompetitionsHandler.GetAllCompetitionApplyes)
 
-	//getAllApplyesForOneCompetition := router.Methods(http.MethodGet).Subrouter()
-	//getAllApplyesForOneCompetition.HandleFunc("/competitions/{id}/applyes", applyCompetitionsHandler.GetAllApplyesForOneCompetition)
+	getAllApplyesForOneCompetition := router.Methods(http.MethodGet).Subrouter()
+	getAllApplyesForOneCompetition.HandleFunc("/competitions/{id}/applyes", applyCompetitionsHandler.GetAllApplyesForOneCompetition)
 
 	getApplyByID := router.Methods(http.MethodGet).Subrouter()
 	getApplyByID.HandleFunc("/competitions/applyes/{id}", applyCompetitionsHandler.GetApplyById)
 
-	//cors := gorillaHandlers.CORS(gorillaHandlers.AllowedOrigins([]string{"http://localhost:4200"}),
-	//	gorillaHandlers.AllowedMethods([]string{"GET", "POST", "PUT", "DELETE"}),
-	//	gorillaHandlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type"}),
-	//	gorillaHandlers.AllowCredentials())
-
 	server := http.Server{
-		Addr:         ":" + port,
-		Handler:      router,
-		IdleTimeout:  120 * time.Second,
-		ReadTimeout:  1 * time.Second,
-		WriteTimeout: 1 * time.Second,
+		Addr:    ":" + port,
+		Handler: router,
+		//IdleTimeout:  120 * time.Second,
+		//ReadTimeout:  1 * time.Second,
+		//WriteTimeout: 1 * time.Second,
 	}
-	//certFile := "twitter.crt"
-	//keyFile := "twitter.key"
 
 	logger.Println("Server listening on port", port)
-	//Distribute all the connections to goroutines
 	go func() {
-		//err := server.ListenAndServeTLS(certFile, keyFile)
 
-		err := server.ListenAndServe()
-
-		if err != nil {
-			logger.Fatal(err)
+		if err := server.ListenAndServe(); err != nil {
+			log.Println("Server served and started listening")
 		}
 	}()
 

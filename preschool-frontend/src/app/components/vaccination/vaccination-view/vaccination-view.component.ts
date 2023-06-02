@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Vaccination } from 'src/app/models/vaccination.model';
-import { VaccinationService } from 'src/app/services/vaccination.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-vaccination-view',
@@ -12,13 +12,13 @@ export class VaccinationViewComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private vaccinationService: VaccinationService) { }
+              private healthcareService: HealthcareService) { }
 
   vaccination: Vaccination = new Vaccination()
   vaccination_id = String(this.route.snapshot.paramMap.get("id"))
 
   ngOnInit(): void {
-    this.vaccinationService.GetSingleVaccination(this.vaccination_id)
+    this.healthcareService.GetSingleVaccination(this.vaccination_id)
       .subscribe({
         next: (data) => {
           this.vaccination = data
@@ -30,7 +30,7 @@ export class VaccinationViewComponent implements OnInit {
   }
 
   update() {
-    this.vaccinationService.SetVaccination(this.vaccination_id)
+    this.healthcareService.SetVaccination(this.vaccination_id)
       .subscribe({
         next: () => {
           this.router.navigate(['/Vaccinations-Regular'])

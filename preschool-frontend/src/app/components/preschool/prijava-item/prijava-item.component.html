@@ -1,0 +1,17 @@
+<mat-card class="vrtic-card">
+    <mat-card-title class="competition-title">
+      Osvojen broj bodova je "{{prijava.bodovi}}"
+    </mat-card-title>
+    <mat-card-content>
+        <h2>Podaci o upisanom detetu</h2>
+        <br>
+      <p class="">JMBG: {{prijava.dete.jmbg}}</p>
+      <p class="">Datum rodjenja: {{prijava.dete.datum_rodjenja * 1000 | date: "longDate"}}</p>
+      <p class="">Ime: {{prijava.dete.ime}}</p>
+      <p class="">Prezime: {{prijava.dete.prezime}}</p>
+      <p class="">Opstina: {{prijava.dete.opstina}}</p>
+      <p class="">Adresa: {{prijava.dete.adresa}}</p>
+
+  
+    </mat-card-content>
+  </mat-card>

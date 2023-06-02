@@ -3,7 +3,6 @@ package repository_impl
 import (
 	"context"
 	"fmt"
-	"github.com/pkg/errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"log"
@@ -36,11 +35,13 @@ func (store *RegistrarRepositoryImpl) CreateNewBirthCertificate(user domain.User
 	if !store.IsUserExist(user.JMBG) {
 		_, err := store.user_registry.InsertOne(context.Background(), user)
 		if err != nil {
+			log.Println("Error in saving User")
 			return err
 		}
+		return nil
 	}
 
-	return errors.New("User Already Exists")
+	return fmt.Errorf("user already exists")
 }
 
 func (store *RegistrarRepositoryImpl) IsUserExist(jmbg string) bool {

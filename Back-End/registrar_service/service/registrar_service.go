@@ -208,14 +208,11 @@ func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 			return
 		}
 
+		user.ID = primitive.NewObjectID()
 		err = service.store.CreateNewBirthCertificate(user)
 		if err != nil {
-			log.Println("Error")
-			err := natsConnection.Publish(message.Reply, []byte(err.Error()))
-			if err != nil {
-				log.Println("Error in publishing message")
-			}
-			return
+			user.ID = primitive.NilObjectID
+			log.Println("Error in Nats")
 		}
 
 		dataToSend, err := json.Marshal(user)

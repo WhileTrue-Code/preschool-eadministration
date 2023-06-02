@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Appointment } from 'src/app/models/appointment.model';
-import { AppointmentService } from 'src/app/services/appointment.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-appointments-regular',
@@ -11,10 +11,10 @@ export class AppointmentsRegularComponent implements OnInit {
 
   appointments: Array<Appointment> = [];
 
-  constructor(private appointmentService: AppointmentService) { }
+  constructor(private healthcareService: HealthcareService) { }
 
   ngOnInit(): void {
-    this.appointmentService.GetAllAvailableAppointments()
+    this.healthcareService.GetAllAvailableAppointments()
     .subscribe({
       next: (data) => {
         this.appointments = data;

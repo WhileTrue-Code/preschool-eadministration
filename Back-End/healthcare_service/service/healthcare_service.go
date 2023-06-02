@@ -339,29 +339,30 @@ func (service *HealthcareService) DeleteVaccinationByID(id primitive.ObjectID) e
 	return service.repository.DeleteVaccinationByID(id)
 }
 
-func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.User, error) {
+func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.User, int) {
 	user.ID = primitive.NewObjectID()
 
 	dataToSend, err := json.Marshal(user)
 	if err != nil {
 		log.Print("Error in Marshaling JSON")
-		return nil, err
+		return nil, 0
 	}
 
 	response, err := service.natsConnection.Request(os.Getenv("CREATE_USER"), dataToSend, 5*time.Second)
 	if err != nil {
 		log.Println(err)
-		return nil, err
+		return nil, 0
 	}
-	var responseMessage interface{}
-	err = json.Unmarshal(response.Data, responseMessage)
 
-	log.Println(responseMessage)
 	err = json.Unmarshal(response.Data, &user)
 	if err != nil {
 		log.Print("Error in Unmarshal JSON")
-		return nil, err
+		return nil, 0
 	}
 
-	return user, nil
+	if user.ID == primitive.NilObjectID {
+		return nil, 1
+	}
+
+	return user, 0
 }

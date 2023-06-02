@@ -14,7 +14,7 @@ type Competition struct {
 	Uzrast          string             `json:"uzrast" bson:"uzrast"`
 	BrojDece        int64              `json:"broj_dece" bson:"brojDece"`
 	Vrtic           *Vrtic             `json:"vrtic" bson:"vrtic"`
-	//Zavrsen         bool               `json:"zavrsen" bson:"zavrsen"`
+	//Status          string             `json:"status" bson:"status"`
 }
 
 type Vrtic struct {

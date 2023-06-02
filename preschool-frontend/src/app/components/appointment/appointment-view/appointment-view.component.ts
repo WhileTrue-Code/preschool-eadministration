@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Appointment } from 'src/app/models/appointment.model';
-import { AppointmentService } from 'src/app/services/appointment.service';
+import { HealthcareService } from 'src/app/services/healthcare.service';
 
 @Component({
   selector: 'app-appointment-view',
@@ -12,13 +12,13 @@ export class AppointmentViewComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private router: Router,
-              private appointmentService: AppointmentService) { }
+              private healthcareService: HealthcareService) { }
 
   appointment: Appointment = new Appointment();
   appointment_id = String(this.route.snapshot.paramMap.get("id"))
 
   ngOnInit(): void {
-    this.appointmentService.GetSingleAppointment(this.appointment_id)
+    this.healthcareService.GetSingleAppointment(this.appointment_id)
       .subscribe({
         next: (data) => {
           this.appointment = data;
@@ -27,7 +27,7 @@ export class AppointmentViewComponent implements OnInit {
   }
 
   update() {
-    this.appointmentService.SetAppointment(this.appointment_id)
+    this.healthcareService.SetAppointment(this.appointment_id)
       .subscribe({
         next: () => {
           this.router.navigate(['/Appointments-Regular'])
