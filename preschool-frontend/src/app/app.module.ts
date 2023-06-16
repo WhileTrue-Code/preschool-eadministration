@@ -57,6 +57,7 @@ import { PrijavaListComponent } from './components/preschool/prijava-list/prijav
 import { PrijavaItemComponent } from './components/preschool/prijava-item/prijava-item.component';
 import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
 import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
+import { ViewMyRegistryComponent } from './components/view-my-registry/view-my-registry.component';
 
 
 
@@ -107,9 +108,7 @@ import { AddPersonRegistryComponent } from './components/add-person-registry/add
     RegisterEmployeeComponent,
     CompanyEmployeesComponent,
     EmployeeListItemComponent,
-
-
-
+    ViewMyRegistryComponent
   ],
   imports: [
     BrowserModule,

@@ -63,6 +63,11 @@
           && this.storeService.getCustomRole()=='Registrar'" mat-button mat-ripple routerLink="/Marriage">
             <span>Vencanje</span>
           </button>
+          <button *ngIf="isLoggedIn()
+          && this.storeService.getServiceFromStore()=='eMaticar'
+          && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/view-my-registry">
+            <span>Pregledaj izvode</span>
+          </button>
           <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/chose-service">
             <span>Servisi</span>
           </button>
