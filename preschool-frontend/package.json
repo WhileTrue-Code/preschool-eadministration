@@ -23,9 +23,11 @@
     "@schematics/angular": "^16.0.5",
     "bootstrap": "^5.2.3",
     "globby": "^13.1.4",
+    "jspdf": "^2.5.1",
     "materialize-css": "^1.0.0",
     "moment": "^2.29.4",
     "nyc": "^15.1.0",
+    "pdfmake": "^0.2.7",
     "rxjs": "~7.5.0",
     "zone.js": "~0.11.4"
   },
