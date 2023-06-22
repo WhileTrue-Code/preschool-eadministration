@@ -31,39 +31,18 @@ func (service *AuthService) IsJMBGUnique(jmbg string) bool {
 
 func (service *AuthService) SignUp(credentials domain.Credentials) (int, error) {
 
-	log.Println(credentials.UserType)
+	dataToSend, err := json.Marshal(credentials)
 
-	if credentials.UserType == "Regular" {
+	response, err := service.natsConnection.Request(os.Getenv("CHECK_USER_JMBG"), dataToSend, 5*time.Second)
 
-		dataToSend, err := json.Marshal(credentials)
+	var isJMBGExist bool
+	err = json.Unmarshal(response.Data, &isJMBGExist)
+	if err != nil {
+		log.Println("Error in unmarshal json")
+		return 0, err
+	}
 
-		response, err := service.natsConnection.Request(os.Getenv("CHECK_USER_JMBG"), dataToSend, 5*time.Second)
-
-		var isJMBGExist bool
-		err = json.Unmarshal(response.Data, &isJMBGExist)
-		if err != nil {
-			log.Println("Error in unmarshal json")
-			return 0, err
-		}
-
-		if isJMBGExist {
-			isExists := service.IsJMBGUnique(credentials.JMBG)
-			if isExists == true {
-				return -1, nil
-			}
-
-			credentials.ID = primitive.NewObjectID()                                                       //creating unique UUID for MongoDB
-			password, err := bcrypt.GenerateFromPassword([]byte(credentials.Password), bcrypt.DefaultCost) //hashing password
-			credentials.Password = string(password)
-			if err != nil {
-				return 0, err
-			}
-			service.store.SignUp(credentials)
-			return 0, nil
-		} else {
-			return -2, nil
-		}
-	} else {
+	if isJMBGExist {
 		isExists := service.IsJMBGUnique(credentials.JMBG)
 		if isExists == true {
 			return -1, nil
@@ -77,7 +56,10 @@ func (service *AuthService) SignUp(credentials domain.Credentials) (int, error) 
 		}
 		service.store.SignUp(credentials)
 		return 0, nil
+	} else {
+		return -2, nil
 	}
+
 }
 
 func (service *AuthService) Login(jmbg string, password string) (string, int) {
