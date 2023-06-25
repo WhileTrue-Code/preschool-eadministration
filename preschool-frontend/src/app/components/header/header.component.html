@@ -30,12 +30,12 @@
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/Appointments-Doctor">
-                <span>Pregledi(Doctor)</span>
+                <span>Pregledi</span>
             </button>
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/Vaccinations-Doctor">
-                <span>Vakcinacije(Doctor)</span>
+                <span>Vakcinacije</span>
             </button>
 
             <button *ngIf="isLoggedIn()
@@ -47,12 +47,12 @@
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/Vaccinations-Regular">
-                <span>Vakcinacije(Regular)</span>
+                <span>Vakcinacije</span>
             </button>
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/Appointments-Regular">
-                <span>Pregledi(Regular)</span>
+                <span>Pregledi</span>
             </button>
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eVrtic'" mat-button mat-ripple routerLink="/PocetnaVrtic">

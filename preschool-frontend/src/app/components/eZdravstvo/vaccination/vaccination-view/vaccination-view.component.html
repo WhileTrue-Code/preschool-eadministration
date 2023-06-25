@@ -12,6 +12,7 @@
       <p class="vaccination-end">Kraj: {{vaccination.endOfVaccination * 1000 | date: "longDate"}}</p>
     </mat-card-content>
     <div class="form-group form-check">
-      <button type="submit" class="btn btn-success" (click)="update()">Rezerviši</button>
+      <button *ngIf="!isMyVaccination()" type="submit" class="btn btn-success" (click)="update()">Rezerviši</button>
+      <button *ngIf="isMyVaccination()" type="submit" class="btn btn-danger" (click)="delete()">Ukloni</button>
     </div>
   </mat-card>

@@ -7,11 +7,11 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AuthInterceptor } from './services/auth.interceptor';
-import { AppointmentAddComponent } from './components/appointment/appointment-add/appointment-add.component';
-import { AppointmentItemComponent } from './components/appointment/appointment-item/appointment-item.component';
-import { AppointmentListComponent } from './components/appointment/appointment-list/appointment-list.component';
-import { AppointmentViewComponent } from './components/appointment/appointment-view/appointment-view.component';
-import { AppointmentsDoctorComponent } from './components/appointment/appointments-doctor/appointments.component';
+import { AppointmentAddComponent } from './components/eZdravstvo/appointment/appointment-add/appointment-add.component';
+import { AppointmentItemComponent } from './components/eZdravstvo/appointment/appointment-item/appointment-item.component';
+import { AppointmentListComponent } from './components/eZdravstvo/appointment/appointment-list/appointment-list.component';
+import { AppointmentViewComponent } from './components/eZdravstvo/appointment/appointment-view/appointment-view.component';
+import { AppointmentsDoctorComponent } from './components/eZdravstvo/appointment/appointments-doctor/appointments.component';
 import { RegisterComponent } from './components/register/register.component';
 import { LoginComponent } from './components/login/login.component';
 import { CompetitionsComponent } from './components/competitions/competitions/competitions.component';
@@ -23,7 +23,7 @@ import { RegisterAprComponent } from './components/register-apr/register-apr.com
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
-import { AppointmentsRegularComponent } from './components/appointment/appointments-regular/appointments-regular.component';
+import { AppointmentsRegularComponent } from './components/eZdravstvo/appointment/appointments-regular/appointments-regular.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
@@ -31,15 +31,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon'
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import {MatNativeDateModule} from '@angular/material/core';
-import { VaccinationAddComponent } from './components/vaccination/vaccination-add/vaccination-add.component';
-import { VaccinationItemComponent } from './components/vaccination/vaccination-item/vaccination-item.component';
-import { VaccinationListComponent } from './components/vaccination/vaccination-list/vaccination-list.component';
-import { VaccinationViewComponent } from './components/vaccination/vaccination-view/vaccination-view.component';
-import { VaccinationsDoctorComponent } from './components/vaccination/vaccinations-doctor/vaccinations-doctor.component';
-import { VaccinationsRegularComponent } from './components/vaccination/vaccinations-regular/vaccinations-regular.component';
+import { VaccinationAddComponent } from './components/eZdravstvo/vaccination/vaccination-add/vaccination-add.component';
+import { VaccinationItemComponent } from './components/eZdravstvo/vaccination/vaccination-item/vaccination-item.component';
+import { VaccinationListComponent } from './components/eZdravstvo/vaccination/vaccination-list/vaccination-list.component';
+import { VaccinationViewComponent } from './components/eZdravstvo/vaccination/vaccination-view/vaccination-view.component';
+import { VaccinationsDoctorComponent } from './components/eZdravstvo/vaccination/vaccinations-doctor/vaccinations-doctor.component';
+import { VaccinationsRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-regular/vaccinations-regular.component'; 
 import { MarriageComponent } from './components/marriage/marriage.component';
 import { ChooseServiceComponent } from './components/choose-service/choose-service.component';
-import { RegularOrAdminComponent } from './components/regular-or-admin/regular-or-admin.component';
+import { RegularOrAdminComponent } from './components/regular-or-admin/regular-or-admin.component'; 
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { VrticAddComponent } from './components/preschool/vrtic-add/vrtic-add.component';
 import { VrticListComponent } from './components/preschool/vrtic-list/vrtic-list.component';
@@ -56,7 +56,7 @@ import { EmployeeListItemComponent } from './components/employee-list-item/emplo
 import { PrijavaListComponent } from './components/preschool/prijava-list/prijava-list.component';
 import { PrijavaItemComponent } from './components/preschool/prijava-item/prijava-item.component';
 import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
-import { AddPersonRegistryComponent } from './components/add-person-registry/add-person-registry.component';
+import { AddPersonRegistryComponent } from './components/eZdravstvo/add-person-registry/add-person-registry.component'; 
 import { ViewMyRegistryComponent } from './components/view-my-registry/view-my-registry.component';
 
 

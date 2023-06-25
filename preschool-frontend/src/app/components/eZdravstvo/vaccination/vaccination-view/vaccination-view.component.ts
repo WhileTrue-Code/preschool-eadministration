@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { User } from 'src/app/models/user.model';
 import { Vaccination } from 'src/app/models/vaccination.model';
 import { HealthcareService } from 'src/app/services/healthcare.service';
 
@@ -16,6 +17,7 @@ export class VaccinationViewComponent implements OnInit {
 
   vaccination: Vaccination = new Vaccination()
   vaccination_id = String(this.route.snapshot.paramMap.get("id"))
+  user: User = new User();
 
   ngOnInit(): void {
     this.healthcareService.GetSingleVaccination(this.vaccination_id)
@@ -27,6 +29,24 @@ export class VaccinationViewComponent implements OnInit {
           console.log(error)
         }
       })
+
+    this.healthcareService.GetMe()
+    .subscribe({
+      next: (data) => {
+        this.user = data;
+      },
+      error: (error) => {
+        console.log(error)
+      }
+    })
+  }
+
+  isMyVaccination(): boolean {
+    if (this.vaccination.doctor.jmbg == this.user.jmbg) {
+      return true
+    } else {
+      return false
+    }
   }
 
   update() {
@@ -37,6 +57,18 @@ export class VaccinationViewComponent implements OnInit {
         },
         error: (error) => {
           console.log(error);
+        }
+      })
+  }
+
+  delete() {
+    this.healthcareService.DeleteVaccination(this.vaccination_id)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/Vaccinations-Doctor'])
+        },
+        error: (error) => {
+          console.log(error)
         }
       })
   }

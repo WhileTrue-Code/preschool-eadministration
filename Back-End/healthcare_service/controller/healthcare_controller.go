@@ -190,7 +190,6 @@ func (controller *HealthcareController) DeleteAppointmentByID(writer http.Respon
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Deleted"))
 }
 
 func (controller *HealthcareController) GetAllVaccinations(writer http.ResponseWriter, req *http.Request) {
@@ -324,7 +323,6 @@ func (controller *HealthcareController) DeleteVaccinationByID(writer http.Respon
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Deleted"))
 }
 
 func (controller *HealthcareController) GetMe(writer http.ResponseWriter, req *http.Request) {

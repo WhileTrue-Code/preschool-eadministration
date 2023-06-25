@@ -14,6 +14,4 @@ export class User {
     datum_smrti: number = 0;
     mesto_smrti: string = "";
     drzava: string = ""
-
-
 }
