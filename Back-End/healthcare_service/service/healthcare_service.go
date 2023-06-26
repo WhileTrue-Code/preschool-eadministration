@@ -366,3 +366,28 @@ func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.
 
 	return user, 0
 }
+
+//TODO Ne znam da li da saljem samo objekat Zdravstveno
+//stanje detetu pa da mu setujem polje ili da uzmem celo dete pa mu setujem i vratim njega da se sacuva
+func (service *HealthcareService) SetChildHealthReport(zdravstvenoStanje *model.ZdravstvenoStanje) *model.ZdravstvenoStanje {
+	dataToSend, err := json.Marshal(zdravstvenoStanje)
+	if err != nil {
+		log.Println("Error in Marshaling JSON")
+		return nil
+	}
+
+	//Treba preuzeti dete iz Preschool Service
+	response, err := service.natsConnection.Request(os.Getenv("SET_CHILD_HEALTH_REPORT"), dataToSend, 5*time.Second)
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
+
+	err = json.Unmarshal(response.Data, &zdravstvenoStanje)
+	if err != nil {
+		log.Println("Error in Unmarshal JSON")
+		return nil
+	}
+
+	return zdravstvenoStanje
+}

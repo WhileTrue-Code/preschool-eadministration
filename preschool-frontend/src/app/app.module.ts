@@ -58,6 +58,10 @@ import { PrijavaItemComponent } from './components/preschool/prijava-item/prijav
 import { PrijavaMainComponent } from './components/preschool/prijava-main/prijava-main.component';
 import { AddPersonRegistryComponent } from './components/eZdravstvo/add-person-registry/add-person-registry.component'; 
 import { ViewMyRegistryComponent } from './components/view-my-registry/view-my-registry.component';
+import { HealthStatusAddComponent } from './components/eZdravstvo/health-status/health-status-add/health-status-add.component';
+import { ChildItemComponent } from './components/eZdravstvo/health-status/child-item/child-item.component';
+import { ChildListComponent } from './components/eZdravstvo/health-status/child-list/child-list.component';
+import { ChildrenComponent } from './components/eZdravstvo/health-status/children/children.component';
 
 
 
@@ -108,7 +112,11 @@ import { ViewMyRegistryComponent } from './components/view-my-registry/view-my-r
     RegisterEmployeeComponent,
     CompanyEmployeesComponent,
     EmployeeListItemComponent,
-    ViewMyRegistryComponent
+    ViewMyRegistryComponent,
+    HealthStatusAddComponent,
+    ChildItemComponent,
+    ChildListComponent,
+    ChildrenComponent,
   ],
   imports: [
     BrowserModule,

@@ -30,6 +30,7 @@ import { MyCrososComponent } from './components/my-crosos/my-crosos.component';
 import { RegisterEmployeeComponent } from './components/register-employee/register-employee.component';
 import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
 import {ViewMyRegistryComponent} from "./components/view-my-registry/view-my-registry.component";
+import { ChildrenComponent } from './components/eZdravstvo/health-status/children/children.component';
 
 
 
@@ -77,6 +78,10 @@ const routes: Routes = [
   {
     path: "Vaccination-View/:id",
     component: VaccinationViewComponent
+  },
+  {
+    path: "Children",
+    component: ChildrenComponent
   },
   {
     path: "Competitions",

@@ -296,6 +296,21 @@ func (controller *HealthcareController) CreateNewVaccination(writer http.Respons
 	writer.WriteHeader(http.StatusOK)
 }
 
+func (controller *HealthcareController) SetChildHealthReport(writer http.ResponseWriter, req *http.Request) {
+	var zdravstvenoStanje model.ZdravstvenoStanje
+	err := json.NewDecoder(req.Body).Decode(&zdravstvenoStanje)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("There is a problem in decoding JSON"))
+		return
+	}
+
+	value := controller.service.SetChildHealthReport(&zdravstvenoStanje)
+
+	jsonResponse(value, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
 func (controller *HealthcareController) SetVaccination(writer http.ResponseWriter, req *http.Request) {
 	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
