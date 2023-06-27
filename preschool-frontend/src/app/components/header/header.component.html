@@ -27,6 +27,8 @@
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/RegisterCroso">
                 <span>CROSO Registracija</span>
             </button>
+
+            
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/Appointments-Doctor">
@@ -37,13 +39,16 @@
             && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/Vaccinations-Doctor">
                 <span>Vakcinacije</span>
             </button>
-
+            <button *ngIf="isLoggedIn()
+            && this.storeService.getServiceFromStore()=='eZdravstvo'
+            && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/Zdravstveno-Stanje-Add">
+                <span>Zdravstveno Stanje</span>
+            </button>
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/New-Person">
                 <span>Dodavanje Osobe</span>
             </button>
-
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/Vaccinations-Regular">
@@ -54,6 +59,8 @@
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/Appointments-Regular">
                 <span>Pregledi</span>
             </button>
+
+
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eVrtic'" mat-button mat-ripple routerLink="/PocetnaVrtic">
                 <span>Prijava na konkurs za vrtic</span>

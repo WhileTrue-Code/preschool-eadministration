@@ -36,6 +36,10 @@ p, Regular, /setVaccination/*, PUT
 
 p, Doctor, /deleteVaccinationByID/*, DELETE
 
+p, Doctor, /allZdravstvenoStanje, GET
+p, Doctor, /getZdravstvenoStanjeByID/*, GET
+p, Doctor, /newZdravstvenoStanje, POST
+
 p, Doctor, /getMe, GET
 p, Regular, /getMe, GET
 

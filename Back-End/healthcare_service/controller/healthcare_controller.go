@@ -52,6 +52,10 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 	router.HandleFunc("/setVaccination/{id}", controller.SetVaccination).Methods("PUT")
 	router.HandleFunc("/deleteVaccinationByID/{id}", controller.DeleteVaccinationByID).Methods("DELETE")
 
+	router.HandleFunc("/allZdravstvenoStanje", controller.GetAllZdravstvenoStanje).Methods("GET")
+	router.HandleFunc("/getZdravstvenoStanjeByID/{id}", controller.GetZdravstvenoStanjeByID).Methods("GET")
+	router.HandleFunc("/newZdravstvenoStanje", controller.CreateNewZdravstvenoStanje).Methods("POST")
+
 	router.HandleFunc("/addPersonToRegistry", controller.AddPersonToRegistry).Methods("POST")
 	router.HandleFunc("/getMe", controller.GetMe).Methods("GET")
 
@@ -296,21 +300,6 @@ func (controller *HealthcareController) CreateNewVaccination(writer http.Respons
 	writer.WriteHeader(http.StatusOK)
 }
 
-func (controller *HealthcareController) SetChildHealthReport(writer http.ResponseWriter, req *http.Request) {
-	var zdravstvenoStanje model.ZdravstvenoStanje
-	err := json.NewDecoder(req.Body).Decode(&zdravstvenoStanje)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		writer.Write([]byte("There is a problem in decoding JSON"))
-		return
-	}
-
-	value := controller.service.SetChildHealthReport(&zdravstvenoStanje)
-
-	jsonResponse(value, writer)
-	writer.WriteHeader(http.StatusOK)
-}
-
 func (controller *HealthcareController) SetVaccination(writer http.ResponseWriter, req *http.Request) {
 	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
@@ -337,6 +326,50 @@ func (controller *HealthcareController) DeleteVaccinationByID(writer http.Respon
 		return
 	}
 
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetAllZdravstvenoStanje(writer http.ResponseWriter, req *http.Request) {
+	zdravstvenaStanja, err := controller.service.GetAllZdravstvenoStanje()
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse(zdravstvenaStanja, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) GetZdravstvenoStanjeByID(writer http.ResponseWriter, req *http.Request) {
+	objectID, err := getIDFromReqAsPrimitive(writer, req)
+
+	zdravstvenoStanje, err := controller.service.GetZdravstvenoStanjeByID(objectID)
+	if err != nil {
+		log.Println("Error finding Zdravstveno Stanje By ID")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	jsonResponse(zdravstvenoStanje, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) CreateNewZdravstvenoStanje(writer http.ResponseWriter, req *http.Request) {
+	var zdravstvenoStanje model.ZdravstvenoStanje
+	err := json.NewDecoder(req.Body).Decode(&zdravstvenoStanje)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("There is a problem in decoding JSON"))
+		return
+	}
+
+	err = controller.service.CreateNewZdravstvenoStanje(&zdravstvenoStanje)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	jsonResponse(zdravstvenoStanje, writer)
 	writer.WriteHeader(http.StatusOK)
 }
 

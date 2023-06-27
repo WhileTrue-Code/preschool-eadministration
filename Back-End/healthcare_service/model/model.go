@@ -57,22 +57,12 @@ const (
 	PCV = "PCV"
 )
 
-type Dete struct {
-	ID                primitive.ObjectID `json:"id" bson:"_id"`
-	JMBG              string             `json:"jmbg" bson:"JMBG"`
-	DatumRodjenja     int64              `json:"datum_rodjenja" bson:"datumRodjenja"`
-	Ime               string             `json:"ime" bson:"ime"`
-	Prezime           string             `json:"prezime" bson:"prezime"`
-	Opstina           string             `json:"opstina" bson:"opstina"`
-	Adresa            string             `json:"adresa" bson:"adresa"`
-	ZdravstvenoStanje *ZdravstvenoStanje `json:"zdravstveno_stanje" bson:"zdravstvenoStanje"`
-	ProsloZdravstveno bool               `json:"proslo_zdravstveno" bson:"prosloZdravstveno"`
-}
-
 type ZdravstvenoStanje struct {
-	ZdravstveniProblemi     string `json:"zdravstveni_problemi" bson:"zdravstveniProblemi"`
-	SpecificnaIshrana       string `json:"specificna_ishrana" bson:"specificnaIshrana"`
-	DomZdravljaUKomJeKarton string `json:"dom_zdravlja_u_kom_je_karton" bson:"domZdravljaUKomJeKarton"`
-	SmetnjeURazvoju         string `json:"smetnje_u_razvoju" bson:"smetnjeURazvoju"`
-	SpecificniPodaci        string `json:"specificni_podaci" bson:"specificniPodaci"`
+	ID                      primitive.ObjectID `json:"id" bson:"_id"`
+	Jmbg                    string             `json:"jmbg" bson:"jmbg"`
+	ZdravstveniProblemi     string             `json:"zdravstveni_problemi" bson:"zdravstveniProblemi"`
+	SpecificnaIshrana       string             `json:"specificna_ishrana" bson:"specificnaIshrana"`
+	DomZdravljaUKomJeKarton string             `json:"dom_zdravlja_u_kom_je_karton" bson:"domZdravljaUKomJeKarton"`
+	SmetnjeURazvoju         string             `json:"smetnje_u_razvoju" bson:"smetnjeURazvoju"`
+	SpecificniPodaci        string             `json:"specificni_podaci" bson:"specificniPodaci"`
 }

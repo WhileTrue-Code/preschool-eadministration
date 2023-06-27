@@ -339,6 +339,25 @@ func (service *HealthcareService) DeleteVaccinationByID(id primitive.ObjectID) e
 	return service.repository.DeleteVaccinationByID(id)
 }
 
+func (service *HealthcareService) GetAllZdravstvenoStanje() ([]*model.ZdravstvenoStanje, error) {
+	return service.repository.GetAllZdravstvenoStanje()
+}
+
+func (service *HealthcareService) GetZdravstvenoStanjeByID(id primitive.ObjectID) (*model.ZdravstvenoStanje, error) {
+	return service.repository.GetZdravstvenoStanjeByID(id)
+}
+
+func (service *HealthcareService) CreateNewZdravstvenoStanje(zdravstvenoStanje *model.ZdravstvenoStanje) error {
+	zdravstvenoStanje.ID = primitive.NewObjectID()
+	err := service.repository.CreateNewZdravstvenoStanje(zdravstvenoStanje)
+	if err != nil {
+		log.Println("Error in trying to save Zdravstveno Stanje")
+		return err
+	}
+
+	return nil
+}
+
 func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.User, int) {
 	user.ID = primitive.NewObjectID()
 
@@ -365,29 +384,4 @@ func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.
 	}
 
 	return user, 0
-}
-
-//TODO Ne znam da li da saljem samo objekat Zdravstveno
-//stanje detetu pa da mu setujem polje ili da uzmem celo dete pa mu setujem i vratim njega da se sacuva
-func (service *HealthcareService) SetChildHealthReport(zdravstvenoStanje *model.ZdravstvenoStanje) *model.ZdravstvenoStanje {
-	dataToSend, err := json.Marshal(zdravstvenoStanje)
-	if err != nil {
-		log.Println("Error in Marshaling JSON")
-		return nil
-	}
-
-	//Treba preuzeti dete iz Preschool Service
-	response, err := service.natsConnection.Request(os.Getenv("SET_CHILD_HEALTH_REPORT"), dataToSend, 5*time.Second)
-	if err != nil {
-		log.Println(err)
-		return nil
-	}
-
-	err = json.Unmarshal(response.Data, &zdravstvenoStanje)
-	if err != nil {
-		log.Println("Error in Unmarshal JSON")
-		return nil
-	}
-
-	return zdravstvenoStanje
 }

@@ -7,6 +7,7 @@ import { AddVaccination } from "../dto/addVaccination";
 import { Appointment } from "../models/appointment.model";
 import { User } from "../models/user.model";
 import { Vaccination } from "../models/vaccination.model";
+import { ZdravstvenoStanje } from "../models/zdravstvenoStanje.model";
 
 @Injectable({
     providedIn: 'root'
@@ -89,6 +90,10 @@ export class HealthcareService {
 
     public DeleteVaccination(id: string) {
         return this.http.delete(`${environment.baseApiUrl}/${this.url}/deleteVaccinationByID/` + id);
+    }
+
+    public NewZdravstvenoStanje(zdravstvenoStanje: ZdravstvenoStanje): Observable<ZdravstvenoStanje> {
+        return this.http.post<ZdravstvenoStanje>(`${environment.baseApiUrl}/${this.url}/newZdravstvenoStanje`, zdravstvenoStanje)
     }
 
     public AddPersonToRegistry(user: User): Observable<User> {

@@ -62,40 +62,19 @@ export class AddPersonRegistryComponent implements OnInit {
 
     let user = new User()
 
-    let ime = this.formGroup.get("ime")?.value
-
-    let prezime = this.formGroup.get("prezime")?.value
-
-    let ime_oca = this.formGroup.get("ime_oca")?.value
-
-    let jmbg_oca = this.formGroup.get("jmbg_oca")?.value
-
-    let ime_majke = this.formGroup.get("ime_majke")?.value
-
-    let jmbg_majke = this.formGroup.get("jmbg_majke")?.value
-
     var datum: Date = new Date(this.formGroup.get('datum_rodjenja')?.value)
-    let datum_rodjenja = Number(datum.getTime()) / 1000
 
-    let mesto_rodjenja = this.formGroup.get("mesto_rodjenja")?.value
-
-    let jmbg = this.formGroup.get("jmbg")?.value
-
-    let pol = this.formGroup.get("pol")?.value
-
-    let drzava = this.formGroup.get("drzava")?.value
-
-    user.ime = ime
-    user.prezime = prezime
-    user.ime_oca = ime_oca
-    user.jmbg_oca = jmbg_oca
-    user.ime_majke = ime_majke
-    user.jmbg_majke = jmbg_majke
-    user.datum_rodjenja = datum_rodjenja
-    user.mesto_rodjenja = mesto_rodjenja
-    user.jmbg = jmbg
-    user.pol = pol
-    user.drzava = drzava
+    user.ime = this.formGroup.get("ime")?.value
+    user.prezime = this.formGroup.get("prezime")?.value
+    user.ime_oca = this.formGroup.get("ime_oca")?.value
+    user.jmbg_oca = this.formGroup.get("jmbg_oca")?.value
+    user.ime_majke = this.formGroup.get("ime_majke")?.value
+    user.jmbg_majke = this.formGroup.get("jmbg_majke")?.value
+    user.datum_rodjenja = Number(datum.getTime()) / 1000
+    user.mesto_rodjenja = this.formGroup.get("mesto_rodjenja")?.value
+    user.jmbg = this.formGroup.get("jmbg")?.value
+    user.pol = this.formGroup.get("pol")?.value
+    user.drzava = this.formGroup.get("drzava")?.value
 
     this.healthcareService.AddPersonToRegistry(user)
       .subscribe({
