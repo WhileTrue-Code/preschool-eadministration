@@ -245,7 +245,7 @@ func (pr *ApplyCompetitionRepo) ChangeStatus(id string) error {
 	prijave, _ := pr.GetAllApplyesForOneCompetition(id)
 
 	for i, prijava := range prijave {
-		if i <= competition.BrojDece {
+		if i < competition.BrojDece {
 			filter1 := bson.D{{Key: "_id", Value: prijava.ID}}
 			update1 := bson.M{"$set": bson.M{
 				"status": "Upisan",

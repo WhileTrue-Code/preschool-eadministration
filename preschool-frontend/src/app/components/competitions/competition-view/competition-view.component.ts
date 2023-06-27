@@ -42,6 +42,14 @@ export class CompetitionViewComponent implements OnInit {
     }
   }
   
+  isAdmin(): boolean {
+    if (localStorage.getItem("customRole") == "Admin") {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
   
 
   ngOnInit(): void {
