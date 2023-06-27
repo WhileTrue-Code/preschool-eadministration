@@ -1,13 +1,8 @@
-<mat-card class="vrtic-card" >
-  <mat-card class="vrtic-card"  [ngStyle]="{'background-color': prijava.status? 'green' : 'red'}">
+  <mat-card class="vrtic-card" [ngStyle]="{'background-color': prijava.status == 'Upisan'? 'green' : 'red'}" >
 
-    <mat-card-title class="competition-title-true">
+    <mat-card-title class="competition-title">
       Osvojen broj bodova je "{{prijava.bodovi}}"
     </mat-card-title>
-
-    <!-- <mat-card-title class="competition-title-false" *ngIf="!isUpisan()">
-      Osvojen broj bodova je "{{prijava.bodovi}}"
-    </mat-card-title> -->
 
     <mat-card-content>
         <h2>Podaci o upisanom detetu</h2>

@@ -46,6 +46,7 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	vars := mux.Vars(h)
 	competitionID := vars["id"]
 
+	//cole **********
 	isParent, errr := p.registarService.GetIsParent(insertComp.Dete.JMBG, authToken)
 	if errr != nil {
 		http.Error(rw, errr.Error(), http.StatusInternalServerError)
@@ -56,7 +57,9 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 		http.Error(rw, "You are not a parent "+insertComp.Dete.JMBG, 403)
 		return
 	}
+	//cole **********
 
+	// silja***********
 	splitted := strings.Split(authToken, " ")
 	claims := authorization.GetMapClaims([]byte(splitted[1]))
 
@@ -77,7 +80,7 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	if response["employed"] {
 		insertComp.Bodovi = 6
 	}
-
+	// silja***********
 	println(request)
 	println(response)
 
