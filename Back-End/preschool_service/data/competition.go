@@ -12,10 +12,17 @@ type Competition struct {
 	PocetakKonkursa int64              `json:"pocetak_konkursa" bson:"pocetakKonkursa"`
 	KrajKonkursa    int64              `json:"kraj_konkursa" bson:"krajKonkursa"`
 	Uzrast          string             `json:"uzrast" bson:"uzrast"`
-	BrojDece        int64              `json:"broj_dece" bson:"brojDece"`
+	BrojDece        int                `json:"broj_dece" bson:"brojDece"`
 	Vrtic           *Vrtic             `json:"vrtic" bson:"vrtic"`
-	//Status          string             `json:"status" bson:"status"`
+	Status          string             `json:"status" bson:"status"`
 }
+
+//type Status string
+
+const (
+	Zatvoren = "Zatvoren"
+	Otvoren  = "Otvoren"
+)
 
 type Vrtic struct {
 	ID      primitive.ObjectID `json:"id" bson:"_id"`

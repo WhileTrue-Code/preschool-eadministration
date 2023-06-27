@@ -190,7 +190,6 @@ func (controller *HealthcareController) DeleteAppointmentByID(writer http.Respon
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Deleted"))
 }
 
 func (controller *HealthcareController) GetAllVaccinations(writer http.ResponseWriter, req *http.Request) {
@@ -297,6 +296,21 @@ func (controller *HealthcareController) CreateNewVaccination(writer http.Respons
 	writer.WriteHeader(http.StatusOK)
 }
 
+func (controller *HealthcareController) SetChildHealthReport(writer http.ResponseWriter, req *http.Request) {
+	var zdravstvenoStanje model.ZdravstvenoStanje
+	err := json.NewDecoder(req.Body).Decode(&zdravstvenoStanje)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		writer.Write([]byte("There is a problem in decoding JSON"))
+		return
+	}
+
+	value := controller.service.SetChildHealthReport(&zdravstvenoStanje)
+
+	jsonResponse(value, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
 func (controller *HealthcareController) SetVaccination(writer http.ResponseWriter, req *http.Request) {
 	objectID, err := getIDFromReqAsPrimitive(writer, req)
 
@@ -324,7 +338,6 @@ func (controller *HealthcareController) DeleteVaccinationByID(writer http.Respon
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Deleted"))
 }
 
 func (controller *HealthcareController) GetMe(writer http.ResponseWriter, req *http.Request) {
@@ -348,10 +361,10 @@ func (controller *HealthcareController) AddPersonToRegistry(writer http.Response
 		return
 	}
 
-	newUser, err := controller.service.AddPersonToRegistry(&user)
-	if err != nil {
-		writer.WriteHeader(http.StatusInternalServerError)
-		writer.Write([]byte("Error adding person to Registry in Service"))
+	newUser, value := controller.service.AddPersonToRegistry(&user)
+	if value == 1 {
+		writer.WriteHeader(http.StatusAccepted)
+		writer.Write([]byte("User already exists in database"))
 		return
 	}
 

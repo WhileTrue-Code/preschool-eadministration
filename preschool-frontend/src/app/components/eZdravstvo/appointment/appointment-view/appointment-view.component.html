@@ -1,0 +1,19 @@
+<mat-card class="appointment-card">
+    <mat-card-title *ngIf="isTaken()" class="appointment-title" [routerLink]="['/Appointment-View', appointment.id]">
+      Pregled
+    </mat-card-title>
+    <mat-card-title *ngIf="!isTaken()" class="appointment-title" [routerLink]="['/Appointment-View', appointment.id]">
+      Slobodan Pregled
+    </mat-card-title>
+    <mat-card-title class="appointment-doctor">Doktor: {{appointment.doctor.ime + " " + appointment.doctor.prezime}}</mat-card-title>
+    <mat-card-title *ngIf="isTaken()" class="appointment-user">Pacijent: {{appointment.user.ime}}</mat-card-title>
+    <!-- <mat-card-title class="appointment-day">Dan: {{appointment.dayOfAppointment * 1000 | date: "shortDate"}}</mat-card-title> -->
+    <mat-card-content>
+      <p class="appointment-start">Početak: {{appointment.startOfAppointment * 1000 | date: "longDate"}}</p>
+      <p class="appointment-end">Kraj: {{appointment.endOfAppointment * 1000 | date: "longDate"}}</p>
+    </mat-card-content>
+    <div class="form-group form-check">
+      <button *ngIf="!isMyAppointment()" type="submit" class="btn btn-success" (click)="update()">Rezerviši</button>
+      <button *ngIf="isMyAppointment()" type="submit" class="btn btn-danger" (click)="delete()">Ukloni</button>
+    </div>
+  </mat-card>

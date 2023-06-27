@@ -12,6 +12,8 @@
     <p class="competition-krajKonkursa"><b>Kraj konkursa:</b> {{competition.kraj_konkursa * 1000 | date:"medium"}}</p>
     <p class="competition-uzrast"><b>Uzrast:</b> {{competition.uzrast}}</p>
     <p class="competition-brojDece"><b>Broj dece:</b> {{competition.broj_dece}}</p>
+    <p class="competition-status"><b>Status konkursa:</b> {{competition.status}}</p>
+
 
     <div *ngIf="competition.vrtic != null">
       <h2>Podaci o vrticu:</h2>

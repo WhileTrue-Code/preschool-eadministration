@@ -1,6 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { AprCompany } from 'src/app/models/aprAccount.model';
+import { Router } from '@angular/router';
+import { Company } from 'src/app/models/aprAccount.model';
 import { AprService } from 'src/app/services/apr.service';
 
 @Component({
@@ -10,10 +11,11 @@ import { AprService } from 'src/app/services/apr.service';
 })
 export class MyAprsComponent implements OnInit {
 
-  companies: AprCompany[] = []
+  companies: Company[] = []
   permissionErr: string = ""
 
-  constructor(private aprService: AprService) { }
+  constructor(private aprService: AprService,
+              private router: Router) { }
 
   ngOnInit(): void {
     
@@ -25,7 +27,7 @@ export class MyAprsComponent implements OnInit {
 
     this.aprService.GetAprCompaniesByFounderID()
     .subscribe({
-      next: (response: AprCompany[]) => {
+      next: (response: Company[]) => {
         console.log(response)
         this.companies = response
       },
@@ -45,7 +47,7 @@ export class MyAprsComponent implements OnInit {
   }
 
   redirectToRegister() {
-
+    this.router.navigate(['/RegisterApr'])
   }
 
 }

@@ -1,0 +1,132 @@
+<section class="vh-100 mt-5">
+    <div class="mask d-flex align-items-center h-80 gradient-custom-3">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100" >
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Dodavanje Osobe</h2>
+  
+                <form [formGroup]="formGroup">
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="ime" class="form-control form-control-lg" formControlName="ime"
+                    [ngClass]="{ 'is-invalid': submitted && group['ime'].errors }" />
+                    <div *ngIf="submitted && group['ime'].errors" class="invalid-feedback">
+                      <div *ngIf="group['ime'].errors['required']">Ime je obavezno.</div>
+                    </div>
+                    <label class="form-label" for="ime">Ime</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="prezime" class="form-control form-control-lg" formControlName="prezime" 
+                    [ngClass]="{ 'is-invalid': submitted && group['prezime'].errors }"/>
+                    <div *ngIf="submitted && group['prezime'].errors" class="invalid-feedback">
+                      <div *ngIf="group['prezime'].errors['required']">Prezime je obavezno.</div>
+                    </div>
+                    <label class="form-label" for="prezime">Prezime</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="ime_oca" class="form-control form-control-lg" formControlName="ime_oca" 
+                    [ngClass]="{ 'is-invalid': submitted && group['ime_oca'].errors }"/>
+                    <div *ngIf="submitted && group['ime_oca'].errors" class="invalid-feedback">
+                      <div *ngIf="group['ime_oca'].errors['required']">Ime oca je obavezno.</div>
+                    </div>
+                    <label class="form-label" for="ime_oca">Ime oca</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="jmbg_oca" class="form-control form-control-lg" formControlName="jmbg_oca" 
+                    [ngClass]="{ 'is-invalid': submitted && group['jmbg_oca'].errors }"/>
+                    <div *ngIf="submitted && group['jmbg_oca'].errors" class="invalid-feedback">
+                      <div *ngIf="group['jmbg_oca'].errors['required']">JMBG oca je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="jmbg_oca">JMBG oca</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="ime_majke" class="form-control form-control-lg" formControlName="ime_majke" 
+                    [ngClass]="{ 'is-invalid': submitted && group['ime_majke'].errors }"/>
+                    <div *ngIf="submitted && group['ime_majke'].errors" class="invalid-feedback">
+                      <div *ngIf="group['ime_majke'].errors['required']">Ime majke je obavezno.</div>
+                    </div>
+                    <label class="form-label" for="ime_majke">Ime majke</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="jmbg_majke" class="form-control form-control-lg" formControlName="jmbg_majke" 
+                    [ngClass]="{ 'is-invalid': submitted && group['jmbg_majke'].errors }"/>
+                    <div *ngIf="submitted && group['jmbg_majke'].errors" class="invalid-feedback">
+                      <div *ngIf="group['jmbg_majke'].errors['required']">JMBG majke je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="jmbg_majke">JMBG majke</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="date" id="datum_rodjenja" class="form-control form-control-lg" formControlName="datum_rodjenja" 
+                    [ngClass]="{ 'is-invalid': submitted && group['datum_rodjenja'].errors }"/>
+                    <div *ngIf="submitted && group['datum_rodjenja'].errors" class="invalid-feedback">
+                      <div *ngIf="group['datum_rodjenja'].errors['required']">Datum je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="datum_rodjenja">Datum rođenja</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="mesto_rodjenja" class="form-control form-control-lg" formControlName="mesto_rodjenja" 
+                    [ngClass]="{ 'is-invalid': submitted && group['mesto_rodjenja'].errors }"/>
+                    <div *ngIf="submitted && group['mesto_rodjenja'].errors" class="invalid-feedback">
+                      <div *ngIf="group['mesto_rodjenja'].errors['required']">Mesto rođenja je obavezno.</div>
+                    </div>
+                    <label class="form-label" for="mesto_rodjenja">Mesto rođenja</label>
+                  </div>
+  
+                  <div class="form-outline mb-4">
+                    <input type="text" id="jmbg" class="form-control form-control-lg" formControlName="jmbg" 
+                    [ngClass]="{ 'is-invalid': submitted && group['jmbg'].errors }"/>
+                    <div *ngIf="submitted && group['jmbg'].errors" class="invalid-feedback">
+                      <div *ngIf="group['jmbg'].errors['required']">JMBG je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="jmbg">JMBG</label>
+                  </div>
+                  
+                  <div class="form-outline mb-4">
+                    <select id="pol" class="form-control form-control-lg" formControlName="pol"
+                    [ngClass]="{ 'is-invalid': submitted && group['pol'].errors }">
+                      <option [value]="pol" *ngFor="let pol of polovi">{{pol}}</option>
+                    </select>
+                    <div *ngIf="submitted && group['pol'].errors" class="invalid-feedback">
+                      <div *ngIf="group['pol'].errors['required']">Pol je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="pol">Pol</label>
+                  </div>
+  
+                  <div class="form-outline mb-4">
+                    <select id="drzava" class="form-control form-control-lg" formControlName="drzava"
+                    [ngClass]="{ 'is-invalid': submitted && group['drzava'].errors }">
+                      <option [value]="drzava" *ngFor="let drzava of drzave">{{drzava}}</option>
+                    </select>
+                    <div *ngIf="submitted && group['drzava'].errors" class="invalid-feedback">
+                      <div *ngIf="group['drzava'].errors['required']">Država je obavezna.</div>
+                    </div>
+                    <label class="form-label" for="drzava">Država</label>
+                  </div>
+
+                  <div *ngIf="userAlreadyExists">
+                    <h1 class="user-exists">Korisnik sa tim JMBG već postoji</h1>
+                  </div>
+  
+                  <div class="d-flex justify-content-center">
+                    <button type="button"
+                            class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body" (click)="onSubmit()">Prijavite se</button>
+                  </div>
+                </form>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

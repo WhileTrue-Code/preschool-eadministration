@@ -1,0 +1,50 @@
+.vaccination-card {
+    max-width: 530px;
+    margin-top: 30px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+.vaccination-title {
+  font-size: 22px;
+  text-align: center;
+  color:blue;
+  margin-bottom: 20px;
+}
+
+.vaccination-doctor {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.vaccination-user {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.vaccination-day {
+  font-size: 17px;
+  text-align: center;
+}
+
+.vaccination-start {
+  font-size: 17px;
+  text-align: center;
+}
+
+.vaccination-end {
+  font-size: 17px;
+  text-align: center;
+}
+
+.btn-success {
+  margin-top: 20px;
+  margin-left: 180px;
+}
+
+.btn-danger {
+  margin-top: 20px;
+  margin-left: 180px;
+}

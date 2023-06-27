@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { AprCompany } from 'src/app/models/aprAccount.model';
+import { Company } from 'src/app/models/aprAccount.model';
 
 @Component({
   selector: 'app-apr-list-item',
@@ -11,7 +11,7 @@ export class AprListItemComponent implements OnInit {
 
   constructor() { }
 
-  @Input() apr: AprCompany = new AprCompany()
+  @Input() apr: Company = new Company()
 
   ngOnInit(): void {
   }

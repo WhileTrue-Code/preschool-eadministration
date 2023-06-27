@@ -1,0 +1,84 @@
+<mat-card style="width: 50%; margin:auto; margin-top: 10px;">
+    <mat-card-title class="card-title" style="text-align: center; margin-bottom: 15px;">Registracija zaposlenog</mat-card-title>
+    <div class="form-group">
+        <form [formGroup]="formGroup">
+            <mat-card-content>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Ime</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="firstName"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['firstName'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['firstName'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['firstName'].errors['required']">Ime zaposlenog je obavezno.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Prezime</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="lastName"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['lastName'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['lastName'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['lastName'].errors['required']">Prezime zaposlenog je obavezno.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Adresa zaposlenog</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="address"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['address'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['address'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['address'].errors['required']">Adresa zaposlenog je obavezna.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">JMBG</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="jmbg"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['jmbg'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['jmbg'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['jmbg'].errors['required']">JMBG zaposlenog je obavezan ukoliko ....</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Broj licne karte</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="idCardNumber"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['brLk'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['idCardNumber'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['idCardNumber'].errors['required']">
+                            Broj licne karte zaposlenog je obavezan ukoliko ....
+                        </div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Broj pasosa</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="passportNumber"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['passportNumber'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['passportNumber'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['passportNumber'].errors['required']">
+                            Broj pasosa zaposlenog je obavezan ukoliko ....
+                        </div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Tip ugovora</h2>
+                    <select class="form-control form-select" formControlName="employmentStatus" id="employmentStatus">
+                        <option class="form-control form-option" value="definite_contract">Ugovor na odredjeno</option>
+                        <option class="form-control form-option" value="indefinite_contract">Ugovor na neodredjeno</option>
+                        <option class="form-control form-option" value="temporary_works">Ugovor o povremeno privremenom radu</option>
+                    </select>
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;" 
+                [hidden]="registerEmployeeForm['employmentStatus'].value !== 'definite_contract'">
+                    <h2 class="box-title">Trajanje ugovora</h2>
+                    <input type="number" maxlength="30" class="form-control" formControlName="employmentDuration"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['employmentDuration'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['employmentDuration'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['employmentDuration'].errors['required']">
+                            Broj pasosa zaposlenog je obavezan ukoliko ....
+                        </div>
+                    </div>  
+                </div>
+ 
+                <div class="form-group form-check mt-4" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Registruj zaposlenog</button>
+                </div>
+            </mat-card-content>
+        </form>
+    </div>
+</mat-card>

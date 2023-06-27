@@ -18,7 +18,7 @@ export class PrijavaComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute) { }
 
-    vrticForm: FormGroup = new FormGroup({
+    prijavaForm: FormGroup = new FormGroup({
       jmbg: new FormControl(''),
       datum_rodjenja: new FormControl(''),
       ime: new FormControl(''),
@@ -31,19 +31,19 @@ export class PrijavaComponent implements OnInit {
 
     onSubmit(){
       this.submitted = true;
-      if (this.vrticForm.invalid) {
+      if (this.prijavaForm.invalid) {
         return;
       }
 
-      var DatumRodjenja: Date = new Date(this.vrticForm.get('datum_rodjenja')?.value)
+      var DatumRodjenja: Date = new Date(this.prijavaForm.get('datum_rodjenja')?.value)
 
       let dodajPrijavu: Prijava = new Prijava();
-      dodajPrijavu.dete.jmbg = this.vrticForm.get("jmbg")?.value;
+      dodajPrijavu.dete.jmbg = this.prijavaForm.get("jmbg")?.value;
       dodajPrijavu.dete.datum_rodjenja = Number(DatumRodjenja.getTime()) / 1000
-      dodajPrijavu.dete.ime = this.vrticForm.get("ime")?.value;
-      dodajPrijavu.dete.prezime = this.vrticForm.get("prezime")?.value;
-      dodajPrijavu.dete.opstina = this.vrticForm.get("opstina")?.value;
-      dodajPrijavu.dete.adresa = this.vrticForm.get("adresa")?.value;
+      dodajPrijavu.dete.ime = this.prijavaForm.get("ime")?.value;
+      dodajPrijavu.dete.prezime = this.prijavaForm.get("prezime")?.value;
+      dodajPrijavu.dete.opstina = this.prijavaForm.get("opstina")?.value;
+      dodajPrijavu.dete.adresa = this.prijavaForm.get("adresa")?.value;
 
   
 

@@ -62,6 +62,9 @@ func main() {
 	deleteRouter := router.Methods(http.MethodDelete).Subrouter()
 	deleteRouter.HandleFunc("/competitions/{id}", applyCompetitionsHandler.DeleteCompetition)
 
+	changeStanjeKonkursa := router.Methods(http.MethodPut).Subrouter()
+	changeStanjeKonkursa.HandleFunc("/competitions/{id}", applyCompetitionsHandler.ChangeStatus)
+
 	postVrtic := router.Methods(http.MethodPost).Subrouter()
 	postVrtic.HandleFunc("/vrtic/add", applyCompetitionsHandler.PostVrtic)
 

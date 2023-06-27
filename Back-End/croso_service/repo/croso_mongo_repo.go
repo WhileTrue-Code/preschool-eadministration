@@ -3,6 +3,7 @@ package repo
 import (
 	"context"
 	"croso_service/domain"
+	"strconv"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -40,7 +41,7 @@ func (repo *CrosoMongoRepo) SaveCrosoAccount(crosoAccount *domain.CrosoAccount) 
 	return
 }
 
-func (repo *CrosoMongoRepo) FindCrosoAccountsByFounderID(founderID string) (results []domain.CrosoAccount, err error) {
+func (repo *CrosoMongoRepo) FindCrosoAccountsByFounderID(founderID string) (results []domain.CrosoAccount) {
 	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID}})
 	if err != nil {
 		repo.Logger.Info("Error in getting accounts by founderID",
@@ -49,7 +50,7 @@ func (repo *CrosoMongoRepo) FindCrosoAccountsByFounderID(founderID string) (resu
 		return
 	}
 
-	results = []domain.CrosoAccount{}
+	results = make([]domain.CrosoAccount, 0)
 	err = cursor.All(context.Background(), &results)
 	if err != nil {
 		repo.Logger.Info("Error in decoding by results with All()",
@@ -117,20 +118,28 @@ func (repo *CrosoMongoRepo) UpdateEmployee(employee *domain.Employee) (err error
 }
 
 func (repo *CrosoMongoRepo) FindEmployeesWithCompanyID(companyID string) (employees []domain.Employee, err error) {
-	cursor, err := repo.CollectionEmployees.Find(context.Background(), bson.D{{Key: "companyID", Value: companyID}})
+	intComp, _ := strconv.Atoi(companyID)
+	cursor, err := repo.CollectionEmployees.Find(context.Background(),
+		bson.D{
+			{Key: "companyID", Value: intComp},
+			{Key: "registrationStatus", Value: domain.ACCEPTED},
+		},
+	)
 	if err != nil {
 		repo.Logger.Error("error in finding employees with companyID",
 			zap.Error(err),
 		)
 		return
 	}
-
-	err = cursor.Decode(&employees)
+	employees = []domain.Employee{}
+	err = cursor.All(context.Background(), &employees)
 	if err != nil {
 		repo.Logger.Error("error in decoding cursor into slice of struct",
 			zap.Error(err),
 		)
 	}
+
+	repo.Logger.Info("logging slice", zap.Any("slice", employees))
 
 	return
 }

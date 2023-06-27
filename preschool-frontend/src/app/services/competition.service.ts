@@ -33,8 +33,8 @@ export class CompetitionService {
     //     return this.http.put(`${environment.baseApiUrl}/preschool/competitions/${competition_id}/changeStatus`, competition)
     // }
 
-    public DeleteCompetition(competition_id: string) {
-        return this.http.delete(`${environment.baseApiUrl}/preschool/competitions/${competition_id}`);
+    public updateStanjeCompetition(competition_id: string) {
+        return this.http.put(`${environment.baseApiUrl}/preschool/competitions/${competition_id}`, {});
     }
 
 

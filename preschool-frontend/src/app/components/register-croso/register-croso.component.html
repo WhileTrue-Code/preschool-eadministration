@@ -1,0 +1,26 @@
+<mat-card style="width: 50%; margin:auto; margin-top: 10px;">
+    <mat-card-title class="card-title" style="text-align: center; margin-bottom: 15px;">Registracija firme na CROSO</mat-card-title>
+    <h4 style="color:red;text-align: center; margin-bottom: 15px;">
+        Napomena: Za ovu registraciju je potrebno imati prethodno registrovanu firmu na APR servisu, <br>
+        u suprotnom Vam ova akcija nije dozvoljena
+    </h4>
+    <div class="form-group">
+        <form [formGroup]="formGroup">
+            <mat-card-content>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">PIB firme</h2>
+                    <input type="text" class="form-control" formControlName="companyID"
+                        [ngClass]="{ 'is-invalid': submitted && registerCrosoForm['companyID'].errors }">
+                    <div *ngIf="submitted && registerCrosoForm['companyID'].errors" class="invalid-feedback">
+                        <div *ngIf="registerCrosoForm['companyID'].errors['required']">Unos PIB-a firme je obavezan.</div>
+                        <div *ngIf="registerCrosoForm['companyID'].errors['exactValue']">PIB firme se sastoji od 8 cifara.</div>
+                        <div *ngIf="registerCrosoForm['companyID'].errors['pattern']">PIB firme se sastoji samo od cifara.</div>
+                    </div>   
+                </div>
+                <div class="form-group form-check mt-4" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Registruj firmu</button>
+                </div>
+            </mat-card-content>
+        </form> 
+    </div>
+</mat-card>

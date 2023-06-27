@@ -1,0 +1,50 @@
+.appointment-card {
+  max-width: 530px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+  
+.appointment-title {
+  font-size: 22px;
+  text-align: center;
+  color:blue;
+  margin-bottom: 20px;
+}
+
+.appointment-doctor {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.appointment-user {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.appointment-day {
+  font-size: 17px;
+  text-align: center;
+}
+
+.appointment-start {
+  font-size: 17px;
+  text-align: center;
+}
+
+.appointment-end {
+  font-size: 17px;
+  text-align: center;
+}
+
+.btn-success {
+  margin-top: 20px;
+  margin-left: 180px;
+}
+
+.btn-danger {
+  margin-top: 20px;
+  margin-left: 180px;
+}

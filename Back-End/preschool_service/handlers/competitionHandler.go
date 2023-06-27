@@ -46,6 +46,7 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	vars := mux.Vars(h)
 	competitionID := vars["id"]
 
+	//cole **********
 	isParent, errr := p.registarService.GetIsParent(insertComp.Dete.JMBG, authToken)
 	if errr != nil {
 		http.Error(rw, errr.Error(), http.StatusInternalServerError)
@@ -56,7 +57,9 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 		http.Error(rw, "You are not a parent "+insertComp.Dete.JMBG, 403)
 		return
 	}
+	//cole **********
 
+	// silja***********
 	splitted := strings.Split(authToken, " ")
 	claims := authorization.GetMapClaims([]byte(splitted[1]))
 
@@ -75,8 +78,11 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	err = json.Unmarshal(msg.Data, &response)
 
 	if response["employed"] {
-		insertComp.Bodovi = 1
+		insertComp.Bodovi = 6
 	}
+	// silja***********
+	println(request)
+	println(response)
 
 	err = p.repo.ApplyForCompetition(competitionID, &insertComp)
 	if err != nil {
@@ -252,22 +258,17 @@ func (p *ApplyCompetitionHandler) PostVrtic(rw http.ResponseWriter, h *http.Requ
 	rw.WriteHeader(http.StatusCreated)
 }
 
-//func (p *ApplyCompetitionHandler) PatchStatusCompetition(rw http.ResponseWriter, h *http.Request) {
-//	vars := mux.Vars(h)
-//	id := vars["id"]
-//
-//	var patchCompStatus data.Competition
-//	eerr := json.NewDecoder(h.Body).Decode(&patchCompStatus)
-//
-//	if eerr != nil {
-//		fmt.Println(eerr)
-//		http.Error(rw, "Cannot unmarshal body", 500)
-//		return
-//	}
-//
-//	p.repo.UpdateCompetitionStatus(id, patchCompStatus)
-//	rw.WriteHeader(http.StatusOK)
-//}
+func (p *ApplyCompetitionHandler) ChangeStatus(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	var status string
+	d := json.NewDecoder(h.Body)
+	d.Decode(&status)
+
+	p.repo.ChangeStatus(id)
+	rw.WriteHeader(http.StatusOK)
+}
 
 func (p *ApplyCompetitionHandler) DeleteCompetition(rw http.ResponseWriter, h *http.Request) {
 	vars := mux.Vars(h)

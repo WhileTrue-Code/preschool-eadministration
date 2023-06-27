@@ -10,11 +10,19 @@ export class PrijavaItemComponent implements OnInit {
 
 
   @Input() prijava: Prijava = new Prijava();
-
+  
   
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  // isUpisan(): boolean {
+  //   if (this.prijava.status = "Upisan") {
+  //     return true;
+  //   }
+  //   else {
+  //     return false;
+  //   }
+  // }
 }

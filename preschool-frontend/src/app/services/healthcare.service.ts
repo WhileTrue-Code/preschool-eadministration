@@ -47,6 +47,10 @@ export class HealthcareService {
         return this.http.put(`${environment.baseApiUrl}/${this.url}/setAppointment/` + id, null);
     }
 
+    public DeleteAppointment(id: string) {
+        return this.http.delete(`${environment.baseApiUrl}/${this.url}/deleteAppointmentByID/` + id);
+    }
+
     public GetMe(): Observable<User> {
         return this.http.get<User>(`${environment.baseApiUrl}/${this.url}/getMe`);
     }
@@ -81,5 +85,13 @@ export class HealthcareService {
 
     public SetVaccination(id: string) {
         return this.http.put(`${environment.baseApiUrl}/${this.url}/setVaccination/` + id, null);
+    }
+
+    public DeleteVaccination(id: string) {
+        return this.http.delete(`${environment.baseApiUrl}/${this.url}/deleteVaccinationByID/` + id);
+    }
+
+    public AddPersonToRegistry(user: User): Observable<User> {
+        return this.http.post<User>(`${environment.baseApiUrl}/${this.url}/addPersonToRegistry`, user)
     }
 }
