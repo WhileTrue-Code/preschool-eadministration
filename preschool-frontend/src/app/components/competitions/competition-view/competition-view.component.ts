@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { fakeAsync } from '@angular/core/testing';
 import { FormBuilder } from '@angular/forms';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Competition } from 'src/app/models/competition.model';
@@ -17,6 +18,30 @@ export class CompetitionViewComponent implements OnInit {
   competition_id = String(this.route.snapshot.paramMap.get("id"))
   competition:Competition = new Competition;
 
+
+  isZatvoren(): boolean {
+    if(this.competition.status == "Zatvoren")
+    {
+      return false;
+    }
+
+    else {
+      return true;
+    }
+  }
+
+  
+  isOtvoren(): boolean {
+    if(this.competition.status == "Zatvoren")
+    {
+      return true;
+    }
+
+    else {
+      return false;
+    }
+  }
+  
   
 
   ngOnInit(): void {
@@ -34,8 +59,8 @@ export class CompetitionViewComponent implements OnInit {
     status: ['']
   });
 
-  deleteCompetition(competition_id: string){
-    this.competitionService.DeleteCompetition(competition_id).subscribe((data) =>{
+  updateStanjeCompetition(competition_id: string){
+    this.competitionService.updateStanjeCompetition(competition_id).subscribe((data) =>{
       console.log(data)
       
     })

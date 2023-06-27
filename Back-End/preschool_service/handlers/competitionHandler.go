@@ -75,7 +75,7 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	err = json.Unmarshal(msg.Data, &response)
 
 	if response["employed"] {
-		insertComp.Bodovi = 1
+		insertComp.Bodovi = 6
 	}
 
 	println(request)
@@ -255,22 +255,17 @@ func (p *ApplyCompetitionHandler) PostVrtic(rw http.ResponseWriter, h *http.Requ
 	rw.WriteHeader(http.StatusCreated)
 }
 
-//func (p *ApplyCompetitionHandler) PatchStatusCompetition(rw http.ResponseWriter, h *http.Request) {
-//	vars := mux.Vars(h)
-//	id := vars["id"]
-//
-//	var patchCompStatus data.Competition
-//	eerr := json.NewDecoder(h.Body).Decode(&patchCompStatus)
-//
-//	if eerr != nil {
-//		fmt.Println(eerr)
-//		http.Error(rw, "Cannot unmarshal body", 500)
-//		return
-//	}
-//
-//	p.repo.UpdateCompetitionStatus(id, patchCompStatus)
-//	rw.WriteHeader(http.StatusOK)
-//}
+func (p *ApplyCompetitionHandler) ChangeStatus(rw http.ResponseWriter, h *http.Request) {
+	vars := mux.Vars(h)
+	id := vars["id"]
+
+	var status string
+	d := json.NewDecoder(h.Body)
+	d.Decode(&status)
+
+	p.repo.ChangeStatus(id)
+	rw.WriteHeader(http.StatusOK)
+}
 
 func (p *ApplyCompetitionHandler) DeleteCompetition(rw http.ResponseWriter, h *http.Request) {
 	vars := mux.Vars(h)

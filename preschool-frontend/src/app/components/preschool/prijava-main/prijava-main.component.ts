@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Competition } from 'src/app/models/competition.model';
 import { Prijava } from 'src/app/models/prijava';
 import { CompetitionService } from 'src/app/services/competition.service';
 
@@ -10,12 +11,13 @@ import { CompetitionService } from 'src/app/services/competition.service';
 })
 export class PrijavaMainComponent implements OnInit {
 
+  @Input() competition: Competition = new Competition();
   prijave: Array<Prijava> = [];
   comp_id = String(this.route.snapshot.paramMap.get("id"))
 
 
-  constructor(private competitionService : CompetitionService,
-    private route:ActivatedRoute) { }
+  constructor(private competitionService: CompetitionService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     console.log(this.comp_id)
@@ -29,6 +31,7 @@ export class PrijavaMainComponent implements OnInit {
         }
       })
   }
+
 
   isLoggedIn(): boolean {
     if (localStorage.getItem("authToken") != null) {

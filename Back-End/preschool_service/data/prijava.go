@@ -11,7 +11,16 @@ type Prijava struct {
 	CompetitionID primitive.ObjectID `json:"competition_id" bson:"_idCompetition"`
 	Bodovi        int                `json:"bodovi" bson:"bodovi"`
 	Dete          Dete               `json:"dete" bson:"dete"`
+	Status        string             `json:"status" bson:"status"`
 }
+
+//type Status string
+
+const (
+	Prijavljen = "Prijavljen"
+	Odbijen    = "Odbijen"
+	Upisan     = "Upisan"
+)
 
 type Dete struct {
 	ID                primitive.ObjectID `json:"id" bson:"_id"`

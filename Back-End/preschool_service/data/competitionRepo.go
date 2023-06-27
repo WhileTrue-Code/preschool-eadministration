@@ -221,12 +221,64 @@ func (pr *ApplyCompetitionRepo) GetVrticById(id string) (*Vrtic, error) {
 	return &vrtic, nil
 }
 
+func (pr *ApplyCompetitionRepo) ChangeStatus(id string) error {
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	compCollection := pr.getCollection()
+	prijavaCollection := pr.getCollectionCompetitionApply()
+
+	// What happens if set value for index=10, but we only have 3 phone numbers?
+	// -> Every value in between will be set to an empty string
+	objID, _ := primitive.ObjectIDFromHex(id)
+	filter := bson.D{{Key: "_id", Value: objID}}
+	update := bson.M{"$set": bson.M{
+		"status": "Zatvoren",
+	}}
+
+	var competition Competition
+	err := compCollection.FindOne(ctx, bson.M{"_id": objID}).Decode(&competition)
+	if err != nil {
+		pr.logger.Println(err)
+		return nil
+	}
+
+	prijave, _ := pr.GetAllApplyesForOneCompetition(id)
+
+	for i, prijava := range prijave {
+		if i <= competition.BrojDece {
+			filter1 := bson.D{{Key: "_id", Value: prijava.ID}}
+			update1 := bson.M{"$set": bson.M{
+				"status": "Upisan",
+			}}
+			prijavaCollection.UpdateOne(ctx, filter1, update1)
+		} else {
+			filter2 := bson.D{{Key: "_id", Value: prijava.ID}}
+			update2 := bson.M{"$set": bson.M{
+				"status": "Odbijen",
+			}}
+			prijavaCollection.UpdateOne(ctx, filter2, update2)
+		}
+
+	}
+
+	result, err := compCollection.UpdateOne(ctx, filter, update)
+	pr.logger.Printf("Documents matched: %v\n", result.MatchedCount)
+	pr.logger.Printf("Documents updated: %v\n", result.ModifiedCount)
+
+	if err != nil {
+		pr.logger.Println(err)
+		return err
+	}
+	return nil
+}
+
 func (pr *ApplyCompetitionRepo) GetAllApplyesForOneCompetition(compId string) (prijave Prijave, err error) {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
 	competitionCollection := pr.getCollectionCompetitionApply()
 
+	//var konkurs Competition
 	var prijave2 Prijave
 	competitionID, _ := primitive.ObjectIDFromHex(compId)
 
@@ -236,8 +288,8 @@ func (pr *ApplyCompetitionRepo) GetAllApplyesForOneCompetition(compId string) (p
 		}
 	}
 	fmt.Println(prijave2)
-
-	usersCursor, err := competitionCollection.Find(ctx, bson.M{"_idCompetition": competitionID})
+	opts := options.Find().SetSort(bson.D{{"bodovi", -1}})
+	usersCursor, err := competitionCollection.Find(ctx, bson.M{"_idCompetition": competitionID}, opts)
 	if err != nil {
 		pr.logger.Println(err)
 		return nil, err
@@ -257,6 +309,7 @@ func (pr *ApplyCompetitionRepo) PostCompetition(vrticID string, competition *Com
 
 	competition.ID = primitive.NewObjectID()
 	competition.Vrtic, _ = pr.GetVrticById(vrticID)
+	competition.Status = "Otvoren"
 
 	result, err := competitionsCollection.InsertOne(ctx, &competition)
 	if err != nil {
@@ -296,6 +349,7 @@ func (pr *ApplyCompetitionRepo) ApplyForCompetition(competitionID string, prijav
 	prijava.CompetitionID, _ = primitive.ObjectIDFromHex(competitionID) //proveriti
 	//zdravstvenoStanje := client.getZS(jmbg)
 	prijava.Dete.ID = primitive.NewObjectID()
+	prijava.Status = "Prijavljen"
 
 	dete := Dete{
 		ID:            prijava.Dete.ID,
