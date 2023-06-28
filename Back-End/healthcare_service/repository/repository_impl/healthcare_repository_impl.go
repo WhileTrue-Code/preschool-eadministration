@@ -11,26 +11,31 @@ import (
 )
 
 type HealthcareRepositoryImpl struct {
-	appointment *mongo.Collection
-	vaccination *mongo.Collection
+	appointment       *mongo.Collection
+	vaccination       *mongo.Collection
+	zdravstvenoStanje *mongo.Collection
 }
 
 const (
-	DATABASE               = "healthcare"
-	COLLECTION_APPOINTMENT = "appointment"
-	COLLECTION_VACCINATION = "vaccination"
+	DATABASE                      = "healthcare"
+	COLLECTION_APPOINTMENT        = "appointment"
+	COLLECTION_VACCINATION        = "vaccination"
+	COLLECTION_ZDRAVSTVENO_STANJE = "zdravstvenoStanje"
 )
 
 func NewAuthRepositoryImpl(client *mongo.Client) repository.HealthcareRepository {
 	appointment := client.Database(DATABASE).Collection(COLLECTION_APPOINTMENT)
 	vaccination := client.Database(DATABASE).Collection(COLLECTION_VACCINATION)
+	zdravstvenoStanje := client.Database(DATABASE).Collection(COLLECTION_ZDRAVSTVENO_STANJE)
 
 	return &HealthcareRepositoryImpl{
-		appointment: appointment,
-		vaccination: vaccination,
+		appointment:       appointment,
+		vaccination:       vaccination,
+		zdravstvenoStanje: zdravstvenoStanje,
 	}
 }
 
+//Appointments
 func (repository *HealthcareRepositoryImpl) GetAllAppointments() ([]*model.Appointment, error) {
 	filter := bson.M{}
 	return repository.filterAppointments(filter)
@@ -108,6 +113,7 @@ func (repository *HealthcareRepositoryImpl) filterOneAppointment(filter interfac
 	return
 }
 
+//Vacinations
 func (repository *HealthcareRepositoryImpl) GetAllVaccinations() ([]*model.Vaccination, error) {
 	filter := bson.D{{}}
 	return repository.filterVaccinations(filter)
@@ -185,6 +191,42 @@ func (repository *HealthcareRepositoryImpl) filterOneVaccination(filter interfac
 	return
 }
 
+//ZdravstvenoStanje
+func (repository *HealthcareRepositoryImpl) GetAllZdravstvenoStanje() ([]*model.ZdravstvenoStanje, error) {
+	filter := bson.D{{}}
+	return repository.filterZdravstvenaStanja(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) GetZdravstvenoStanjeByID(id primitive.ObjectID) (*model.ZdravstvenoStanje, error) {
+	filter := bson.M{"_id": id}
+	return repository.filterOneZdravstvenoStanje(filter)
+}
+
+func (repository *HealthcareRepositoryImpl) CreateNewZdravstvenoStanje(zdravstvenoStanje *model.ZdravstvenoStanje) error {
+	_, err := repository.zdravstvenoStanje.InsertOne(context.Background(), zdravstvenoStanje)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (repository *HealthcareRepositoryImpl) filterZdravstvenaStanja(filter interface{}) ([]*model.ZdravstvenoStanje, error) {
+	cursor, err := repository.zdravstvenoStanje.Find(context.Background(), filter)
+	defer cursor.Close(context.TODO())
+
+	if err != nil {
+		return nil, err
+	}
+
+	return decodeZdravstvenoStanje(cursor)
+}
+
+func (repository *HealthcareRepositoryImpl) filterOneZdravstvenoStanje(filter interface{}) (zdravstvenoStanje *model.ZdravstvenoStanje, err error) {
+	result := repository.zdravstvenoStanje.FindOne(context.Background(), filter)
+	err = result.Decode(&zdravstvenoStanje)
+	return
+}
+
 func decodeAppointment(cursor *mongo.Cursor) (appointments []*model.Appointment, err error) {
 	for cursor.Next(context.Background()) {
 		var appointment model.Appointment
@@ -206,6 +248,19 @@ func decodeVaccination(cursor *mongo.Cursor) (vaccinations []*model.Vaccination,
 			return
 		}
 		vaccinations = append(vaccinations, &vaccination)
+	}
+	err = cursor.Err()
+	return
+}
+
+func decodeZdravstvenoStanje(cursor *mongo.Cursor) (zdravstvenaStanja []*model.ZdravstvenoStanje, err error) {
+	for cursor.Next(context.Background()) {
+		var zdravstvenoStanje model.ZdravstvenoStanje
+		err = cursor.Decode(&zdravstvenoStanje)
+		if err != nil {
+			return
+		}
+		zdravstvenaStanja = append(zdravstvenaStanja, &zdravstvenoStanje)
 	}
 	err = cursor.Err()
 	return

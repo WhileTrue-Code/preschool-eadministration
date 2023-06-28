@@ -1,0 +1,79 @@
+<section class="vh-100 mt-5">
+    <div class="mask d-flex align-items-center h-80 gradient-custom-3">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100" >
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Novo Zdravstveno Stanje</h2>
+  
+                <form [formGroup]="formGroup">
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="jmbg" class="form-control form-control-lg" formControlName="jmbg"
+                    [ngClass]="{ 'is-invalid': submitted && group['jmbg'].errors }" />
+                    <div *ngIf="submitted && group['jmbg'].errors" class="invalid-feedback">
+                      <div *ngIf="group['jmbg'].errors['required']">JMBG je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="jmbg">JMBG</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="zdravstveni_problemi" class="form-control form-control-lg" formControlName="zdravstveni_problemi" 
+                    [ngClass]="{ 'is-invalid': submitted && group['zdravstveni_problemi'].errors }"/>
+                    <div *ngIf="submitted && group['zdravstveni_problemi'].errors" class="invalid-feedback">
+                      <div *ngIf="group['zdravstveni_problemi'].errors['required']">Zdravstveni problemi su obavezni.</div>
+                    </div>
+                    <label class="form-label" for="zdravstveni_problemi">Zdravstveni Problemi</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="specificna_ishrana" class="form-control form-control-lg" formControlName="specificna_ishrana" 
+                    [ngClass]="{ 'is-invalid': submitted && group['specificna_ishrana'].errors }"/>
+                    <div *ngIf="submitted && group['specificna_ishrana'].errors" class="invalid-feedback">
+                      <div *ngIf="group['specificna_ishrana'].errors['required']">Specifična ishrana je obavezna.</div>
+                    </div>
+                    <label class="form-label" for="specificna_ishrana">Specifična ishrana</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="dom_zdravlja_u_kom_je_karton" class="form-control form-control-lg" formControlName="dom_zdravlja_u_kom_je_karton" 
+                    [ngClass]="{ 'is-invalid': submitted && group['dom_zdravlja_u_kom_je_karton'].errors }"/>
+                    <div *ngIf="submitted && group['dom_zdravlja_u_kom_je_karton'].errors" class="invalid-feedback">
+                      <div *ngIf="group['dom_zdravlja_u_kom_je_karton'].errors['required']">Dom zdravlja u kom je karton je obavezan.</div>
+                    </div>
+                    <label class="form-label" for="dom_zdravlja_u_kom_je_karton">Dom zdravlja u kom je karton</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="smetnje_u_razvoju" class="form-control form-control-lg" formControlName="smetnje_u_razvoju" 
+                    [ngClass]="{ 'is-invalid': submitted && group['smetnje_u_razvoju'].errors }"/>
+                    <div *ngIf="submitted && group['smetnje_u_razvoju'].errors" class="invalid-feedback">
+                      <div *ngIf="group['smetnje_u_razvoju'].errors['required']">Smetnje u razvoju su obavezne.</div>
+                    </div>
+                    <label class="form-label" for="smetnje_u_razvoju">Smetnje u razvoju</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="text" id="specificni_podaci" class="form-control form-control-lg" formControlName="specificni_podaci" 
+                    [ngClass]="{ 'is-invalid': submitted && group['specificni_podaci'].errors }"/>
+                    <div *ngIf="submitted && group['specificni_podaci'].errors" class="invalid-feedback">
+                      <div *ngIf="group['specificni_podaci'].errors['required']">Specifični podaci su obavezni.</div>
+                    </div>
+                    <label class="form-label" for="specificni_podaci">Specifični podaci</label>
+                  </div>
+                         
+                  <div class="d-flex justify-content-center">
+                    <button type="button"
+                            class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body" (click)="onSubmit()">Prijavite se</button>
+                  </div>
+                </form>
+  
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

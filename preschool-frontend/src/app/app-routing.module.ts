@@ -30,9 +30,7 @@ import { MyCrososComponent } from './components/my-crosos/my-crosos.component';
 import { RegisterEmployeeComponent } from './components/register-employee/register-employee.component';
 import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
 import {ViewMyRegistryComponent} from "./components/view-my-registry/view-my-registry.component";
-import { ChildrenComponent } from './components/eZdravstvo/health-status/children/children.component';
-
-
+import { ZdravstvenoStanjeAddComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-add/zdravstveno-stanje-add.component';
 
 const routes: Routes = [
   {
@@ -80,8 +78,8 @@ const routes: Routes = [
     component: VaccinationViewComponent
   },
   {
-    path: "Children",
-    component: ChildrenComponent
+    path: "Zdravstveno-Stanje-Add",
+    component: ZdravstvenoStanjeAddComponent
   },
   {
     path: "Competitions",

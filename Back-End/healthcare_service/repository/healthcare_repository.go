@@ -25,4 +25,8 @@ type HealthcareRepository interface {
 	CreateNewVaccination(vaccination *model.Vaccination) error
 	SetVaccination(vaccination *model.Vaccination) error
 	DeleteVaccinationByID(id primitive.ObjectID) error
+
+	GetAllZdravstvenoStanje() ([]*model.ZdravstvenoStanje, error)
+	GetZdravstvenoStanjeByID(id primitive.ObjectID) (*model.ZdravstvenoStanje, error)
+	CreateNewZdravstvenoStanje(zdravstvenoStanje *model.ZdravstvenoStanje) error
 }
