@@ -38,7 +38,9 @@ p, Doctor, /deleteVaccinationByID/*, DELETE
 
 p, Doctor, /allZdravstvenoStanje, GET
 p, Doctor, /getZdravstvenoStanjeByID/*, GET
+p, Doctor, /getZdravstvenoStanjeByJMBG/*, GET
 p, Doctor, /newZdravstvenoStanje, POST
+p, Doctor, /deleteZdravstvenoStanjeByJMBG/*, DELETE
 
 p, Doctor, /getMe, GET
 p, Regular, /getMe, GET

@@ -54,7 +54,9 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 
 	router.HandleFunc("/allZdravstvenoStanje", controller.GetAllZdravstvenoStanje).Methods("GET")
 	router.HandleFunc("/getZdravstvenoStanjeByID/{id}", controller.GetZdravstvenoStanjeByID).Methods("GET")
+	router.HandleFunc("/getZdravstvenoStanjeByJMBG/{jmbg}", controller.GetZdravstvenoStanjeByJMBG).Methods("GET")
 	router.HandleFunc("/newZdravstvenoStanje", controller.CreateNewZdravstvenoStanje).Methods("POST")
+	router.HandleFunc("/deleteZdravstvenoStanjeByJMBG/{jmbg}", controller.DeleteZdravstvenoStanjeByJMBG).Methods("DELETE")
 
 	router.HandleFunc("/addPersonToRegistry", controller.AddPersonToRegistry).Methods("POST")
 	router.HandleFunc("/getMe", controller.GetMe).Methods("GET")
@@ -354,12 +356,42 @@ func (controller *HealthcareController) GetZdravstvenoStanjeByID(writer http.Res
 	writer.WriteHeader(http.StatusOK)
 }
 
+func (controller *HealthcareController) GetZdravstvenoStanjeByJMBG(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	jmbg := vars["jmbg"]
+
+	zdravstvenoStanje, err := controller.service.GetZdravstvenoStanjeByJMBG(jmbg)
+	if err != nil {
+		log.Println("Error finding Zdravstveno Stanje By JMBG")
+		log.Println("Found no Zdravstveno Stanje with that JMBG")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
+	jsonResponse(zdravstvenoStanje, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
 func (controller *HealthcareController) CreateNewZdravstvenoStanje(writer http.ResponseWriter, req *http.Request) {
 	var zdravstvenoStanje model.ZdravstvenoStanje
 	err := json.NewDecoder(req.Body).Decode(&zdravstvenoStanje)
 	if err != nil {
 		writer.WriteHeader(http.StatusInternalServerError)
 		writer.Write([]byte("There is a problem in decoding JSON"))
+		return
+	}
+
+	//Validacije na frontu, ne moram bas i ovde
+	//if zdravstvenoStanje.Jmbg == "" {
+	//	writer.WriteHeader(http.StatusBadRequest)
+	//	writer.Write([]byte("JMBG is required"))
+	//	return
+	//}
+
+	existingZdravstveno, _ := controller.service.GetZdravstvenoStanjeByJMBG(zdravstvenoStanje.Jmbg)
+	if existingZdravstveno != nil {
+		writer.WriteHeader(http.StatusForbidden)
+		writer.Write([]byte("Zdravstveno Stanje with that ID already exists"))
 		return
 	}
 
@@ -370,6 +402,20 @@ func (controller *HealthcareController) CreateNewZdravstvenoStanje(writer http.R
 	}
 
 	jsonResponse(zdravstvenoStanje, writer)
+	writer.WriteHeader(http.StatusOK)
+}
+
+func (controller *HealthcareController) DeleteZdravstvenoStanjeByJMBG(writer http.ResponseWriter, req *http.Request) {
+	vars := mux.Vars(req)
+	jmbg := vars["jmbg"]
+
+	err := controller.service.DeleteZdravstvenoStanjeByJMBG(jmbg)
+	if err != nil {
+		log.Println("Error in deleting Zdravstveno Stanje by JMBG")
+		writer.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	writer.WriteHeader(http.StatusOK)
 }
 

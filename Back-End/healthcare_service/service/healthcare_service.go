@@ -347,6 +347,10 @@ func (service *HealthcareService) GetZdravstvenoStanjeByID(id primitive.ObjectID
 	return service.repository.GetZdravstvenoStanjeByID(id)
 }
 
+func (service *HealthcareService) GetZdravstvenoStanjeByJMBG(jmbg string) (*model.ZdravstvenoStanje, error) {
+	return service.repository.GetZdravstvenoStanjeByJMBG(jmbg)
+}
+
 func (service *HealthcareService) CreateNewZdravstvenoStanje(zdravstvenoStanje *model.ZdravstvenoStanje) error {
 	zdravstvenoStanje.ID = primitive.NewObjectID()
 	err := service.repository.CreateNewZdravstvenoStanje(zdravstvenoStanje)
@@ -356,6 +360,10 @@ func (service *HealthcareService) CreateNewZdravstvenoStanje(zdravstvenoStanje *
 	}
 
 	return nil
+}
+
+func (service *HealthcareService) DeleteZdravstvenoStanjeByJMBG(jmbg string) error {
+	return service.repository.DeleteZdravstvenoStanjeByJMBG(jmbg)
 }
 
 func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.User, int) {

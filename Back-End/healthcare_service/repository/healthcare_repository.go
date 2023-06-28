@@ -28,5 +28,7 @@ type HealthcareRepository interface {
 
 	GetAllZdravstvenoStanje() ([]*model.ZdravstvenoStanje, error)
 	GetZdravstvenoStanjeByID(id primitive.ObjectID) (*model.ZdravstvenoStanje, error)
+	GetZdravstvenoStanjeByJMBG(jmbg string) (*model.ZdravstvenoStanje, error)
 	CreateNewZdravstvenoStanje(zdravstvenoStanje *model.ZdravstvenoStanje) error
+	DeleteZdravstvenoStanjeByJMBG(jmbg string) error
 }

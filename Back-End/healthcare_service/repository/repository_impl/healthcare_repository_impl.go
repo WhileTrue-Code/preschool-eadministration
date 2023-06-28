@@ -202,6 +202,11 @@ func (repository *HealthcareRepositoryImpl) GetZdravstvenoStanjeByID(id primitiv
 	return repository.filterOneZdravstvenoStanje(filter)
 }
 
+func (repository *HealthcareRepositoryImpl) GetZdravstvenoStanjeByJMBG(jmbg string) (*model.ZdravstvenoStanje, error) {
+	filter := bson.M{"jmbg": jmbg}
+	return repository.filterOneZdravstvenoStanje(filter)
+}
+
 func (repository *HealthcareRepositoryImpl) CreateNewZdravstvenoStanje(zdravstvenoStanje *model.ZdravstvenoStanje) error {
 	_, err := repository.zdravstvenoStanje.InsertOne(context.Background(), zdravstvenoStanje)
 	if err != nil {
@@ -210,6 +215,15 @@ func (repository *HealthcareRepositoryImpl) CreateNewZdravstvenoStanje(zdravstve
 	return nil
 }
 
+func (repository *HealthcareRepositoryImpl) DeleteZdravstvenoStanjeByJMBG(jmbg string) error {
+	filter := bson.M{"jmbg": jmbg}
+	_, err := repository.zdravstvenoStanje.DeleteOne(context.Background(), filter)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
 func (repository *HealthcareRepositoryImpl) filterZdravstvenaStanja(filter interface{}) ([]*model.ZdravstvenoStanje, error) {
 	cursor, err := repository.zdravstvenoStanje.Find(context.Background(), filter)
 	defer cursor.Close(context.TODO())
