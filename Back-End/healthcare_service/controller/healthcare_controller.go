@@ -390,7 +390,7 @@ func (controller *HealthcareController) CreateNewZdravstvenoStanje(writer http.R
 
 	existingZdravstveno, _ := controller.service.GetZdravstvenoStanjeByJMBG(zdravstvenoStanje.Jmbg)
 	if existingZdravstveno != nil {
-		writer.WriteHeader(http.StatusForbidden)
+		writer.WriteHeader(http.StatusAccepted)
 		writer.Write([]byte("Zdravstveno Stanje with that ID already exists"))
 		return
 	}

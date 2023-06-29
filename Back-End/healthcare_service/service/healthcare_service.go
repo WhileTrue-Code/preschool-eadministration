@@ -393,3 +393,39 @@ func (service *HealthcareService) AddPersonToRegistry(user *model.User) (*model.
 
 	return user, 0
 }
+
+func (service *HealthcareService) SubscribeToNats(natsConnection *nats.Conn) {
+
+	_, err := natsConnection.QueueSubscribe(os.Getenv("GET_STANJE_BY_JMBG"), "queue-healthcare-group", func(message *nats.Msg) {
+		var jmbg string
+		err := json.Unmarshal(message.Data, &jmbg)
+		if err != nil {
+			log.Println("Error in unmarshal JSON")
+			return
+		}
+
+		zdravstvenoStanje, err := service.GetZdravstvenoStanjeByJMBG(jmbg)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		dataToSend, err := json.Marshal(zdravstvenoStanje)
+		if err != nil {
+			log.Println("Error in marshaling JSON")
+			return
+		}
+		reply := dataToSend
+		err = natsConnection.Publish(message.Reply, reply)
+		if err != nil {
+			log.Println("Error in publishing response: %s", err.Error())
+			return
+		}
+	})
+	if err != nil {
+		log.Print("Error in receiving message: %s", err.Error())
+	}
+
+	log.Printf("Subscribed to channel: %s", os.Getenv("GET_STANJE_BY_JMBG"))
+
+}

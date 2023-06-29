@@ -47,6 +47,8 @@ func (server *Server) Start() {
 	authService := server.initHealthcareService(authRepository, natsConnection)
 	authController := server.initHealthcareController(authService)
 
+	authService.SubscribeToNats(natsConnection)
+
 	server.start(authController)
 }
 

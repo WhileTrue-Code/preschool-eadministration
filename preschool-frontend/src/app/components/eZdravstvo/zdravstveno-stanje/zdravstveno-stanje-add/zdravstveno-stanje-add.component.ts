@@ -18,6 +18,7 @@ export class ZdravstvenoStanjeAddComponent implements OnInit {
   ) { }
 
   submitted = false;
+  stanjeAlreadyExists = false
 
   formGroup: FormGroup = new FormGroup({
     jmbg: new FormControl(''),
@@ -67,6 +68,9 @@ export class ZdravstvenoStanjeAddComponent implements OnInit {
         },
         error: (error) => {
           console.log(error)
+          if (error.status == 202) {
+            this.stanjeAlreadyExists = true
+          }
         }
       })
   }

@@ -233,18 +233,6 @@ func (service *RegistrarService) SubscribeToNats(natsConnection *nats.Conn) {
 	}
 
 	log.Printf("Subscribed to channel: %s", os.Getenv("CREATE_USER"))
-
-	_, err = natsConnection.QueueSubscribe(os.Getenv("GET_STANJE_BY_JMBG"), "queue-registrar-group", func(message *nats.Msg) {
-		var jmbg string
-		err := json.Unmarshal(message.Data, &jmbg)
-		if err != nil {
-			log.Print("Error in unmarshal JSON")
-			return
-		}
-
-		//zdravstvenoStanje := service.
-	})
-
 }
 
 func (service *RegistrarService) GetChildren(jmbg string) []entity.User {

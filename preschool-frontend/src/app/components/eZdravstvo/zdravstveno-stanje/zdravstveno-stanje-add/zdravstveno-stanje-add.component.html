@@ -62,10 +62,14 @@
                     </div>
                     <label class="form-label" for="specificni_podaci">Specifični podaci</label>
                   </div>
+
+                  <div *ngIf="stanjeAlreadyExists">
+                    <h1 class="stanje-exists">Zdravstveno Stanje pod tim JMBG već postoji</h1>
+                  </div>
                          
                   <div class="d-flex justify-content-center">
                     <button type="button"
-                            class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body" (click)="onSubmit()">Prijavite se</button>
+                            class="btn btn-primary btn-block btn-lg gradient-custom-4 text-body" (click)="onSubmit()">Dodaj</button>
                   </div>
                 </form>
   
