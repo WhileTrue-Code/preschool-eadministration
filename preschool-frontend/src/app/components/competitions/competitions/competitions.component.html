@@ -1,4 +1,6 @@
 <h1 class="konkursNaslov">Pregled svih konkursa</h1>
+<button type="submit" class="btn btn-info" [routerLink]="['/PocetnaVrtic']" *ngIf="isAdmin()">Pregled svih vrtica</button>
+
 <app-competition-list [competitions]="competitions"></app-competition-list>
 
-<!-- *ngIf="isLoggedIn()" dodati da ne zab--> 
+<!-- *ngIf="isLoggedIn()" dodati da ne zab-->
