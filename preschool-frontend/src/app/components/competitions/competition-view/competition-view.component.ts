@@ -13,15 +13,14 @@ import { CompetitionService } from 'src/app/services/competition.service';
 export class CompetitionViewComponent implements OnInit {
 
 
-  constructor(private router:Router,private route:ActivatedRoute, private competitionService:CompetitionService, private fb: FormBuilder) { }
+  constructor(private router: Router, private route: ActivatedRoute, private competitionService: CompetitionService, private fb: FormBuilder) { }
 
   competition_id = String(this.route.snapshot.paramMap.get("id"))
-  competition:Competition = new Competition;
+  competition: Competition = new Competition;
 
 
   isZatvoren(): boolean {
-    if(this.competition.status == "Zatvoren")
-    {
+    if (this.competition.status == "Zatvoren") {
       return false;
     }
 
@@ -30,10 +29,9 @@ export class CompetitionViewComponent implements OnInit {
     }
   }
 
-  
+
   isOtvoren(): boolean {
-    if(this.competition.status == "Zatvoren")
-    {
+    if (this.competition.status == "Zatvoren") {
       return true;
     }
 
@@ -41,7 +39,7 @@ export class CompetitionViewComponent implements OnInit {
       return false;
     }
   }
-  
+
   isAdmin(): boolean {
     if (localStorage.getItem("customRole") == "Admin") {
       return true;
@@ -50,39 +48,47 @@ export class CompetitionViewComponent implements OnInit {
       return false;
     }
   }
-  
+
+  isRegular(): boolean {
+    if (localStorage.getItem("customRole") == "Regular") {
+      return true
+    } else {
+      return false
+    }
+  }
+
 
   ngOnInit(): void {
     console.log(this.competition_id)
     this.competitionService.GetSingleCompetition(this.competition_id)
-    .subscribe({
-      next:(data) => {
-        this.competition=data
-      }
+      .subscribe({
+        next: (data) => {
+          this.competition = data
+        }
 
-    })
+      })
   }
 
   izmenaCompetitionForm = this.fb.group({
     status: ['']
   });
 
-  updateStanjeCompetition(competition_id: string){
-    this.competitionService.updateStanjeCompetition(competition_id).subscribe((data) =>{
+  updateStanjeCompetition(competition_id: string) {
+    this.competitionService.updateStanjeCompetition(competition_id).subscribe((data) => {
       console.log(data)
-      
+
     })
-    
+
   }
 
-  isAdmin(): boolean {
-    if (localStorage.getItem("customRole") == "Admin") {
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
+  // isAdmin(): boolean {
+  //   if (localStorage.getItem("customRole") == "Admin") {
+  //     return true;
+  //   }
+  //   else {
+  //     return false;
+  //   }
+  // }
 
   isRegularUser(): boolean {
     if (localStorage.getItem("customRole") == "Regular") {

@@ -31,11 +31,11 @@ export class ZdravstvenoStanjeAddComponent implements OnInit {
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       jmbg: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(30)]],
-      zdravstveni_problemi: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      specificna_ishrana: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      dom_zdravlja_u_kom_je_karton: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      smetnje_u_razvoju: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]],
-      specificni_podaci: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(30)]]
+      zdravstveni_problemi: ['', Validators.maxLength(30)],
+      specificna_ishrana: ['', Validators.maxLength(30)],
+      dom_zdravlja_u_kom_je_karton: ['', Validators.maxLength(30)],
+      smetnje_u_razvoju: ['', Validators.maxLength(30)],
+      specificni_podaci: ['', Validators.maxLength(30)]
     })
   }
 
