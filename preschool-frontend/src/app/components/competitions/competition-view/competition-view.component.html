@@ -25,7 +25,7 @@
       <p><b>Email:</b> {{competition.vrtic.email}}</p>
 
       <br>
-      <button type="submit" *ngIf="isZatvoren()" class="btn btn-success" [routerLink]="['/Prijava', competition.id]">Prijava na
+      <button type="submit" *ngIf="isZatvoren() && isRegular() " class="btn btn-success" [routerLink]="['/Prijava', competition.id]">Prijava na
         konkurs</button>
 
         <br>

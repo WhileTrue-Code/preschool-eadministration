@@ -72,8 +72,12 @@
 
 
             <button *ngIf="isLoggedIn()
-            && this.storeService.getServiceFromStore()=='eVrtic'" mat-button mat-ripple routerLink="/PocetnaVrtic">
+            && this.storeService.getServiceFromStore()=='eVrtic'" mat-button mat-ripple routerLink="/Competitions">
                 <span>Prijava na konkurs za vrtic</span>
+            </button>
+            <button *ngIf="isLoggedIn()
+            && this.storeService.getServiceFromStore()=='eVrtic'" mat-button mat-ripple routerLink="/PocetnaVrtic">
+                <span>Pregled Vrtica</span>
             </button>
           <button *ngIf="isLoggedIn()
           && this.storeService.getServiceFromStore()=='eMaticar'

@@ -1,1 +1,10 @@
+<br>
+<div>
+<div class="myDiv">
+    <p>Pretrazite konkurse po imenu vrtica, gradu ili opstini</p>
+    <input type="text" class="form-control form-control-lg" [(ngModel)]="searchQuery" placeholder="Enter text" />
+    <button type="submit" class="btn btn-success" (click)="search()">Pretrazi</button>
+</div>
+</div>
+<br>
 <app-competition-item *ngFor="let competition of competitions" [competition]="competition"></app-competition-item>

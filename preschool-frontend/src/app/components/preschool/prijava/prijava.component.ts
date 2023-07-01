@@ -57,6 +57,8 @@ export class PrijavaComponent implements OnInit {
           },
           error: (error) => {
             console.log(error);
+            alert("NE MOZETE PRIJAVITI DETE JER NIJE PREGLEDANO")
+            this.router.navigate(['/Competitions']);
           },
           complete: () => {
             this.router.navigate(['/Competitions'])
