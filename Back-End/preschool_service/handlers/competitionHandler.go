@@ -78,11 +78,41 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 	err = json.Unmarshal(msg.Data, &response)
 
 	if response["employed"] {
-		insertComp.Bodovi = 6
+		insertComp.Bodovi = 1
 	}
-	// silja***********
 	println(request)
 	println(response)
+	// silja***********
+
+	// miljus *****
+	dataToSend, err := json.Marshal(insertComp.Dete.JMBG)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response1, err := p.nats.Request(os.Getenv("GET_STANJE_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var deteZS data.ZdravstvenoStanje
+
+	if response1.Data == nil {
+		http.Error(rw, "Dete nema ZS", http.StatusBadRequest)
+		return
+	}
+
+	err = json.Unmarshal(response1.Data, &deteZS)
+	if err != nil {
+		log.Println("Error in Unmarshalling json")
+		return
+	}
+
+	if deteZS.ZdravstveniProblemi != "" {
+		insertComp.Bodovi = insertComp.Bodovi + 2
+	}
+	if deteZS.SmetnjeURazvoju != "" {
+		insertComp.Bodovi = insertComp.Bodovi + 3
+	}
+
+	// miljus *****
 
 	err = p.repo.ApplyForCompetition(competitionID, &insertComp)
 	if err != nil {

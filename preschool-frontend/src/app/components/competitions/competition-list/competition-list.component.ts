@@ -10,6 +10,18 @@ export class CompetitionListComponent implements OnInit {
 
   @Input() competitions: Competition[] = [];
 
+  searchQuery: string = ''
+
+  search(): void {
+    this.competitions = this.competitions.filter(item => {
+      return item.vrtic.grad.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        item.vrtic.opstina.toLocaleLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        item.vrtic.naziv.toLocaleLowerCase().includes(this.searchQuery.toLowerCase())
+
+    });
+  }
+
+
   constructor() { }
 
   ngOnInit(): void {

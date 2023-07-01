@@ -32,7 +32,7 @@
       <button type="submit" class="btn btn-danger" *ngIf="isZatvoren() && isAdmin()" (click)="updateStanjeCompetition(competition.id)" >Zavrsi
         konkurs</button>
         
-        <!-- <button type="submit" class="btn btn-success" [routerLink]="['/PregledPrijava', competition.id]">Pregled prijava</button> -->
+        <button type="submit" class="btn btn-success" [routerLink]="['/PregledPrijava', competition.id]">Pregled prijava</button>
         <!-- *ngIf="isOtvoren()" -->
     </div>
   </mat-card-content>
