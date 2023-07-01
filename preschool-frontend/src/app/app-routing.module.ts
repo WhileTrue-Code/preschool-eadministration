@@ -31,6 +31,9 @@ import { RegisterEmployeeComponent } from './components/register-employee/regist
 import { CompanyEmployeesComponent } from './components/company-employees/company-employees.component';
 import {ViewMyRegistryComponent} from "./components/view-my-registry/view-my-registry.component";
 import { ZdravstvenoStanjeAddComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-add/zdravstveno-stanje-add.component';
+import { ZdravstvenaStanjaDoctorComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstvena-stanja-doctor/zdravstvena-stanja-doctor.component';
+import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-view-my/zdravstveno-stanje-view-my.component';
+import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
 
 const routes: Routes = [
   {
@@ -76,6 +79,18 @@ const routes: Routes = [
   {
     path: "Vaccination-View/:id",
     component: VaccinationViewComponent
+  },
+  {
+    path: "Zdravstvena-Stanja-Doctor",
+    component: ZdravstvenaStanjaDoctorComponent
+  },
+  {
+    path: "Zdravstveno-Stanje-View-My",
+    component: ZdravstvenoStanjeViewMyComponent
+  },
+  {
+    path: "Vaccinations-My-Regular",
+    component: VaccinationsMyRegularComponent
   },
   {
     path: "Zdravstveno-Stanje-Add",

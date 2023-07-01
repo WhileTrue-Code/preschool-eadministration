@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ZdravstvenoStanje } from 'src/app/models/zdravstvenoStanje.model';
 
 @Component({
   selector: 'app-zdravstveno-stanje-list',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./zdravstveno-stanje-list.component.css']
 })
 export class ZdravstvenoStanjeListComponent implements OnInit {
+
+  @Input() zdravstvenaStanja: ZdravstvenoStanje[] = []
 
   constructor() { }
 

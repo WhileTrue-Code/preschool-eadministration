@@ -61,7 +61,9 @@ import { ViewMyRegistryComponent } from './components/view-my-registry/view-my-r
 import { ZdravstvenoStanjeItemComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-item/zdravstveno-stanje-item.component';
 import { ZdravstvenoStanjeListComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-list/zdravstveno-stanje-list.component';
 import { ZdravstvenoStanjeAddComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-add/zdravstveno-stanje-add.component';
-
+import { ZdravstvenaStanjaDoctorComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstvena-stanja-doctor/zdravstvena-stanja-doctor.component';
+import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-view-my/zdravstveno-stanje-view-my.component';
+import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
 
 
 
@@ -115,6 +117,9 @@ import { ZdravstvenoStanjeAddComponent } from './components/eZdravstvo/zdravstve
     ZdravstvenoStanjeItemComponent,
     ZdravstvenoStanjeListComponent,
     ZdravstvenoStanjeAddComponent,
+    ZdravstvenaStanjaDoctorComponent,
+    ZdravstvenoStanjeViewMyComponent,
+    VaccinationsMyRegularComponent
   ],
   imports: [
     BrowserModule,

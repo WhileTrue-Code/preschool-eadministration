@@ -1,0 +1,31 @@
+.zdravstvenoStanje-card {
+  max-width: 530px;
+  margin-top: 30px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.zdravstvenoStanje-title {
+  font-size: 22px;
+  text-align: center;
+  color:blue;
+  margin-bottom: 20px;
+}
+
+.zdravstvenoStanje-jmbg {
+  font-size: 19px;
+  text-align: center;
+  font: bold;
+}
+
+.zdravstvenoStanje-text {
+  font-size: 19px;
+  text-align: left;
+  color: blue;
+}
+
+.zdravstvenoStanje-field {
+  font-size: 17px;
+  text-align: left;
+  margin-bottom: 15px;
+}

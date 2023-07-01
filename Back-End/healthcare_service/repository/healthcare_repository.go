@@ -21,6 +21,7 @@ type HealthcareRepository interface {
 	GetMyAvailableVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error)
 	GetMyTakenVaccinationsDoctor(id primitive.ObjectID) ([]*model.Vaccination, error)
 	GetAllAvailableVaccinations() ([]*model.Vaccination, error)
+	GetMyTakenVaccinationsRegular(jmbg string) ([]*model.Vaccination, error)
 	GetVaccinationByID(id primitive.ObjectID) (*model.Vaccination, error)
 	CreateNewVaccination(vaccination *model.Vaccination) error
 	SetVaccination(vaccination *model.Vaccination) error

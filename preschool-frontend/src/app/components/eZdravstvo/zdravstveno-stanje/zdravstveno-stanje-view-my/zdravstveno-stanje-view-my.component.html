@@ -1,7 +1,9 @@
-<mat-card class="zdravstvenoStanje-card">
-    <mat-card-title class="zdravstvenoStanje-title">
-      Zdravstveno stanje
-    </mat-card-title>
+<h1 class="moje-zdravstveno">Moje zdravstveno stanje</h1>
+<h1 *ngIf="zdravstvenoStanje == null" class="moje-zdravstveno">Doktor Vam još nije izdao zdravstveno stanje</h1>
+<mat-card *ngIf="zdravstvenoStanje != null" class="zdravstvenoStanje-card">
+  <mat-card-title class="zdravstvenoStanje-title">
+    Zdravstveno stanje
+  </mat-card-title>
     <mat-card-content>
       <p class="zdravstvenoStanje-jmbg">JMBG: {{zdravstvenoStanje.jmbg}}</p>
 
@@ -20,4 +22,4 @@
       <p class="zdravstvenoStanje-text">Specifični podaci:</p>
       <p class="zdravstvenoStanje-field">- {{zdravstvenoStanje.specificni_podaci}}</p>
     </mat-card-content>
-  </mat-card>
+</mat-card>

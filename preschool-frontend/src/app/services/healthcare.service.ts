@@ -80,8 +80,8 @@ export class HealthcareService {
         return this.http.get<Vaccination[]>(`${environment.baseApiUrl}/${this.url}/myTakenVaccinationsDoctor`);
     }
 
-    public AddVaccination(addAppointment: AddVaccination): Observable<string> {
-        return this.http.post<string>(`${environment.baseApiUrl}/${this.url}/newVaccination`, addAppointment);
+    public AddVaccination(addVaccination: AddVaccination): Observable<AddVaccination> {
+        return this.http.post<AddVaccination>(`${environment.baseApiUrl}/${this.url}/newVaccination`, addVaccination);
     }
 
     public SetVaccination(id: string) {
@@ -90,6 +90,14 @@ export class HealthcareService {
 
     public DeleteVaccination(id: string) {
         return this.http.delete(`${environment.baseApiUrl}/${this.url}/deleteVaccinationByID/` + id);
+    }
+
+    public GetAllZdravstvenaStanja(): Observable<ZdravstvenoStanje[]> {
+        return this.http.get<ZdravstvenoStanje[]>(`${environment.baseApiUrl}/${this.url}/allZdravstvenaStanja`);
+    }
+
+    public GetMyZdravstvenoStanje(): Observable<ZdravstvenoStanje> {
+        return this.http.get<ZdravstvenoStanje>(`${environment.baseApiUrl}/${this.url}/myZdravstvenoStanje`)
     }
 
     public NewZdravstvenoStanje(zdravstvenoStanje: ZdravstvenoStanje): Observable<ZdravstvenoStanje> {

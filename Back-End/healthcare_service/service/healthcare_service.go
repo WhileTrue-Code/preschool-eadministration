@@ -267,7 +267,6 @@ func (service *HealthcareService) CreateNewVaccination(vaccination *model.Vaccin
 	if err != nil {
 		log.Println("Error Marshaling JMBG")
 	}
-
 	existingVaccinations, err := service.repository.GetAllVaccinations()
 	for _, existingVaccination := range existingVaccinations {
 		if (existingVaccination.StartOfVaccination >= vaccination.StartOfVaccination && existingVaccination.StartOfVaccination <= vaccination.EndOfVaccination) ||
@@ -299,7 +298,6 @@ func (service *HealthcareService) CreateNewVaccination(vaccination *model.Vaccin
 		log.Println("Error in trying to save Vaccination")
 		return 0, err
 	}
-
 	return 0, nil
 }
 
@@ -348,6 +346,10 @@ func (service *HealthcareService) GetZdravstvenoStanjeByID(id primitive.ObjectID
 }
 
 func (service *HealthcareService) GetZdravstvenoStanjeByJMBG(jmbg string) (*model.ZdravstvenoStanje, error) {
+	return service.repository.GetZdravstvenoStanjeByJMBG(jmbg)
+}
+
+func (service *HealthcareService) GetMyZdravstvenoStanje(jmbg string) (*model.ZdravstvenoStanje, error) {
 	return service.repository.GetZdravstvenoStanjeByJMBG(jmbg)
 }
 

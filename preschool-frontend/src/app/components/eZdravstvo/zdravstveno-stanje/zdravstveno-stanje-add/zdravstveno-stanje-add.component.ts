@@ -64,7 +64,7 @@ export class ZdravstvenoStanjeAddComponent implements OnInit {
     this.healthcareService.NewZdravstvenoStanje(zdravstvenoStanje)
       .subscribe({
         next: () => {
-          this.router.navigate(['/Appointments-Doctor'])
+          this.router.navigate(['/Zdravstvena-Stanja-Doctor'])
         },
         error: (error) => {
           console.log(error)

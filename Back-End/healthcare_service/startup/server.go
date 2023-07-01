@@ -43,13 +43,13 @@ func (server *Server) Start() {
 		}
 	}(mongoClient, context.Background())
 
-	authRepository := server.initHealthcareRepository(mongoClient)
-	authService := server.initHealthcareService(authRepository, natsConnection)
-	authController := server.initHealthcareController(authService)
+	healthcareRepository := server.initHealthcareRepository(mongoClient)
+	healthcareService := server.initHealthcareService(healthcareRepository, natsConnection)
+	healthcareController := server.initHealthcareController(healthcareService)
 
-	authService.SubscribeToNats(natsConnection)
+	healthcareService.SubscribeToNats(natsConnection)
 
-	server.start(authController)
+	server.start(healthcareController)
 }
 
 func (server *Server) initMongoClient() *mongo.Client {
@@ -73,9 +73,9 @@ func (server *Server) initHealthcareController(service *service.HealthcareServic
 	return controller.NewHealthcareController(service)
 }
 
-func (server *Server) start(registrarController *controller.HealthcareController) {
+func (server *Server) start(healthcareController *controller.HealthcareController) {
 	router := mux.NewRouter()
-	registrarController.Init(router)
+	healthcareController.Init(router)
 
 	srv := &http.Server{
 		Addr:    fmt.Sprintf(":%s", server.config.HealthcareServicePort),
