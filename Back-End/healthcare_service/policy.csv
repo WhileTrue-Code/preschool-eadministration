@@ -26,6 +26,7 @@ p, Doctor, /myAvailableVaccinationsDoctor, GET
 p, Doctor, /myTakenVaccinationsDoctor, GET
 
 p, Regular, /allAvailableVaccinations, GET
+p, Regular, /myTakenVaccinationsRegular, GET
 
 p, Doctor, /getVaccinationByID/*, GET
 p, Regular, /getVaccinationByID/*, GET

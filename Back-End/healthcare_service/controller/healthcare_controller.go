@@ -47,7 +47,7 @@ func (controller *HealthcareController) Init(router *mux.Router) {
 	router.HandleFunc("/myAvailableVaccinationsDoctor", controller.GetMyAvailableVaccinationsDoctor).Methods("GET")
 	router.HandleFunc("/myTakenVaccinationsDoctor", controller.GetMyTakenVaccinationsDoctor).Methods("GET")
 	router.HandleFunc("/allAvailableVaccinations", controller.GetAllAvailableVaccinations).Methods("GET")
-	router.HandleFunc("myTakenVaccinationsRegular", controller.GetMyTakenVaccinationsRegular).Methods("GET")
+	router.HandleFunc("/myTakenVaccinationsRegular", controller.GetMyTakenVaccinationsRegular).Methods("GET")
 	router.HandleFunc("/getVaccinationByID/{id}", controller.GetVaccinationByID).Methods("GET")
 	router.HandleFunc("/newVaccination", controller.CreateNewVaccination).Methods("POST")
 	router.HandleFunc("/setVaccination/{id}", controller.SetVaccination).Methods("PUT")
@@ -265,7 +265,17 @@ func (controller *HealthcareController) GetAllAvailableVaccinations(writer http.
 }
 
 func (controller *HealthcareController) GetMyTakenVaccinationsRegular(writer http.ResponseWriter, req *http.Request) {
+	jmbg, err := extractJMBGFromClaims(writer, req)
 
+	vaccinations, err := controller.service.GetMyTakenVaccinationsRegular(jmbg)
+	if err != nil {
+		writer.WriteHeader(http.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+
+	jsonResponse(vaccinations, writer)
+	writer.WriteHeader(http.StatusOK)
 }
 
 func (controller *HealthcareController) GetVaccinationByID(writer http.ResponseWriter, req *http.Request) {

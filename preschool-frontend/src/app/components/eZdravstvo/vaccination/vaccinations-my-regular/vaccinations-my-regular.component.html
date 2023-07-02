@@ -1,1 +1,27 @@
-<p>vaccinations-my-regular works!</p>
+<div *ngFor="let vaccination of vaccinations" id="htmlData">
+
+  <br>
+  <h2 class="pdf-title">Primljene vakcine</h2>
+  <h1 class="pdf-user">{{vaccination.user.ime + " " + vaccination.user.prezime}}</h1>
+
+  <div class="table-view">
+    <table class="table w-75 text-center">
+      <thead class="heads">
+        <tr>
+          <th scope="col">Doktor</th>
+          <th scope="col">Vakcina</th>
+          <th scope="col">Datum</th>
+        </tr>
+      </thead>
+      <tbody class="bodies">
+        <tr>
+          <td>{{vaccination.doctor.ime + " " + vaccination.doctor.prezime}}</td>
+          <td>{{vaccination.vaccineType}}</td>
+          <td>{{vaccination.startOfVaccination * 1000 | date: "longDate"}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+<button class="btn btn-primary" (click)="openPDF()">Preuzmi PDF</button>

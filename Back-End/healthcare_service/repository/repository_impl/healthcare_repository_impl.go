@@ -139,8 +139,9 @@ func (repository *HealthcareRepositoryImpl) GetAllAvailableVaccinations() ([]*mo
 	return repository.filterVaccinations(filter)
 }
 
-func (repository *HealthcareRepositoryImpl) GetMyTakenVaccinationsRegular(jmbg string) ([]*model.Vaccination, error) {
-	return nil, nil
+func (repository *HealthcareRepositoryImpl) GetMyTakenVaccinationsRegular(id primitive.ObjectID) ([]*model.Vaccination, error) {
+	filter := bson.M{"user._id": id}
+	return repository.filterVaccinations(filter)
 }
 
 func (repository *HealthcareRepositoryImpl) GetVaccinationByID(id primitive.ObjectID) (*model.Vaccination, error) {

@@ -80,6 +80,10 @@ export class HealthcareService {
         return this.http.get<Vaccination[]>(`${environment.baseApiUrl}/${this.url}/myTakenVaccinationsDoctor`);
     }
 
+    public GetMyTakenVaccinationsRegular(): Observable<Vaccination[]> {
+        return this.http.get<Vaccination[]>(`${environment.baseApiUrl}/${this.url}/myTakenVaccinationsRegular`);
+    }
+
     public AddVaccination(addVaccination: AddVaccination): Observable<AddVaccination> {
         return this.http.post<AddVaccination>(`${environment.baseApiUrl}/${this.url}/newVaccination`, addVaccination);
     }

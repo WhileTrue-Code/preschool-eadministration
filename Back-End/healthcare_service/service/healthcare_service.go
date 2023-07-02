@@ -254,6 +254,26 @@ func (service *HealthcareService) GetMyTakenVaccinationsDoctor(jmbg string) ([]*
 	return service.repository.GetMyTakenVaccinationsDoctor(doctorID)
 }
 
+func (service *HealthcareService) GetMyTakenVaccinationsRegular(jmbg string) ([]*model.Vaccination, error) {
+	dataToSend, err := json.Marshal(jmbg)
+	if err != nil {
+		log.Println("Error Marshaling JMBG")
+	}
+
+	response, err := service.natsConnection.Request(os.Getenv("GET_USER_BY_JMBG"), dataToSend, 5*time.Second)
+
+	var user model.User
+	err = json.Unmarshal(response.Data, &user)
+	if err != nil {
+		log.Print("Error in Unmarshalling JSON")
+		return nil, err
+	}
+
+	userID := user.ID
+
+	return service.repository.GetMyTakenVaccinationsRegular(userID)
+}
+
 func (service *HealthcareService) GetAllAvailableVaccinations() ([]*model.Vaccination, error) {
 	return service.repository.GetAllAvailableVaccinations()
 }
