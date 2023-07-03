@@ -2,11 +2,16 @@ package service
 
 import (
 	"apr_service/domain"
+<<<<<<< Updated upstream
 	"encoding/json"
 	"fmt"
 	"log"
 	"math/rand"
 	"os"
+=======
+	"fmt"
+	"math/rand"
+>>>>>>> Stashed changes
 	"strconv"
 	"time"
 
@@ -39,6 +44,7 @@ func (service *AprServiceImpl) FindAprByFounderID(founderID string) ([]domain.Ap
 	return service.Repo.FindAprAccountsByFounderID(founderID)
 }
 
+<<<<<<< Updated upstream
 func (service *AprServiceImpl) FindByFounderIDAndCompanyID(founderID string,
 	companyID int) (company domain.AprAccount, err error) {
 	return service.Repo.FindCompanyByFounderIDAndCompanyID(founderID, companyID)
@@ -58,6 +64,8 @@ func (service *AprServiceImpl) LiquidateCompany(companyID string) error {
 	return service.Repo.PatchCompany(company)
 }
 
+=======
+>>>>>>> Stashed changes
 func (service *AprServiceImpl) generatePIB() (pibI int) {
 	rand.Seed(time.Now().UnixNano())
 	pib := fmt.Sprintf("%d", rand.Intn(9)+1)
@@ -84,6 +92,7 @@ func (service *AprServiceImpl) generatePIB() (pibI int) {
 	// }
 
 	return
+<<<<<<< Updated upstream
 }
 
 func (service *AprServiceImpl) SubscribeToNats(connection *nats.Conn) {
@@ -134,4 +143,6 @@ func (service *AprServiceImpl) SubscribeToNats(connection *nats.Conn) {
 	}
 
 	log.Printf("Subscribed to channel: %s", os.Getenv(GET_COMPANY_QUEUE))
+=======
+>>>>>>> Stashed changes
 }

@@ -7,6 +7,7 @@
             <button *ngIf="!isLoggedIn()" mat-button mat-ripple routerLink="/Register">
                 <span>Registracija</span>
             </button>
+<<<<<<< Updated upstream
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='APR'
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/MyAprs">
@@ -37,6 +38,12 @@
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='eZdravstvo'
             && this.storeService.getCustomRole()=='Doctor'" mat-button mat-ripple routerLink="/Appointments-Doctor">
+=======
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/MyAprs">
+                <span>Moj APR</span>
+            </button>
+            <button *ngIf="isLoggedIn()" mat-button mat-ripple routerLink="/Appointments">
+>>>>>>> Stashed changes
                 <span>Pregledi</span>
             </button>
             <button *ngIf="isLoggedIn()

@@ -20,6 +20,7 @@ import { CompetitionAddComponent } from './components/competitions/competition-a
 import { CompetitionItemComponent } from './components/competitions/competition-item/competition-item.component';
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
 import { RegisterAprComponent } from './components/register-apr/register-apr.component';
+<<<<<<< Updated upstream
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -68,6 +69,11 @@ import { EmployeeRequestsComponent } from './components/employee-requests/employ
 import { EmployeeRequestItemComponent } from './components/employee-request-item/employee-request-item.component';
 
 
+=======
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
+import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
+>>>>>>> Stashed changes
 
 @NgModule({
   declarations: [
@@ -87,6 +93,7 @@ import { EmployeeRequestItemComponent } from './components/employee-request-item
     CompetitionViewComponent,
     RegisterAprComponent,
     MyAprsComponent,
+<<<<<<< Updated upstream
     AprListItemComponent,
     WelcomeComponent,
     AppointmentsRegularComponent,
@@ -124,6 +131,9 @@ import { EmployeeRequestItemComponent } from './components/employee-request-item
     VaccinationsMyRegularComponent,
     EmployeeRequestsComponent,
     EmployeeRequestItemComponent
+=======
+    AprListItemComponent
+>>>>>>> Stashed changes
   ],
   imports: [
     BrowserModule,
@@ -139,7 +149,12 @@ import { EmployeeRequestItemComponent } from './components/employee-request-item
     MatNativeDateModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+<<<<<<< Updated upstream
     MatSnackBarModule,
+=======
+    MatCheckboxModule,
+    MatSnackBarModule
+>>>>>>> Stashed changes
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

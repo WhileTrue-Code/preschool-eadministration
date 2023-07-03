@@ -28,8 +28,11 @@ func NewController(aprService domain.AprService, logger *zap.Logger) *AprControl
 func (controller *AprController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterAprCompany).Methods("POST")
 	router.HandleFunc("/", controller.FindAprByFounderID).Methods("GET")
+<<<<<<< Updated upstream
 	router.HandleFunc("/{id}", controller.UpdateCompanyData).Methods("PUT")
 	router.HandleFunc("/liquidate/{id}", controller.LiquidateCompany).Methods("PUT")
+=======
+>>>>>>> Stashed changes
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
 }
@@ -38,6 +41,7 @@ func (controller *AprController) RegisterAprCompany(writer http.ResponseWriter, 
 	controller.Logger.Info("Started registering new APR account.")
 	var account domain.AprAccount
 	bytes, err := io.ReadAll(req.Body)
+	controller.Logger.Info("Bytes from fend", zap.String("Json stringified", string(bytes)))
 	if err != nil {
 		controller.Logger.Error("error in reading request body bytes.",
 			zap.Error(err),
@@ -73,7 +77,12 @@ func (controller *AprController) RegisterAprCompany(writer http.ResponseWriter, 
 		zap.Any("account", account),
 	)
 	controller.Logger.Info("APR account registered successfully.")
+<<<<<<< Updated upstream
 	var response any = "Registration firme uspešna."
+=======
+	// writer.WriteHeader(http.StatusCreated)
+	var response any = "Registration was successfully."
+>>>>>>> Stashed changes
 	stringResp, _ := json.Marshal(response)
 	writer.Write([]byte(stringResp))
 
@@ -87,7 +96,11 @@ func (controller *AprController) FindAprByFounderID(writer http.ResponseWriter, 
 	founderID := claims["jmbg"]
 	res, err := controller.Service.FindAprByFounderID(founderID)
 	if err != nil {
+<<<<<<< Updated upstream
 		http.Error(writer, "Error on server-side, please try again later.", http.StatusInternalServerError)
+=======
+		http.Error(writer, "Error on server-side, please try again.", http.StatusInternalServerError)
+>>>>>>> Stashed changes
 		return
 	}
 
