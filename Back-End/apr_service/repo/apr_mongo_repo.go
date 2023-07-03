@@ -2,7 +2,9 @@ package repo
 
 import (
 	"apr_service/domain"
+	"apr_service/errors"
 	"context"
+	"fmt"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -58,6 +60,25 @@ func (repo *AprMongoRepo) FindAprAccountsByFounderID(founderID string) (results 
 	return
 }
 
+func (repo *AprMongoRepo) FindAprAccountsByCompanyID(companyID int) (found domain.AprAccount, err error) {
+	result := repo.Collection.FindOne(context.Background(), bson.D{{Key: "companyID", Value: companyID}})
+	if result.Err() != nil {
+		repo.Logger.Info("Error in getting accounts by founderID",
+			zap.Error(err),
+		)
+		return
+	}
+
+	err = result.Decode(&found)
+	if err != nil {
+		repo.Logger.Info("Error in decoding found result.",
+			zap.Error(err),
+		)
+	}
+
+	return
+}
+
 func (repo *AprMongoRepo) FindCompanyByFounderIDAndCompanyID(founderID string,
 	companyID int) (company domain.AprAccount, err error) {
 	result := repo.Collection.FindOne(context.Background(),
@@ -92,4 +113,17 @@ func (repo *AprMongoRepo) DoesExistAprWithID(ID int) (exists bool) {
 	}
 
 	return true
+}
+
+func (repo *AprMongoRepo) PatchCompany(newCompany domain.AprAccount) (err error) {
+	result, err := repo.Collection.UpdateByID(context.Background(), newCompany.ID, newCompany)
+	if result.UpsertedCount != 1 && err != nil {
+		repo.Logger.Error(errors.ERR_PATCHING_BY_ID,
+			zap.Error(err),
+			zap.Any("newCompany", newCompany),
+		)
+		return fmt.Errorf(errors.ERR_PATCHING_BY_ID)
+	}
+
+	return nil
 }

@@ -1,6 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBarConfig } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { CompanyID } from 'src/app/models/companyID.model';
 import { CrosoService } from 'src/app/services/croso.service';
@@ -18,7 +20,8 @@ export class RegisterCrosoComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               private crosoService: CrosoService,
-              private router: Router) { }
+              private router: Router,
+              private snackBar: MatSnackBar) { }
 
   submitted = false;
 
@@ -46,15 +49,16 @@ export class RegisterCrosoComponent implements OnInit {
     this.crosoService.RegisterCrosoCompany(companyID)
     .subscribe({
       next: (response:string) => {
-        alert(response)
-        console.log(response)
-        
+        this.openSnackBar(response + ", redirekcija na stranicu Moj CROSO")
         setTimeout(() => {
           this.router.navigate(['/MyCrosos']);
-        }, 1500)
+        }, 1000)
         
       },
       error: (error: HttpErrorResponse) => {
+        if (error.status == 406){
+          this.openSnackBar(error.error)
+        }
         console.log(error)
       }
     });
@@ -71,6 +75,12 @@ export class RegisterCrosoComponent implements OnInit {
       }
       return null;
     };
+  }
+
+  openSnackBar(msg: string){
+    let config: MatSnackBarConfig = new MatSnackBarConfig()
+    config.duration = 1000 
+    this.snackBar.open(msg, undefined, config)
   }
 
 }

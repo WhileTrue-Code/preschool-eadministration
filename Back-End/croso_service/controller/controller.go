@@ -29,7 +29,10 @@ func (controller *CrosoController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterCrosoCompany).Methods("POST")
 	router.HandleFunc("/company", controller.GetMyCrosos).Methods("GET")
 	router.HandleFunc("/employee/register", controller.RequestEmployeeRegistration).Methods("POST")
+	router.HandleFunc("/employee/pending", controller.RequestEmployeeRegistration).Methods("GET")
 	router.HandleFunc("/employee/status", controller.PatchEmployeeRegistrationStatus).Methods("PATCH")
+	router.HandleFunc("/employee/{id}/employmentStatus", controller.ChangeEmploymentStatus).Methods("PATCH")
+	router.HandleFunc("/employee/{id}/unemployee", controller.Unemployee).Methods("POST")
 	router.HandleFunc("/employees/{companyID}", controller.GetCompanyEmployees).Methods("GET")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
@@ -68,6 +71,10 @@ func (controller *CrosoController) RegisterCrosoCompany(writer http.ResponseWrit
 
 	err = controller.Service.RegisterCrosoAccount(&request)
 	if err != nil {
+		if err.Error() == errors.ERR_RS_COMPANY_NOT_EXIST_IN_APR {
+			http.Error(writer, err.Error(), http.StatusNotAcceptable)
+			return
+		}
 		http.Error(writer, "error in saving CrosoAccount to repository.", http.StatusInternalServerError)
 		return
 	}
@@ -130,6 +137,10 @@ func (controller *CrosoController) RequestEmployeeRegistration(writer http.Respo
 		controller.Logger.Error("error in saving request.",
 			zap.Error(err),
 		)
+		if err.Error() == errors.ERR_RS_USER_NOT_EXIST {
+			http.Error(writer, err.Error(), http.StatusNotAcceptable)
+			return
+		}
 		http.Error(writer, errors.ERR_SERVER_INTERNAL_MSG, http.StatusInternalServerError)
 		return
 	}
@@ -138,6 +149,12 @@ func (controller *CrosoController) RequestEmployeeRegistration(writer http.Respo
 	resBytes, _ := json.Marshal(response)
 	writer.Write(resBytes)
 
+}
+
+func (controller *CrosoController) GetPendingRegisterEmployeeRequests(writer http.ResponseWriter, request *http.Request) {
+	var pendingRequests interface{} = controller.Service.GetPendingEmployeeRequests()
+	bytes, _ := json.Marshal(pendingRequests)
+	writer.Write(bytes)
 }
 
 func (controller *CrosoController) PatchEmployeeRegistrationStatus(writer http.ResponseWriter, req *http.Request) {
@@ -198,5 +215,56 @@ func (controller *CrosoController) GetCompanyEmployees(writer http.ResponseWrite
 	var employeesRes interface{} = employees
 	bytes, _ := json.Marshal(employeesRes)
 	writer.Write(bytes)
+
+}
+
+func (controller *CrosoController) ChangeEmploymentStatus(writer http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+	id, ok := vars["id"]
+	if !ok {
+		http.Error(writer, errors.ERR_BAD_REQUEST_CHECK_DATA, http.StatusBadRequest)
+		return
+	}
+
+	var req domain.ChangeEmploymentStatus
+	bytes, err := io.ReadAll(request.Body)
+	if err != nil {
+		http.Error(writer, errors.ERR_SERVER_INTERNAL_MSG, http.StatusInternalServerError)
+		return
+	}
+
+	err = json.Unmarshal(bytes, &req)
+	if err != nil {
+		http.Error(writer, errors.ERR_BAD_REQUEST_CHECK_DATA, http.StatusBadRequest)
+		return
+	}
+
+	err = controller.Service.ChangeEmploymentStatus(id, req)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var response string = "Uspešno izmenjen status zaposlenog."
+	writer.Write([]byte(response))
+
+}
+
+func (controller *CrosoController) Unemployee(writer http.ResponseWriter, request *http.Request) {
+	vars := mux.Vars(request)
+	id, ok := vars["id"]
+	if !ok {
+		http.Error(writer, errors.ERR_BAD_REQUEST_CHECK_DATA, http.StatusBadRequest)
+		return
+	}
+
+	err := controller.Service.CancelEmployment(id)
+	if err != nil {
+		http.Error(writer, errors.ERR_SERVER_INTERNAL_MSG, http.StatusInternalServerError)
+		return
+	}
+
+	var response string = "Uspešno odjavljen zaposleni iz preduzeća."
+	writer.Write([]byte(response))
 
 }

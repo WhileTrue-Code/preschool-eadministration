@@ -23,6 +23,7 @@ type CrosoServiceImpl struct {
 var (
 	GET_COMPANY         = "COMPANY_GET_BY_FOUNDER_COMPANY_ID"
 	GET_EMPLOYEE_STATUS = "GET_EMPLOYEE_STATUS_BY_ID"
+	CHECK_USER_JMBG     = "CHECK_USER_JMBG"
 )
 
 func NewAprService(aprRepo domain.CrosoRepository, nats *nats.Conn, logger *zap.Logger) domain.CrosoService {
@@ -56,6 +57,13 @@ func (service *CrosoServiceImpl) RegisterCrosoAccount(request *domain.RequestFor
 		return
 	}
 
+	if account.CompanyID == 0 {
+		service.Logger.Warn("company not found in APR db.", zap.String("companyID", request.CompanyID))
+		return fmt.Errorf(errors.ERR_RS_COMPANY_NOT_EXIST_IN_APR)
+	}
+
+	service.Logger.Info("id of struct responsed from nats", zap.String("idPrimitive", account.ID.Hex()))
+
 	return service.Repo.SaveCrosoAccount(&account)
 }
 
@@ -64,16 +72,40 @@ func (service *CrosoServiceImpl) GetMyCrosos(founderID string) []domain.CrosoAcc
 	return service.Repo.FindCrosoAccountsByFounderID(founderID)
 }
 
-func (service *CrosoServiceImpl) RequestRegisterEmployee(employee *domain.Employee) error {
+func (service *CrosoServiceImpl) RequestRegisterEmployee(employee *domain.Employee) (err error) {
+
+	employeeId := map[string]string{
+		"jmbg": employee.EmployeeID,
+	}
+	bytes, _ := json.Marshal(employeeId)
+
+	msg, err := service.Nats.Request(os.Getenv(CHECK_USER_JMBG), bytes, 5*time.Second)
+	if err != nil {
+		service.Logger.Error("unable to get msg from nats.",
+			zap.Error(err),
+		)
+		return
+	}
+	var doesExist bool
+	json.Unmarshal(msg.Data, &doesExist)
+	service.Logger.Info("got doesExist from nats",
+		zap.Any("jmbg", employeeId),
+		zap.Bool("doesExist", doesExist),
+	)
+
+	if !doesExist {
+		return fmt.Errorf(errors.ERR_RS_USER_NOT_EXIST)
+	}
+
 	employee.ID = primitive.NewObjectID()
 	employee.RegistrationStatus = domain.ACCEPTED
 	employee.RegistrationTimestamp = time.Now().Unix()
+	calculateTaxesAndContributions(employee)
 	return service.Repo.SaveEmployee(employee)
 }
 
 func (service *CrosoServiceImpl) GetPendingEmployeeRequests() (pending []domain.Employee) {
-
-	return nil
+	return service.Repo.GetEmployees(bson.D{{Key: "registrationStatus", Value: domain.PENDING}})
 }
 
 func (service *CrosoServiceImpl) ResolveRequestRegisterEmployee(request *domain.ResolveRequestRegisterEmployee) (err error) {
@@ -116,7 +148,7 @@ func (service *CrosoServiceImpl) SubscribeToNats(connection *nats.Conn) {
 
 			employeeID, ok := request["employeeID"]
 			if !ok {
-				service.Logger.Error("bad request got from nats.")
+				log.Error("bad request got from nats.")
 				return
 			}
 
@@ -165,4 +197,81 @@ func (service *CrosoServiceImpl) SubscribeToNats(connection *nats.Conn) {
 	}
 
 	service.Logger.Sugar().Infof("Subscribed to channel: %s", os.Getenv(GET_EMPLOYEE_STATUS))
+}
+
+func calculateTaxesAndContributions(employee *domain.Employee) {
+	employee.PersonalIncomeTax = calculatePersonalIncomeTax(employee.NetSalary)
+	employee.PDContribution = calculatePensionDisabilityContribution(employee.NetSalary)
+	employee.HIContribution = calculateHealthInsuranceContribution(employee.NetSalary)
+	employee.UIContribution = calculateUnemploymentInsuranceContribution(employee.NetSalary)
+	employee.EFContribution = calculateEmploymentFundContribution(employee.NetSalary)
+	employee.GrossPay = float64(employee.NetSalary) + employee.PersonalIncomeTax +
+		employee.PDContribution + employee.HIContribution + employee.UIContribution +
+		employee.EFContribution
+}
+
+func calculatePersonalIncomeTax(netSalary int) (personalIncomeTax float64) {
+	var taxPercent float64
+	if 3601 >= netSalary && netSalary <= 15000 {
+		taxPercent = 0.15
+	} else if 15001 >= netSalary && netSalary <= 30000 {
+		taxPercent = 0.2
+	} else {
+		taxPercent = 0.1
+	}
+
+	personalIncomeTax = float64(netSalary) * taxPercent
+	return
+}
+
+func calculatePensionDisabilityContribution(netSalary int) (pdContribution float64) {
+	return float64(netSalary) * 0.26
+}
+
+func calculateHealthInsuranceContribution(netSalary int) (hiContribution float64) {
+	return float64(netSalary) * 0.123
+}
+
+func calculateUnemploymentInsuranceContribution(netSalary int) (uiContribution float64) {
+	return float64(netSalary) * 0.0075
+}
+
+func calculateEmploymentFundContribution(netSalary int) (efContribution float64) {
+	return float64(netSalary) * 0.0075
+}
+
+func (service *CrosoServiceImpl) ChangeEmploymentStatus(id string, changeRequest domain.ChangeEmploymentStatus) (err error) {
+
+	primitiveID, _ := primitive.ObjectIDFromHex(id)
+
+	employee := service.Repo.GetEmployee(bson.M{"_id": primitiveID})
+	if employee == nil {
+		err = fmt.Errorf(errors.ERR_EMPLOYEE_NOT_FOUND)
+		return
+	}
+
+	employee.EmploymentStatus = changeRequest.EmploymentStatus
+	employee.EmploymentDuration = changeRequest.EmploymentDuration
+
+	err = service.Repo.SaveEmployee(employee)
+
+	return
+}
+
+func (service *CrosoServiceImpl) CancelEmployment(id string) (err error) {
+
+	primitiveID, _ := primitive.ObjectIDFromHex(id)
+
+	employee := service.Repo.GetEmployee(bson.M{"_id": primitiveID})
+	if employee == nil {
+		err = fmt.Errorf(errors.ERR_EMPLOYEE_NOT_FOUND)
+		return
+	}
+
+	employee.EmploymentStatus = domain.UNEMPLOYED
+	employee.EmploymentDuration = 0
+
+	err = service.Repo.SaveEmployee(employee)
+
+	return
 }

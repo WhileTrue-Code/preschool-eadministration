@@ -27,35 +27,54 @@
                         <div *ngIf="registerEmployeeForm['address'].errors['required']">Adresa zaposlenog je obavezna.</div>
                     </div>   
                 </div>
-                <div class="mb-3 w-50" style="margin: auto;">
+                <div class="mb-3 w-50" style="margin: auto;"
+                [@fadeInOut]="isPassportEnabled ? 'y' : 'n'"
+                *ngIf="isJmbgEnabled != 'n'"
+                (input)="change('jmbg', $event)">
                     <h2 class="box-title">JMBG</h2>
                     <input type="text" maxlength="30" class="form-control" formControlName="jmbg"
                         [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['jmbg'].errors }">
-                    <div *ngIf="submitted && registerEmployeeForm['jmbg'].errors" class="invalid-feedback">
-                        <div *ngIf="registerEmployeeForm['jmbg'].errors['required']">JMBG zaposlenog je obavezan ukoliko ....</div>
-                    </div>   
+                    <!-- <div *ngIf="submitted && registerEmployeeForm['jmbg'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['jmbg'].errors['required']">JMBG zaposlenog je obavezan ukoliko niste uneli broj pasoša.</div>
+                    </div>    -->
                 </div>
-                <div class="mb-3 w-50" style="margin: auto;">
-                    <h2 class="box-title">Broj licne karte</h2>
+                <div class="mb-3 w-50" style="margin: auto;" 
+                [@fadeInOut]="isPassportEnabled ? 'y' : 'n'"
+                *ngIf="isIdCardEnabled != 'n'"
+                (input)="change('idCardNumber', $event)">
+                    <h2 class="box-title">Broj lične karte</h2>
                     <input type="text" maxlength="30" class="form-control" formControlName="idCardNumber"
                         [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['brLk'].errors }">
                     <div *ngIf="submitted && registerEmployeeForm['idCardNumber'].errors" class="invalid-feedback">
-                        <div *ngIf="registerEmployeeForm['idCardNumber'].errors['required']">
-                            Broj licne karte zaposlenog je obavezan ukoliko ....
-                        </div>
+                        <!-- <div *ngIf="registerEmployeeForm['jmbg'].value != ''">
+                            Broj lične karte je obavezan ukoliko ste uneli JMBG.
+                        </div> -->
                     </div>   
                 </div>
-                <div class="mb-3 w-50" style="margin: auto;">
-                    <h2 class="box-title">Broj pasosa</h2>
+                <div class="mb-3 w-50" style="margin: auto;"
+                [@fadeInOut]="isPassportEnabled ? 'y' : 'n'"
+                *ngIf="isPassportEnabled != 'n'"
+                (input)="change('passportNumber', $event)">
+                    <h2 class="box-title">Broj pasoša</h2>
                     <input type="text" maxlength="30" class="form-control" formControlName="passportNumber"
-                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['passportNumber'].errors }">
+                    [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['address'].errors }">
                     <div *ngIf="submitted && registerEmployeeForm['passportNumber'].errors" class="invalid-feedback">
-                        <div *ngIf="registerEmployeeForm['passportNumber'].errors['required']">
-                            Broj pasosa zaposlenog je obavezan ukoliko ....
-                        </div>
+                        <!-- <div *ngIf="registerEmployeeForm['jmbg'].value == '' && registerEmployeeForm['idCardNumber'].value == ''">
+                            Broj pasoša zaposlenog je obavezan ukoliko niste uneli jmbg i broj lične karte.
+                        </div> -->
                     </div>   
                 </div>
                 <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Neto iznos plate</h2>
+                    <input type="number" class="form-control" formControlName="netSalary"
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['netSalary'].errors }">
+                    <div *ngIf="submitted && registerEmployeeForm['netSalary'].errors" class="invalid-feedback">
+                        <div *ngIf="registerEmployeeForm['netSalary'].errors['required']">Neto iznos plate je obavezno polje.</div>
+                        <div *ngIf="registerEmployeeForm['netSalary'].errors['min']">Neto iznos plate ne sme biti manji od 40000.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;"
+                (input)="change('employmentStatus', $event)">
                     <h2 class="box-title">Tip ugovora</h2>
                     <select class="form-control form-select" formControlName="employmentStatus" id="employmentStatus">
                         <option class="form-control form-option" value="definite_contract">Ugovor na odredjeno</option>
@@ -63,14 +82,15 @@
                         <option class="form-control form-option" value="temporary_works">Ugovor o povremeno privremenom radu</option>
                     </select>
                 </div>
-                <div class="mb-3 w-50" style="margin: auto;" 
-                [hidden]="registerEmployeeForm['employmentStatus'].value !== 'definite_contract'">
+                <div class="mb-3 w-50 hide-anim" style="margin: auto;" 
+                [@fadeInOut]="employmentStatus ? 'y' : 'n' "
+                *ngIf="registerEmployeeForm['employmentStatus'].value === 'definite_contract'">
                     <h2 class="box-title">Trajanje ugovora</h2>
                     <input type="number" maxlength="30" class="form-control" formControlName="employmentDuration"
                         [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['employmentDuration'].errors }">
                     <div *ngIf="submitted && registerEmployeeForm['employmentDuration'].errors" class="invalid-feedback">
                         <div *ngIf="registerEmployeeForm['employmentDuration'].errors['required']">
-                            Broj pasosa zaposlenog je obavezan ukoliko ....
+                            Trajanje ugovora je obavezno polje
                         </div>
                     </div>  
                 </div>

@@ -12,4 +12,5 @@ type CompanyAccount struct {
 	AuthorizedPersonFirstName string             `bson:"authorizedPersonFirstName" json:"authorizedPersonFirstName"`
 	AuthorizedPersonLastName  string             `bson:"authorizedPersonLastName" json:"authorizedPersonLastName"`
 	LastUpdateDate            int                `bson:"lastUpdateDate" json:"lastUpdateDate"`
+	IsLiquidated              bool               `json:"isLiquidated" bson:"isLiquidated"`
 }

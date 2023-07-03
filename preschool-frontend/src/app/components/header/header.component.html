@@ -24,6 +24,11 @@
             </button>
             <button *ngIf="isLoggedIn()
             && this.storeService.getServiceFromStore()=='CROSO'
+            && this.storeService.getCustomRole()=='Admin'" mat-button mat-ripple routerLink="/PendingEmployeeRequests">
+                <span>Zahtevi na čekanju</span>
+            </button>
+            <button *ngIf="isLoggedIn()
+            && this.storeService.getServiceFromStore()=='CROSO'
             && this.storeService.getCustomRole()=='Regular'" mat-button mat-ripple routerLink="/RegisterCroso">
                 <span>CROSO Registracija</span>
             </button>

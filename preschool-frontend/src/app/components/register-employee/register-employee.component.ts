@@ -1,6 +1,8 @@
+import { animate, state, style, transition, trigger } from '@angular/animations';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 import { CrosoService } from 'src/app/services/croso.service';
@@ -9,7 +11,18 @@ import { CompanyIDService } from 'src/app/services/inputs.service';
 @Component({
   selector: 'app-register-employee',
   templateUrl: './register-employee.component.html',
-  styleUrls: ['./register-employee.component.css']
+  styleUrls: ['./register-employee.component.css'],
+  animations: [
+    trigger('fadeInOut', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('500ms', style({ opacity: 1 }))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({ opacity: 0 }))
+      ])
+    ])
+  ], 
 })
 export class RegisterEmployeeComponent implements OnInit {
   formGroup: FormGroup = new FormGroup({
@@ -19,6 +32,7 @@ export class RegisterEmployeeComponent implements OnInit {
     jmbg: new FormControl(''),
     idCardNumber: new FormControl(''),
     passportNumber: new FormControl(''),
+    netSalary: new FormControl(''),
     employmentStatus:  new FormControl(''),
     employmentDuration:  new FormControl(''),
   });
@@ -27,9 +41,15 @@ export class RegisterEmployeeComponent implements OnInit {
   constructor (private companyIDservice: CompanyIDService,
                private crosoService: CrosoService,
                private formBuilder: FormBuilder,
-               private router: Router) { }
+               private router: Router,
+               private snackBar: MatSnackBar) { }
 
   submitted = false;
+
+  isPassportEnabled = 'y'
+  isJmbgEnabled = 'y'
+  isIdCardEnabled = 'y'
+  employmentStatus = 'n'
 
   ngOnInit(): void {
     this.companyID = this.companyIDservice.getCompanyID()
@@ -42,6 +62,7 @@ export class RegisterEmployeeComponent implements OnInit {
       jmbg: ['', []],
       idCardNumber: ['', []],
       passportNumber: ['', []],
+      netSalary: ['', [Validators.required, Validators.min(40000)]],
       employmentStatus: ['', [Validators.required]],
       employmentDuration: ['', []],
     });
@@ -53,6 +74,12 @@ export class RegisterEmployeeComponent implements OnInit {
   
   
   onSubmit() {
+    this.submitted = true;
+
+    if (this.formGroup.invalid) {
+      return;
+    }
+    
     if (this.formGroup.get('jmbg')!.value == "" && this.formGroup.get('idCardNumber')!.value == ""){
       if(this.formGroup.get('passportNumber')!.value == ""){
         this.submitted = false
@@ -77,19 +104,52 @@ export class RegisterEmployeeComponent implements OnInit {
     console.log(employee)
     this.crosoService.RequestEmployeeRegistration(employee)
     .subscribe({next:(response) => {
-      alert(response)
+      this.openSnackBar(response)
       setTimeout(() => {
         this.companyIDservice.setCompanyID(this.companyID)
         this.router.navigate(['/CompanyEmployees']);
       }, 800)
-    },error: (errResp: HttpErrorResponse)=> {
-      console.log(errResp)
+    },error: (error: HttpErrorResponse)=> {
+      this.openSnackBar(error.error)
     }
   })
     
 
   }
 
+  openSnackBar(msg: string){
+    let config: MatSnackBarConfig = new MatSnackBarConfig()
+    config.duration = 1000 
+    this.snackBar.open(msg, undefined, config)
+  }
+
+  change(type: string, event: Event) {
+    const value = (event.target as HTMLInputElement).value;
+    if ((type == "jmbg" || type == "idCardNumber")) {
+      if(value == ''){
+        this.isPassportEnabled = 'y'
+        return
+      }
+      this.isPassportEnabled = 'n'
+    }else if (type == "passportNumber") {
+      if(value == ''){
+        this.isJmbgEnabled = 'y'
+        this.isIdCardEnabled = 'y'
+        return
+      }
+      
+      this.isJmbgEnabled = 'n'
+      this.isIdCardEnabled = 'n'
+    }
+
+    if (type == "employmentStatus"){
+      if (value != "definite_contract"){
+        this.employmentStatus = 'n'
+        return
+      }
+      this.employmentStatus = 'y'
+    }
+  }
   // customReqIdValidator() {
   //   let that = this
   //   return function(control: FormControl) {

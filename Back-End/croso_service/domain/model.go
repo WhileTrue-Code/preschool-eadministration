@@ -25,9 +25,34 @@ type Employee struct {
 	CompanyID             int                `json:"companyID" bson:"companyID"`
 	RegistrationTimestamp int64              `json:"timestamp" bson:"timestamp"`
 	EmploymentStatus      EmploymentStatus   `json:"employmentStatus" bson:"employmentStatus"`
+
 	// EmploymentDuration represents employment duration in number
 	// of months if is EmloymentStatus set to CONTRACT_DEFINITE_PERIOD
-	EmploymentDuration int8               `json:"employmentDuration" bson:"employmentDuration"`
+	EmploymentDuration int8 `json:"employmentDuration" bson:"employmentDuration"`
+	NetSalary          int  `json:"netSalary" bson:"netSalary"`
+
+	// GrossPay is sum of NetSalary and all contributions and taxes which have to be payed to state of RS
+	GrossPay float64 `json:"grossPay" bson:"grossPay"`
+
+	// PersonalIncomeTax is tax which has to be payed to the state of RS
+	// to 3600 RSD PIT amounts to 10 percent of net salary amount
+	// from 3601 to 15000 PIT 15 percent
+	// from 15001 to 30000 PIT 20 percent
+	// from 30000 and higher PIT 10 percent
+	PersonalIncomeTax float64 `json:"personalIncomeTax" bson:"personalIncomeTax"`
+
+	// PDContribution stands for Pension and Disability contribution and presented by 26% of employee net salary
+	PDContribution float64 `json:"pdContribution" bson:"pdContribution"`
+
+	// HIContribution stands for Health Insurance Contribution and presented by 12,3% of employee net salary
+	HIContribution float64 `json:"hiContribution" bson:"hiContribution"`
+
+	// UIContribution stands for Unemployment Insurance Contribution and presented by 0,075% of employee net salary
+	UIContribution float64 `json:"uiContribution" bson:"uiContribution"`
+
+	// EFContribution stands for Employment Fund Contribution and presented by 0,075% of employee net salary
+	EFContribution float64 `json:"efContribution" bson:"efContribution"`
+
 	RegistrationStatus RegistrationStatus `json:"registrationStatus" bson:"registrationStatus"`
 }
 
@@ -39,6 +64,11 @@ const (
 	CONTRACT_INDEFINITE_PERIOD = "indefinite_contract"
 	CONTRACT_TEMPORARY_WORKS   = "temporary_works"
 )
+
+type ChangeEmploymentStatus struct {
+	EmploymentStatus   EmploymentStatus
+	EmploymentDuration int8
+}
 
 type ResolveRequestRegisterEmployee struct {
 	EmployeeID string

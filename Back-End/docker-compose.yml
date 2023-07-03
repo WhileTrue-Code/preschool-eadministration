@@ -135,6 +135,7 @@ services:
       NATS_URI: ${NATS_URI}
       COMPANY_GET_BY_FOUNDER_COMPANY_ID: ${COMPANY_GET_BY_FOUNDER_COMPANY_ID}
       GET_EMPLOYEE_STATUS_BY_ID: ${GET_EMPLOYEE_STATUS_BY_ID}
+      CHECK_USER_JMBG: ${CHECK_USER_JMBG}
     networks:
       - network
     depends_on:

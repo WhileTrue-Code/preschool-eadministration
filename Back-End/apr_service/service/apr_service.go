@@ -41,8 +41,21 @@ func (service *AprServiceImpl) FindAprByFounderID(founderID string) ([]domain.Ap
 
 func (service *AprServiceImpl) FindByFounderIDAndCompanyID(founderID string,
 	companyID int) (company domain.AprAccount, err error) {
-
 	return service.Repo.FindCompanyByFounderIDAndCompanyID(founderID, companyID)
+}
+
+func (service *AprServiceImpl) UpdateCompanyData(company domain.AprAccount) (err error) {
+	return service.Repo.PatchCompany(company)
+}
+
+func (service *AprServiceImpl) LiquidateCompany(companyID string) error {
+
+	companyIDI, _ := strconv.Atoi(companyID)
+	company, _ := service.Repo.FindAprAccountsByCompanyID(companyIDI)
+
+	company.IsLiquidated = true
+
+	return service.Repo.PatchCompany(company)
 }
 
 func (service *AprServiceImpl) generatePIB() (pibI int) {
@@ -85,14 +98,15 @@ func (service *AprServiceImpl) SubscribeToNats(connection *nats.Conn) {
 		founderID := request["founderID"]
 		companyID, _ := strconv.Atoi(request["companyID"])
 
-		company, err := service.FindByFounderIDAndCompanyID(founderID, companyID)
+		company := domain.AprAccount{}
+		company, err = service.FindByFounderIDAndCompanyID(founderID, companyID)
 		if err != nil {
 			service.Logger.Error("error in finding company",
 				zap.Error(err),
 				zap.String("founderID", founderID),
 				zap.Int("companyID", companyID),
 			)
-			return
+			// return
 		}
 
 		response, err := json.Marshal(company)

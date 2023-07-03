@@ -28,6 +28,8 @@ func NewController(aprService domain.AprService, logger *zap.Logger) *AprControl
 func (controller *AprController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterAprCompany).Methods("POST")
 	router.HandleFunc("/", controller.FindAprByFounderID).Methods("GET")
+	router.HandleFunc("/{id}", controller.UpdateCompanyData).Methods("PUT")
+	router.HandleFunc("/liquidate/{id}", controller.LiquidateCompany).Methods("PUT")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
 }
@@ -97,4 +99,55 @@ func (controller *AprController) FindAprByFounderID(writer http.ResponseWriter, 
 	resBytes, _ := json.Marshal(res)
 	writer.Write(resBytes)
 
+}
+
+func (controller *AprController) UpdateCompanyData(writer http.ResponseWriter, req *http.Request) {
+	controller.Logger.Info("started UpdateCompanyData")
+
+	bytes, err := io.ReadAll(req.Body)
+	if err != nil {
+		http.Error(writer, "serverska greška, molimo pokušajte kasnije.", http.StatusInternalServerError)
+		return
+	}
+	var newCompany domain.AprAccount
+	err = json.Unmarshal(bytes, &newCompany)
+	if err != nil {
+		http.Error(writer, "bad request.", http.StatusBadRequest)
+		return
+	}
+
+	err = controller.Service.UpdateCompanyData(newCompany)
+	if err != nil {
+		controller.Logger.Info("error in updating company data.",
+			zap.Any("company", newCompany),
+		)
+	}
+
+	controller.Logger.Info("finished UpdateCompanyData")
+	msg := "Podaci preduzeća su uspešno ažurirani."
+	writer.Write([]byte(msg))
+}
+
+func (controller *AprController) LiquidateCompany(writer http.ResponseWriter, req *http.Request) {
+	controller.Logger.Info("started LiquidateCompany")
+	vars := mux.Vars(req)
+
+	companyID, ok := vars["id"]
+
+	if !ok {
+		http.Error(writer, "company id is not provided", http.StatusBadRequest)
+		return
+	}
+
+	err := controller.Service.LiquidateCompany(companyID)
+	if err != nil {
+		controller.Logger.Info("error in liquidating company.",
+			zap.String("companyID", companyID),
+		)
+	}
+
+	controller.Logger.Info("finished LiquidateCompany")
+	msg := "company successfully liquidated."
+
+	writer.Write([]byte(msg))
 }

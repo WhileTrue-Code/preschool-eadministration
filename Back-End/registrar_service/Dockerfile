@@ -3,8 +3,6 @@ WORKDIR /app
 COPY ./registrar_service/ .
 COPY ./authorization/ /authorization/
 COPY ./nats/ /nats/
-RUN cd /authorization && go mod download
-RUN cd /nats && go mod download
 RUN go mod download
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o main .
 

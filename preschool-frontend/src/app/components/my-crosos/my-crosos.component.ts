@@ -39,7 +39,7 @@ export class MyCrososComponent implements OnInit {
   }
 
   redirectToRegister() {
-    this.router.navigate(['/RegisterApr'])
+    this.router.navigate(['/RegisterCroso'])
   }
 
 }

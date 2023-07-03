@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Credentials} from "../../models/credentials";
 import {Router} from "@angular/router";
 import {StoreServiceService} from "../../services/store-service.service";
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-choose-service',
@@ -12,7 +13,7 @@ export class ChooseServiceComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private storeService: StoreServiceService
+    private storeService: StoreServiceService,
   ) { }
 
   ngOnInit(): void {

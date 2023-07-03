@@ -34,6 +34,7 @@ import { ZdravstvenoStanjeAddComponent } from './components/eZdravstvo/zdravstve
 import { ZdravstvenaStanjaDoctorComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstvena-stanja-doctor/zdravstvena-stanja-doctor.component';
 import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-view-my/zdravstveno-stanje-view-my.component';
 import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
+import { EmployeeRequestsComponent } from './components/employee-requests/employee-requests.component';
 
 const routes: Routes = [
   {
@@ -167,7 +168,12 @@ const routes: Routes = [
   {
     path: "CompanyEmployees",
     component: CompanyEmployeesComponent
-  },{
+  },
+  {
+    path: "PendingEmployeeRequests",
+    component: EmployeeRequestsComponent
+  },
+  {
     path: "view-my-registry",
     component: ViewMyRegistryComponent
   }
