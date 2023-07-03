@@ -64,6 +64,7 @@ import { ZdravstvenoStanjeAddComponent } from './components/eZdravstvo/zdravstve
 import { ZdravstvenaStanjaDoctorComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstvena-stanja-doctor/zdravstvena-stanja-doctor.component';
 import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-view-my/zdravstveno-stanje-view-my.component';
 import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
+import { UserDiedComponent } from './components/eZdravstvo/user-died/user-died.component';
 
 
 
@@ -119,7 +120,8 @@ import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccinat
     ZdravstvenoStanjeAddComponent,
     ZdravstvenaStanjaDoctorComponent,
     ZdravstvenoStanjeViewMyComponent,
-    VaccinationsMyRegularComponent
+    VaccinationsMyRegularComponent,
+    UserDiedComponent
   ],
   imports: [
     BrowserModule,
