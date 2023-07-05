@@ -47,7 +47,9 @@ func (repo *CrosoMongoRepo) UpdateCompany(company *domain.CrosoAccount) (err err
 }
 
 func (repo *CrosoMongoRepo) FindCrosoAccountsByFounderID(founderID string) (results []domain.CrosoAccount) {
-	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID}})
+	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID},
+		{Key: "isLiquidated", Value: false},
+	})
 	if err != nil {
 		repo.Logger.Info("Error in getting accounts by founderID",
 			zap.Error(err),

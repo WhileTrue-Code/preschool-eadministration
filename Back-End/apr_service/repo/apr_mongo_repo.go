@@ -40,7 +40,9 @@ func (repo *AprMongoRepo) SaveAprAccount(aprAccount *domain.AprAccount) (err err
 
 func (repo *AprMongoRepo) FindAprAccountsByFounderID(founderID string) (results []domain.AprAccount, err error) {
 
-	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID}})
+	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID},
+		{Key: "isLiquidated", Value: false},
+	})
 	if err != nil {
 		repo.Logger.Info("Error in getting accounts by founderID",
 			zap.Error(err),

@@ -100,14 +100,15 @@ func (service *CrosoServiceImpl) RequestRegisterEmployee(employee *domain.Employ
 
 	found := service.Repo.GetEmployee(bson.M{"employeeID": employee.EmployeeID})
 	if found != nil {
+		service.Logger.Info("found!\n\n\n\n\n")
 		if found.EmploymentStatus != domain.UNEMPLOYED {
 			return fmt.Errorf(errors.ERR_RS_EMPLOYEE_ALREADY_EMPLOYEED)
 		}
 		employee.ID = found.ID
 		employee.RegistrationStatus = domain.PENDING
 		employee.RegistrationTimestamp = time.Now().Unix()
-		calculateTaxesAndContributions(found)
-		return service.Repo.UpdateEmployee(found)
+		calculateTaxesAndContributions(employee)
+		return service.Repo.UpdateEmployee(employee)
 	}
 
 	employee.ID = primitive.NewObjectID()

@@ -133,6 +133,7 @@ func (controller *CrosoController) RequestEmployeeRegistration(writer http.Respo
 	}
 
 	err = controller.Service.RequestRegisterEmployee(&request)
+	controller.Logger.Info("err\n\n\n\n\n", zap.Any("err", err))
 	if err != nil {
 		controller.Logger.Error("error in saving request.",
 			zap.Error(err),
