@@ -44,7 +44,7 @@
                 (input)="change('idCardNumber', $event)">
                     <h2 class="box-title">Broj lične karte</h2>
                     <input type="text" maxlength="30" class="form-control" formControlName="idCardNumber"
-                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['brLk'].errors }">
+                        [ngClass]="{ 'is-invalid': submitted && registerEmployeeForm['idCardNumber'].errors }">
                     <div *ngIf="submitted && registerEmployeeForm['idCardNumber'].errors" class="invalid-feedback">
                         <!-- <div *ngIf="registerEmployeeForm['jmbg'].value != ''">
                             Broj lične karte je obavezan ukoliko ste uneli JMBG.

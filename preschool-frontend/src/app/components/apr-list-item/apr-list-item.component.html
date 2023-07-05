@@ -3,7 +3,11 @@
     <h2 class="apr-item-items">PIB: {{apr.companyID}}</h2>
     <h2 class="apr-item-items">Adresa: {{apr.address}}</h2>
     <h2 class="apr-item-items">Početni kapital: {{apr.startCapital}} RSD</h2>
-    <h2 class="apr-item-items">Ovlašćeno lice: {{apr.authorizedPersonFirstName}} {{apr.authorizedPersonLastName}}</h2>
+    <h2 class="apr-item-items">Ovlašćeno lice: {{apr.authorizedPersonFirstName}} {{apr.authorizedPersonLastName}}</h2><br/>
+    <div class="text-center">
+        <button class="btn btn-primary m-3" (click)="redirectToChangeCompany()">Izmeni preduzece</button>
+        <button class="btn btn-primary" (click)="liquidateCompany()">Likvidiraj preduzece</button>
+    </div>
     
 </mat-card>
 

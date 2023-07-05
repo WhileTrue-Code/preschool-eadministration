@@ -1,0 +1,17 @@
+<div class="w-50 m-auto mt-3">
+    <mat-card  style="text-align: center;">
+        <p>Tip ugovora</p>
+        <mat-select class="w-50" [(ngModel)]="selectedEmploymentStatus" (selectionChange)="onEmploymentStatusSelected($event)">
+            <mat-option [value]="'indefinite_contract'">Na neodređeno</mat-option>
+            <mat-option [value]="'definite_contract'">Na određeno</mat-option>
+            <mat-option [value]="'temporary_works'">Privremeno povremeni rad</mat-option>
+        </mat-select>
+
+        <p class="mt-3">Duzina trajanja</p>
+        <input type="number" [(ngModel)]="employmentDuration" min="0" (change)="onEmploymentDurationInput($event)" matInput/><br/>
+
+        <p class="mt-3" style="color: red;"
+        *ngIf="this.validationErr && this.validationErr != ''">{{this.validationErr}}</p>
+        <button class="btn btn-primary mt-3" (click)="onSubmit()">Azuriraj status</button>
+    </mat-card>
+</div>

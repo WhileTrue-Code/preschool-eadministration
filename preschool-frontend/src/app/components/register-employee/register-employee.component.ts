@@ -6,7 +6,7 @@ import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 import { CrosoService } from 'src/app/services/croso.service';
-import { CompanyIDService } from 'src/app/services/inputs.service';
+import { InputsService } from 'src/app/services/inputs.service';
 
 @Component({
   selector: 'app-register-employee',
@@ -38,7 +38,7 @@ export class RegisterEmployeeComponent implements OnInit {
   });
 
   companyID: string = "";
-  constructor (private companyIDservice: CompanyIDService,
+  constructor (private inputsService: InputsService,
                private crosoService: CrosoService,
                private formBuilder: FormBuilder,
                private router: Router,
@@ -52,7 +52,7 @@ export class RegisterEmployeeComponent implements OnInit {
   employmentStatus = 'n'
 
   ngOnInit(): void {
-    this.companyID = this.companyIDservice.getCompanyID()
+    this.companyID = this.inputsService.getCompanyID()
     console.log(this.companyID)
 
     this.formGroup = this.formBuilder.group({
@@ -106,7 +106,7 @@ export class RegisterEmployeeComponent implements OnInit {
     .subscribe({next:(response) => {
       this.openSnackBar(response)
       setTimeout(() => {
-        this.companyIDservice.setCompanyID(this.companyID)
+        this.inputsService.setCompanyID(this.companyID)
         this.router.navigate(['/CompanyEmployees']);
       }, 800)
     },error: (error: HttpErrorResponse)=> {
@@ -120,7 +120,7 @@ export class RegisterEmployeeComponent implements OnInit {
   openSnackBar(msg: string){
     let config: MatSnackBarConfig = new MatSnackBarConfig()
     config.duration = 1000 
-    this.snackBar.open(msg, undefined, config)
+    this.snackBar.open(msg, "ok", config)
   }
 
   change(type: string, event: Event) {

@@ -31,8 +31,8 @@ func (controller *CrosoController) Init(router *mux.Router) {
 	router.HandleFunc("/employee/register", controller.RequestEmployeeRegistration).Methods("POST")
 	router.HandleFunc("/employee/pending", controller.RequestEmployeeRegistration).Methods("GET")
 	router.HandleFunc("/employee/status", controller.PatchEmployeeRegistrationStatus).Methods("PATCH")
-	router.HandleFunc("/employee/{id}/employmentStatus", controller.ChangeEmploymentStatus).Methods("PATCH")
-	router.HandleFunc("/employee/{id}/unemployee", controller.Unemployee).Methods("POST")
+	router.HandleFunc("/employees/{id}/employmentStatus", controller.ChangeEmploymentStatus).Methods("PATCH")
+	router.HandleFunc("/employees/{id}/cancelEmployment", controller.CancelEmployment).Methods("PATCH")
 	router.HandleFunc("/employees/{companyID}", controller.GetCompanyEmployees).Methods("GET")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
@@ -222,6 +222,7 @@ func (controller *CrosoController) ChangeEmploymentStatus(writer http.ResponseWr
 	vars := mux.Vars(request)
 	id, ok := vars["id"]
 	if !ok {
+		controller.Logger.Error("bad request id from vars is not ok.")
 		http.Error(writer, errors.ERR_BAD_REQUEST_CHECK_DATA, http.StatusBadRequest)
 		return
 	}
@@ -229,12 +230,18 @@ func (controller *CrosoController) ChangeEmploymentStatus(writer http.ResponseWr
 	var req domain.ChangeEmploymentStatus
 	bytes, err := io.ReadAll(request.Body)
 	if err != nil {
+		controller.Logger.Error("error in reading request body.",
+			zap.Error(err),
+		)
 		http.Error(writer, errors.ERR_SERVER_INTERNAL_MSG, http.StatusInternalServerError)
 		return
 	}
 
 	err = json.Unmarshal(bytes, &req)
 	if err != nil {
+		controller.Logger.Error("error in unmarshalling body.",
+			zap.Error(err),
+		)
 		http.Error(writer, errors.ERR_BAD_REQUEST_CHECK_DATA, http.StatusBadRequest)
 		return
 	}
@@ -245,12 +252,13 @@ func (controller *CrosoController) ChangeEmploymentStatus(writer http.ResponseWr
 		return
 	}
 
-	var response string = "Uspešno izmenjen status zaposlenog."
-	writer.Write([]byte(response))
+	var response any = "Uspešno izmenjen status zaposlenog."
+	stringResp, _ := json.Marshal(response)
+	writer.Write(stringResp)
 
 }
 
-func (controller *CrosoController) Unemployee(writer http.ResponseWriter, request *http.Request) {
+func (controller *CrosoController) CancelEmployment(writer http.ResponseWriter, request *http.Request) {
 	vars := mux.Vars(request)
 	id, ok := vars["id"]
 	if !ok {
@@ -264,7 +272,8 @@ func (controller *CrosoController) Unemployee(writer http.ResponseWriter, reques
 		return
 	}
 
-	var response string = "Uspešno odjavljen zaposleni iz preduzeća."
-	writer.Write([]byte(response))
+	var response any = "Uspešno odjavljen zaposleni iz preduzeća."
+	stringResp, _ := json.Marshal(response)
+	writer.Write(stringResp)
 
 }

@@ -7,6 +7,7 @@ import { Competition } from "../models/competition.model";
 import { Company } from "../models/aprAccount.model";
 import { CompanyID } from "../models/companyID.model";
 import { Employee } from "../models/employee.model";
+import { ChangeEmploymentStatus } from "../dto/changeEmploymentStatus";
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +30,14 @@ export class CrosoService {
 
     public GetEmployeesByCompanyID(companyID: string): Observable<Employee[]> {
         return this.http.get<Employee[]>(`${environment.baseApiUrl}/${this.url}/employees/${companyID}`);
+    }
+
+    public ChangeEmploymentStatus(id: string, changeEmploymentStatus: ChangeEmploymentStatus): Observable<string> {
+        return this.http.patch<string>(`${environment.baseApiUrl}/${this.url}/employees/${id}/employmentStatus`, changeEmploymentStatus);
+    }
+
+    public CancelEmployment(id: string): Observable<string> {
+        return this.http.patch<string>(`${environment.baseApiUrl}/${this.url}/employees/${id}/cancelEmployment`, null);
     }
 
 }

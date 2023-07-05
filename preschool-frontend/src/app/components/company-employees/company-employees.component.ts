@@ -1,9 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Employee } from 'src/app/models/employee.model';
 import { CrosoService } from 'src/app/services/croso.service';
-import { CompanyIDService } from 'src/app/services/inputs.service';
+import { InputsService } from 'src/app/services/inputs.service';
 
 @Component({
   selector: 'app-company-employees',
@@ -16,12 +16,12 @@ export class CompanyEmployeesComponent implements OnInit {
   permissionErr: string = ""
   companyID: string = ""
 
-  constructor(private companyIDservice: CompanyIDService,
+  constructor(private inputsService: InputsService,
               private crosoService: CrosoService,
               private router: Router) { }
 
   ngOnInit(): void {
-    this.companyID = this.companyIDservice.getCompanyID()
+    this.companyID = this.inputsService.getCompanyID()
 
     if (!this.permission()) {
       this.permissionErr = "Nemate prava pristupa ovoj stranici."
@@ -52,4 +52,14 @@ export class CompanyEmployeesComponent implements OnInit {
   redirectToRegister() {
     this.router.navigate(['/RegisterEmployee'])
   }
+
+  // @HostListener('window:beforeunload', ['$event'])
+  // onBeforeUnload(event: Event): void {
+    // event.preventDefault()
+    // console.log("hello")
+    // this.inputsService.setCompanyID(this.companyID)
+    // this.router.navigate(['/CompanyEmployees'])
+    // Perform actions before the page is unloaded/reloaded
+    // e.g., save data, send requests, etc.
+  // }
 }

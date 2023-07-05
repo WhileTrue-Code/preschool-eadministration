@@ -66,14 +66,14 @@ const (
 )
 
 type ChangeEmploymentStatus struct {
-	EmploymentStatus   EmploymentStatus
-	EmploymentDuration int8
+	EmploymentStatus   EmploymentStatus `json:"employmentStatus"`
+	EmploymentDuration int8             `json:"employmentDuration"`
 }
 
 type ResolveRequestRegisterEmployee struct {
-	EmployeeID string
-	CompanyID  int
-	Status     RegistrationStatus
+	EmployeeID string             `json:"employeeID"`
+	CompanyID  int                `json:"companyID"`
+	Status     RegistrationStatus `json:"status"`
 }
 
 type RegistrationStatus int

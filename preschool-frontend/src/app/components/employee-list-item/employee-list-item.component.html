@@ -1,13 +1,31 @@
-<mat-card style="width: 60%; margin:auto; margin-top: 10px;">
+<mat-card style="width: 70%; margin:auto; margin-top: 10px;">
     <mat-card-title class="card-title" style="text-align: center; margin-bottom: 12px;">
         {{employee.firstName + " " + employee.lastName}}
     </mat-card-title>
-    <!-- <h2 class="apr-item-items">PIB: {{apr.companyID}}</h2> -->
+    <h2 class="employee-item-items">JMBG: {{employee.employeeID}}</h2>
     <h2 class="employee-item-items">Adresa: {{employee.address}}</h2>
     <h2 class="employee-item-items">Tip ugovora: {{status}}</h2>
     <h2 *ngIf="employee.employmentStatus == 'definite_contract'" class="employee-item-items">
         Trajanje: {{employee.employmentDuration}}
-    </h2>
-    <!-- <h2 class="apr-item-items">Ovlašćeno lice: {{apr.authorizedPersonFirstName}} {{apr.authorizedPersonLastName}}</h2> -->
+    </h2><br/>
+    <div class="row">
+        <div class="col-5 mr-4">
+            <h2 class="employee-item-items">Neto zarada: {{employee.netSalary}}</h2>
+            <h2 class="employee-item-items">Bruto zarada: {{employee.grossPay}}</h2>
+            <h2 class="employee-item-items">Porez na doprinos: {{employee.personalIncomeTax}}</h2>
+        </div>
+        <div class="col-7">
+            <h2 class="employee-item-items">Troskovi zdravstvenog osiguranja: {{employee.hiContribution}}</h2>
+            <h2 class="employee-item-items">Troskovi PIO fonda: {{employee.pdContribution}}</h2>
+            <h2 class="employee-item-items">Troskovi fonda za zaposljavanje: {{employee.efContribution}}</h2>
+            <h2 class="employee-item-items">Troskovi socijalnog: {{employee.uiContribution}}</h2>
+        </div>
+    </div>
+    
+    
+
+
+    <button type="button" class="btn btn-primary mx-2 mt-3" (click)="redirectToChangeEmploymentStatus()">Izmeni status</button>
+    <button type="button" class="btn btn-primary mx-2 mt-3" (click)="cancelEmployment()">Odjavi zaposlenog</button>
     
 </mat-card>

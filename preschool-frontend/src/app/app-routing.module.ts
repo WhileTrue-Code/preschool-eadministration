@@ -7,7 +7,6 @@ import { CompetitionsComponent } from './components/competitions/competitions/co
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
 import { RegisterAprComponent } from './components/register-apr/register-apr.component';
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
-<<<<<<< Updated upstream
 import { CompetitionAddComponent } from './components/competitions/competition-add/competition-add.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { AppointmentAddComponent } from './components/eZdravstvo/appointment/appointment-add/appointment-add.component';
@@ -36,8 +35,8 @@ import { ZdravstvenaStanjaDoctorComponent } from './components/eZdravstvo/zdravs
 import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravstveno-stanje/zdravstveno-stanje-view-my/zdravstveno-stanje-view-my.component';
 import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
 import { EmployeeRequestsComponent } from './components/employee-requests/employee-requests.component';
-=======
->>>>>>> Stashed changes
+import { EmployeeChangeEmploymentStatusComponent } from './components/employee-change-employment-status/employee-change-employment-status.component';
+
 
 const routes: Routes = [
   {
@@ -121,7 +120,6 @@ const routes: Routes = [
     component: CompetitionViewComponent
   },
   {
-<<<<<<< Updated upstream
     path: "Prijava/:id",
     component: PrijavaComponent
   },
@@ -134,15 +132,12 @@ const routes: Routes = [
     component: CompetitionAddComponent
   },
   {
-=======
->>>>>>> Stashed changes
     path: "RegisterApr",
     component: RegisterAprComponent
   },
   {
     path: "MyAprs",
     component: MyAprsComponent
-<<<<<<< Updated upstream
   },
   {
     path: "Welcome",
@@ -183,8 +178,10 @@ const routes: Routes = [
   {
     path: "view-my-registry",
     component: ViewMyRegistryComponent
-=======
->>>>>>> Stashed changes
+  },
+  {
+    path: "ChangeEmploymentStatus",
+    component: EmployeeChangeEmploymentStatusComponent,
   }
 
 ];

@@ -253,7 +253,7 @@ func (service *CrosoServiceImpl) ChangeEmploymentStatus(id string, changeRequest
 	employee.EmploymentStatus = changeRequest.EmploymentStatus
 	employee.EmploymentDuration = changeRequest.EmploymentDuration
 
-	err = service.Repo.SaveEmployee(employee)
+	err = service.Repo.UpdateEmployee(employee)
 
 	return
 }
@@ -269,9 +269,10 @@ func (service *CrosoServiceImpl) CancelEmployment(id string) (err error) {
 	}
 
 	employee.EmploymentStatus = domain.UNEMPLOYED
+	employee.CompanyID = 0
 	employee.EmploymentDuration = 0
 
-	err = service.Repo.SaveEmployee(employee)
+	err = service.Repo.UpdateEmployee(employee)
 
 	return
 }

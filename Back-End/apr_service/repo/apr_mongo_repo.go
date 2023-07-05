@@ -40,11 +40,8 @@ func (repo *AprMongoRepo) SaveAprAccount(aprAccount *domain.AprAccount) (err err
 }
 
 func (repo *AprMongoRepo) FindAprAccountsByFounderID(founderID string) (results []domain.AprAccount, err error) {
-<<<<<<< Updated upstream
+
 	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID}})
-=======
-	cursor, err := repo.Collection.Find(context.Background(), bson.D{{"founderID", founderID}})
->>>>>>> Stashed changes
 	if err != nil {
 		repo.Logger.Info("Error in getting accounts by founderID",
 			zap.Error(err),
@@ -64,7 +61,6 @@ func (repo *AprMongoRepo) FindAprAccountsByFounderID(founderID string) (results 
 	return
 }
 
-<<<<<<< Updated upstream
 func (repo *AprMongoRepo) FindAprAccountsByCompanyID(companyID int) (found domain.AprAccount, err error) {
 	result := repo.Collection.FindOne(context.Background(), bson.D{{Key: "companyID", Value: companyID}})
 	if result.Err() != nil {
@@ -110,8 +106,6 @@ func (repo *AprMongoRepo) FindCompanyByFounderIDAndCompanyID(founderID string,
 	return
 }
 
-=======
->>>>>>> Stashed changes
 func (repo *AprMongoRepo) DoesExistAprWithID(ID int) (exists bool) {
 
 	result := repo.Collection.FindOne(context.Background(), bson.M{"companyID": ID})
@@ -120,7 +114,7 @@ func (repo *AprMongoRepo) DoesExistAprWithID(ID int) (exists bool) {
 	}
 
 	return true
-<<<<<<< Updated upstream
+
 }
 
 func (repo *AprMongoRepo) PatchCompany(newCompany domain.AprAccount) (err error) {
@@ -134,6 +128,5 @@ func (repo *AprMongoRepo) PatchCompany(newCompany domain.AprAccount) (err error)
 	}
 
 	return nil
-=======
->>>>>>> Stashed changes
+
 }

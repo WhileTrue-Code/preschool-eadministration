@@ -4,7 +4,7 @@
     <div style="text-align: center;">
         <button type="submit" class="btn btn-primary" (click)="redirectToRegister()">Registruj novog zaposlenog</button>
     </div>
-    <h2 class="mt-3" style="text-align: center; color:red;" *ngIf="employees.length == 0">Nemate registrovanih zaposlenih za firmu PIB {{this.companyID}}</h2>
+    <h2 class="mt-3" style="text-align: center; color:red;" *ngIf="employees.length == 0">Nemate registrovanih zaposlenih za firmu sa PIB brojem {{this.companyID}}</h2>
     <div *ngFor="let employee of employees">
         <div class="mb-5">
             <app-employee-list-item [employee]="employee"></app-employee-list-item>

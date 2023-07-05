@@ -21,4 +21,8 @@ export class AprService {
         return this.http.get<Company[]>(`${environment.baseApiUrl}/${this.url}/`);
     }
 
+    public LiquidateCompany(id: string): Observable<string> {
+        return this.http.get<string>(`${environment.baseApiUrl}/${this.url}/liquidate/${id}`);
+    }
+
 }

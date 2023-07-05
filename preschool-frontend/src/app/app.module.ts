@@ -20,7 +20,6 @@ import { CompetitionAddComponent } from './components/competitions/competition-a
 import { CompetitionItemComponent } from './components/competitions/competition-item/competition-item.component';
 import { CompetitionViewComponent } from './components/competitions/competition-view/competition-view.component';
 import { RegisterAprComponent } from './components/register-apr/register-apr.component';
-<<<<<<< Updated upstream
 import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
 import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
@@ -67,13 +66,8 @@ import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravs
 import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
 import { EmployeeRequestsComponent } from './components/employee-requests/employee-requests.component';
 import { EmployeeRequestItemComponent } from './components/employee-request-item/employee-request-item.component';
+import { EmployeeChangeEmploymentStatusComponent } from './components/employee-change-employment-status/employee-change-employment-status.component';
 
-
-=======
-import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MyAprsComponent } from './components/my-aprs/my-aprs.component';
-import { AprListItemComponent } from './components/apr-list-item/apr-list-item.component';
->>>>>>> Stashed changes
 
 @NgModule({
   declarations: [
@@ -93,7 +87,6 @@ import { AprListItemComponent } from './components/apr-list-item/apr-list-item.c
     CompetitionViewComponent,
     RegisterAprComponent,
     MyAprsComponent,
-<<<<<<< Updated upstream
     AprListItemComponent,
     WelcomeComponent,
     AppointmentsRegularComponent,
@@ -130,10 +123,9 @@ import { AprListItemComponent } from './components/apr-list-item/apr-list-item.c
     ZdravstvenoStanjeViewMyComponent,
     VaccinationsMyRegularComponent,
     EmployeeRequestsComponent,
-    EmployeeRequestItemComponent
-=======
-    AprListItemComponent
->>>>>>> Stashed changes
+    EmployeeRequestItemComponent,
+    EmployeeChangeEmploymentStatusComponent
+
   ],
   imports: [
     BrowserModule,
@@ -149,12 +141,9 @@ import { AprListItemComponent } from './components/apr-list-item/apr-list-item.c
     MatNativeDateModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-<<<<<<< Updated upstream
     MatSnackBarModule,
-=======
-    MatCheckboxModule,
-    MatSnackBarModule
->>>>>>> Stashed changes
+    // MatCheckboxModule,
+
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
