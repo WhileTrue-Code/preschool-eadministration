@@ -18,16 +18,19 @@ import (
 
 type AprServiceImpl struct {
 	Repo   domain.AprRepository
+	Nats   *nats.Conn
 	Logger *zap.Logger
 }
 
 var (
 	GET_COMPANY_QUEUE = "COMPANY_GET_BY_FOUNDER_COMPANY_ID"
+	UPDATE_COMPANY    = "UPDATE_COMPANY"
 )
 
-func NewAprService(aprRepo domain.AprRepository, logger *zap.Logger) domain.AprService {
+func NewAprService(aprRepo domain.AprRepository, natsConn *nats.Conn, logger *zap.Logger) domain.AprService {
 	return &AprServiceImpl{
 		Repo:   aprRepo,
+		Nats:   natsConn,
 		Logger: logger,
 	}
 }
@@ -47,17 +50,73 @@ func (service *AprServiceImpl) FindByFounderIDAndCompanyID(founderID string,
 }
 
 func (service *AprServiceImpl) UpdateCompanyData(company domain.AprAccount) (err error) {
-	return service.Repo.PatchCompany(company)
+	err = service.Repo.PatchCompany(company)
+
+	bytes, _ := json.Marshal(company)
+	msg, err := service.Nats.Request(os.Getenv(UPDATE_COMPANY), bytes, 5*time.Second)
+	if err != nil {
+		service.Logger.Error("unable to get msg from nats.",
+			zap.Error(err),
+		)
+		return
+	}
+
+	var isUpdated bool
+	_ = json.Unmarshal(msg.Data, &isUpdated)
+
+	if !isUpdated {
+		service.Logger.Info("company not updated on croso service")
+		return fmt.Errorf("company not updated on croso")
+	}
+
+	return nil
 }
 
-func (service *AprServiceImpl) LiquidateCompany(companyID string) error {
+func (service *AprServiceImpl) LiquidateCompany(companyID string) (err error) {
 
 	companyIDI, _ := strconv.Atoi(companyID)
 	company, _ := service.Repo.FindAprAccountsByCompanyID(companyIDI)
 
 	company.IsLiquidated = true
 
-	return service.Repo.PatchCompany(company)
+	err = service.Repo.PatchCompany(company)
+	if err != nil {
+		return fmt.Errorf("greska na serveru pokusajte ponovo")
+	}
+
+	bytes, err := json.Marshal(company)
+	if err != nil {
+		service.Logger.Error("unable to marshal.",
+			zap.Error(err),
+		)
+		return
+	}
+	msg, err := service.Nats.Request(os.Getenv(UPDATE_COMPANY), bytes, 5*time.Second)
+	service.Logger.Info("request pushed")
+	if err != nil {
+		service.Logger.Error("unable to get msg from nats.",
+			zap.Error(err),
+		)
+		return
+	}
+
+	var isUpdated bool
+	err = json.Unmarshal(msg.Data, &isUpdated)
+	if err != nil {
+		service.Logger.Error("unable to unmarshal response from nats"+
+			".",
+			zap.Error(err),
+		)
+	}
+
+	if !isUpdated {
+		service.Logger.Info("company not updated on croso service")
+		return fmt.Errorf("company not updated on croso")
+	}
+
+	service.Logger.Info("END OF UPDATE")
+
+	return nil
 }
 
 func (service *AprServiceImpl) generatePIB() (pibI int) {

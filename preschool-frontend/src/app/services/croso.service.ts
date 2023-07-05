@@ -8,6 +8,7 @@ import { Company } from "../models/aprAccount.model";
 import { CompanyID } from "../models/companyID.model";
 import { Employee } from "../models/employee.model";
 import { ChangeEmploymentStatus } from "../dto/changeEmploymentStatus";
+import { ResolveStatus } from "../dto/resolveStatus";
 
 @Injectable({
     providedIn: 'root'
@@ -30,6 +31,14 @@ export class CrosoService {
 
     public GetEmployeesByCompanyID(companyID: string): Observable<Employee[]> {
         return this.http.get<Employee[]>(`${environment.baseApiUrl}/${this.url}/employees/${companyID}`);
+    }
+
+    public GetPendingEmployees(): Observable<Employee[]> {
+        return this.http.get<Employee[]>(`${environment.baseApiUrl}/${this.url}/employee/pending`);
+    }
+
+    public ResolveRegisterStatus(resolveStatus: ResolveStatus): Observable<string> {
+        return this.http.patch<string>(`${environment.baseApiUrl}/${this.url}/employee/status`, resolveStatus);
     }
 
     public ChangeEmploymentStatus(id: string, changeEmploymentStatus: ChangeEmploymentStatus): Observable<string> {

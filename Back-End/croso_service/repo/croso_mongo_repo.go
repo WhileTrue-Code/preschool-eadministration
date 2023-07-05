@@ -41,6 +41,11 @@ func (repo *CrosoMongoRepo) SaveCrosoAccount(crosoAccount *domain.CrosoAccount) 
 	return
 }
 
+func (repo *CrosoMongoRepo) UpdateCompany(company *domain.CrosoAccount) (err error) {
+	_, err = repo.Collection.UpdateByID(context.Background(), (*company).ID, bson.M{"$set": *company})
+	return
+}
+
 func (repo *CrosoMongoRepo) FindCrosoAccountsByFounderID(founderID string) (results []domain.CrosoAccount) {
 	cursor, err := repo.Collection.Find(context.Background(), bson.D{{Key: "founderID", Value: founderID}})
 	if err != nil {
@@ -57,6 +62,24 @@ func (repo *CrosoMongoRepo) FindCrosoAccountsByFounderID(founderID string) (resu
 			zap.Error(err),
 		)
 		return
+	}
+
+	return
+}
+
+func (repo *CrosoMongoRepo) FindCompanyByCompanyID(company domain.CrosoAccount) (found domain.CrosoAccount, err error) {
+	result := repo.Collection.FindOne(context.Background(), bson.D{{Key: "companyID", Value: company.CompanyID}})
+	if result.Err() != nil {
+		repo.Logger.Error("Error in getting accounts by companyID",
+			zap.Error(result.Err()),
+		)
+		err = result.Err()
+		return
+	}
+
+	err = result.Decode(&found)
+	if err != nil {
+		repo.Logger.Error("error in decoding result into a structure", zap.Error(err))
 	}
 
 	return
@@ -98,10 +121,16 @@ func (repo *CrosoMongoRepo) GetEmployee(filter bson.M) (employee *domain.Employe
 
 func (repo *CrosoMongoRepo) GetEmployees(filter bson.D) (employees []domain.Employee) {
 	results, err := repo.CollectionEmployees.Find(context.Background(), filter)
+	if err != nil {
+		repo.Logger.Error("error in getting pending employees",
+			zap.Error(err),
+		)
+		return
+	}
 
 	employees = make([]domain.Employee, 0)
 
-	err = results.Decode(&employees)
+	err = results.All(context.Background(), &employees)
 	if err != nil {
 		repo.Logger.Error("error in decoding cursor results to []domain.Employee",
 			zap.Error(err),

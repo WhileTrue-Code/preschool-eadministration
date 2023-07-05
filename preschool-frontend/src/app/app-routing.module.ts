@@ -36,6 +36,7 @@ import { ZdravstvenoStanjeViewMyComponent } from './components/eZdravstvo/zdravs
 import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccination/vaccinations-my-regular/vaccinations-my-regular.component';
 import { EmployeeRequestsComponent } from './components/employee-requests/employee-requests.component';
 import { EmployeeChangeEmploymentStatusComponent } from './components/employee-change-employment-status/employee-change-employment-status.component';
+import { ChangeCompanyDetailsComponent } from './components/change-company-details/change-company-details.component';
 
 
 const routes: Routes = [
@@ -182,6 +183,10 @@ const routes: Routes = [
   {
     path: "ChangeEmploymentStatus",
     component: EmployeeChangeEmploymentStatusComponent,
+  },
+  {
+    path: "ChangeCompanyDetails",
+    component: ChangeCompanyDetailsComponent,
   }
 
 ];

@@ -22,13 +22,14 @@ type CrosoServiceImpl struct {
 
 var (
 	GET_COMPANY         = "COMPANY_GET_BY_FOUNDER_COMPANY_ID"
+	UPDATE_COMPANY      = "UPDATE_COMPANY"
 	GET_EMPLOYEE_STATUS = "GET_EMPLOYEE_STATUS_BY_ID"
 	CHECK_USER_JMBG     = "CHECK_USER_JMBG"
 )
 
-func NewAprService(aprRepo domain.CrosoRepository, nats *nats.Conn, logger *zap.Logger) domain.CrosoService {
+func NewAprService(crosoRepo domain.CrosoRepository, nats *nats.Conn, logger *zap.Logger) domain.CrosoService {
 	return &CrosoServiceImpl{
-		Repo:   aprRepo,
+		Repo:   crosoRepo,
 		Nats:   nats,
 		Logger: logger,
 	}
@@ -97,8 +98,19 @@ func (service *CrosoServiceImpl) RequestRegisterEmployee(employee *domain.Employ
 		return fmt.Errorf(errors.ERR_RS_USER_NOT_EXIST)
 	}
 
+	found := service.Repo.GetEmployee(bson.M{"employeeID": employee.EmployeeID})
+	if found != nil {
+		if found.CompanyID != 0 {
+			return fmt.Errorf("korisnik sa unetim jmbg je prijavljen u drugoj firmi")
+		}
+		employee.RegistrationStatus = domain.PENDING
+		employee.RegistrationTimestamp = time.Now().Unix()
+		calculateTaxesAndContributions(found)
+		return service.Repo.UpdateEmployee(found)
+	}
+
 	employee.ID = primitive.NewObjectID()
-	employee.RegistrationStatus = domain.ACCEPTED
+	employee.RegistrationStatus = domain.PENDING
 	employee.RegistrationTimestamp = time.Now().Unix()
 	calculateTaxesAndContributions(employee)
 	return service.Repo.SaveEmployee(employee)
@@ -196,7 +208,58 @@ func (service *CrosoServiceImpl) SubscribeToNats(connection *nats.Conn) {
 		return
 	}
 
-	service.Logger.Sugar().Infof("Subscribed to channel: %s", os.Getenv(GET_EMPLOYEE_STATUS))
+	_, err = connection.QueueSubscribe(os.Getenv(UPDATE_COMPANY), UPDATE_COMPANY, func(message *nats.Msg) {
+		var request domain.CrosoAccount
+		err := json.Unmarshal(message.Data, &request)
+		if err != nil {
+			service.Logger.Error("error in unmarshalling GetCompany struct")
+			return
+		}
+
+		found, err := service.Repo.FindCompanyByCompanyID(request)
+		if err != nil {
+			return
+		}
+
+		request.ID = found.ID
+
+		updated := true
+		err = service.Repo.UpdateCompany(&request)
+		if err != nil {
+			service.Logger.Error("error in finding company",
+				zap.Error(err),
+				zap.Any("company", request),
+			)
+			updated = false
+		}
+
+		response, err := json.Marshal(updated)
+		if err != nil {
+			service.Logger.Error("error in marshalling Company struct",
+				zap.Error(err),
+			)
+			return
+		}
+
+		err = connection.Publish(message.Reply, response)
+		if err != nil {
+			service.Logger.Error("error in publishing response",
+				zap.Error(err),
+			)
+			return
+		}
+
+		service.Logger.Info("PUBLISHED MESSAGE")
+
+	})
+	if err != nil {
+		service.Logger.Error("error in subscribing to NATS queue",
+			zap.Error(err),
+		)
+		return
+	}
+
+	service.Logger.Sugar().Infof("Subscribed to channels")
 }
 
 func calculateTaxesAndContributions(employee *domain.Employee) {

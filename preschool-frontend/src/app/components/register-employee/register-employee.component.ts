@@ -94,6 +94,7 @@ export class RegisterEmployeeComponent implements OnInit {
     employee.address = this.formGroup.get('address')!.value
     employee.employeeID = this.formGroup.get('jmbg')!.value
     employee.companyID = parseInt(this.companyID)
+    employee.netSalary = parseInt(this.formGroup.get('netSalary')!.value) 
     employee.idCardNumber = this.formGroup.get('idCardNumber')!.value
     employee.passportNumber = this.formGroup.get('passportNumber')!.value
     employee.employmentStatus = this.formGroup.get('employmentStatus')!.value

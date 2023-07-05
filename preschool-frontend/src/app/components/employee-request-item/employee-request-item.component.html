@@ -8,7 +8,11 @@
     <h2 *ngIf="employee.employmentStatus == 'definite_contract'" class="employee-item-items">
         Trajanje: {{employee.employmentDuration}}
     </h2>
-    <h2 class="employee-item-items">JMBG: {{employee.employeeID}}</h2>
+    <h2 class="employee-item-items">JMBG: {{employee.employeeID}}</h2><br/>
 
+    <div>
+        <button class="btn btn-primary m-3" (click)="patchStatus(2)">Prihvati</button>
+        <button class="btn btn-primary" (click)="patchStatus(3)">Odbij</button>
+    </div>
     
 </mat-card>

@@ -28,7 +28,7 @@ func NewController(aprService domain.AprService, logger *zap.Logger) *AprControl
 func (controller *AprController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterAprCompany).Methods("POST")
 	router.HandleFunc("/", controller.FindAprByFounderID).Methods("GET")
-	router.HandleFunc("/{id}", controller.UpdateCompanyData).Methods("PUT")
+	router.HandleFunc("/", controller.UpdateCompanyData).Methods("PUT")
 	router.HandleFunc("/liquidate/{id}", controller.LiquidateCompany).Methods("PUT")
 	http.Handle("/", router)
 	controller.Logger.Info("Controller router endpoints initialized and handle run.")
@@ -126,8 +126,9 @@ func (controller *AprController) UpdateCompanyData(writer http.ResponseWriter, r
 	}
 
 	controller.Logger.Info("finished UpdateCompanyData")
-	msg := "Podaci preduzeća su uspešno ažurirani."
-	writer.Write([]byte(msg))
+	var msg any = "Podaci preduzeća su uspešno ažurirani."
+	bytesMsg, _ := json.Marshal(msg)
+	writer.Write(bytesMsg)
 }
 
 func (controller *AprController) LiquidateCompany(writer http.ResponseWriter, req *http.Request) {

@@ -8,8 +8,9 @@ import (
 	"apr_service/startup/config"
 	"context"
 	"fmt"
+	"github.com/nats-io/nats.go"
 	"log"
-	"nats"
+	natsBroker "nats"
 	"net/http"
 	"os"
 	"os/signal"
@@ -41,16 +42,16 @@ func NewServer() *Server {
 }
 
 func (server *Server) Start() {
-	natsConn := nats.Conn()
+	natsConn := natsBroker.Conn()
 	defer natsConn.Close()
 
 	repository := server.initAprRepository()
-	service := server.initAprService(repository)
-	controller := server.initController(service)
+	aprService := server.initAprService(repository, natsConn)
+	aprController := server.initController(aprService)
 
-	service.SubscribeToNats(natsConn)
+	aprService.SubscribeToNats(natsConn)
 
-	server.start(controller)
+	server.start(aprController)
 }
 
 func (server *Server) initAprRepository() domain.AprRepository {
@@ -64,8 +65,8 @@ func (server *Server) initAprRepository() domain.AprRepository {
 	return repo.NewMongoRepo(cli, repoLogger)
 }
 
-func (server *Server) initAprService(repo domain.AprRepository) domain.AprService {
-	return service.NewAprService(repo, server.Logger.Named("[APR / SERVICE]"))
+func (server *Server) initAprService(repo domain.AprRepository, nats *nats.Conn) domain.AprService {
+	return service.NewAprService(repo, nats, server.Logger.Named("[APR / SERVICE]"))
 }
 
 func (server *Server) initController(service domain.AprService) *controller.AprController {

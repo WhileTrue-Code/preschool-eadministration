@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
+import { ResourceLoader } from '@angular/compiler';
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar, MatSnackBarConfig } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { ResolveStatus } from 'src/app/dto/resolveStatus';
 import { Employee } from 'src/app/models/employee.model';
 import { CrosoService } from 'src/app/services/croso.service';
 
@@ -29,6 +31,34 @@ export class EmployeeRequestItemComponent implements OnInit {
     }else{
       this.status = "nezaposlen/odjavljen"
     }
+  }
+
+  patchStatus(status: number) {
+    let resolveStatus = new ResolveStatus();
+    resolveStatus.companyID = this.employee.companyID;
+    resolveStatus.employeeID = this.employee.employeeID;
+    resolveStatus.status = status;
+
+    this.crosoService.ResolveRegisterStatus(resolveStatus)
+    .subscribe({
+      next: (response: string) => {
+        this.openSnackBar(response, 1500);
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log('error occured')
+      }
+    })
+  }
+
+  openSnackBar(msg: string, duration: number) {
+    let config = new MatSnackBarConfig()
+    let defaultDuration = 1500;
+    if (duration <= 0) {
+      duration = defaultDuration;
+    }
+    
+    config.duration = duration;
+    this.matSnackBar.open(msg, "ok", config)
   }
 
  

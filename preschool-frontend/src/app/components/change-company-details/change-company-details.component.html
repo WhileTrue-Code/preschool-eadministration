@@ -1,0 +1,37 @@
+<mat-card style="width: 50%; margin:auto; margin-top: 10px;">
+    <mat-card-title class="card-title" style="text-align: center; margin-bottom: 15px;">Izmena podataka o firmi</mat-card-title>
+    <div class="form-group">
+        <form [formGroup]="formGroup">
+            <mat-card-content>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Naziv firme</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="name" [(ngModel)]="companyName"
+                        (change)="onNameChange($event)"
+                        [ngClass]="{ 'is-invalid': submitted && changeAprForm['name'].errors }">
+                    <div *ngIf="submitted && changeAprForm['name'].errors" class="invalid-feedback">
+                        <div *ngIf="changeAprForm['name'].errors['required']">Naziv firme je obavezan.</div>
+                        <div *ngIf="changeAprForm['name'].errors['minlength']">Naziv firme mora biti dužine minimalno 3 karaktera.</div>
+                        <div *ngIf="changeAprForm['name'].errors['maxlength']">Naziv firme ne sme biti duži od 30 karaktera.</div>
+                        <div *ngIf="changeAprForm['name'].errors['pattern']">Specijalni karakteri nisu dozvoljeni u imenu firme.</div>
+                    </div>   
+                </div>
+                <div class="mb-3 w-50" style="margin: auto;">
+                    <h2 class="box-title">Adresa firme</h2>
+                    <input type="text" maxlength="30" class="form-control" formControlName="address" [(ngModel)]="companyAddress"
+                        (change)="onAddressChange($event)"
+                        [ngClass]="{ 'is-invalid': submitted && changeAprForm['address'].errors }">
+                    <div *ngIf="submitted && changeAprForm['address'].errors" class="invalid-feedback">
+                        <div *ngIf="changeAprForm['address'].errors['required']">Adresa firme je obavezna.</div>
+                        <div *ngIf="changeAprForm['address'].errors['minlength']">Adresa firme mora biti dužine minimalno 3 karaktera.</div>
+                        <div *ngIf="changeAprForm['address'].errors['maxlength']">Adresa firme ne sme biti duža od 30 karaktera.</div>
+                        <div *ngIf="changeAprForm['address'].errors['pattern']">Specijalni karakteri nisu dozvoljeni u adresi firme.</div>
+                    </div>   
+                </div>
+                <div class="form-group form-check mt-4" style="text-align: center;">
+                    <button type="submit" class="btn btn-primary" (click)="onSubmit()">Izmeni podatke</button>
+                </div>
+            </mat-card-content>
+        </form>
+    </div>
+</mat-card>
+

@@ -29,7 +29,7 @@ func (controller *CrosoController) Init(router *mux.Router) {
 	router.HandleFunc("/register", controller.RegisterCrosoCompany).Methods("POST")
 	router.HandleFunc("/company", controller.GetMyCrosos).Methods("GET")
 	router.HandleFunc("/employee/register", controller.RequestEmployeeRegistration).Methods("POST")
-	router.HandleFunc("/employee/pending", controller.RequestEmployeeRegistration).Methods("GET")
+	router.HandleFunc("/employee/pending", controller.GetPendingRegisterEmployeeRequests).Methods("GET")
 	router.HandleFunc("/employee/status", controller.PatchEmployeeRegistrationStatus).Methods("PATCH")
 	router.HandleFunc("/employees/{id}/employmentStatus", controller.ChangeEmploymentStatus).Methods("PATCH")
 	router.HandleFunc("/employees/{id}/cancelEmployment", controller.CancelEmployment).Methods("PATCH")
@@ -152,7 +152,7 @@ func (controller *CrosoController) RequestEmployeeRegistration(writer http.Respo
 }
 
 func (controller *CrosoController) GetPendingRegisterEmployeeRequests(writer http.ResponseWriter, request *http.Request) {
-	var pendingRequests interface{} = controller.Service.GetPendingEmployeeRequests()
+	pendingRequests := controller.Service.GetPendingEmployeeRequests()
 	bytes, _ := json.Marshal(pendingRequests)
 	writer.Write(bytes)
 }

@@ -5,7 +5,6 @@ import (
 	"apr_service/errors"
 	"context"
 	"fmt"
-
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.uber.org/zap"
@@ -69,7 +68,7 @@ func (repo *AprMongoRepo) FindAprAccountsByCompanyID(companyID int) (found domai
 		)
 		return
 	}
-
+	found = domain.AprAccount{}
 	err = result.Decode(&found)
 	if err != nil {
 		repo.Logger.Info("Error in decoding found result.",
@@ -118,7 +117,7 @@ func (repo *AprMongoRepo) DoesExistAprWithID(ID int) (exists bool) {
 }
 
 func (repo *AprMongoRepo) PatchCompany(newCompany domain.AprAccount) (err error) {
-	result, err := repo.Collection.UpdateByID(context.Background(), newCompany.ID, newCompany)
+	result, err := repo.Collection.UpdateByID(context.Background(), newCompany.ID, bson.M{"$set": newCompany})
 	if result.UpsertedCount != 1 && err != nil {
 		repo.Logger.Error(errors.ERR_PATCHING_BY_ID,
 			zap.Error(err),
@@ -130,3 +129,18 @@ func (repo *AprMongoRepo) PatchCompany(newCompany domain.AprAccount) (err error)
 	return nil
 
 }
+
+//func (repo *AprMongoRepo) PatchCompany(newCompany domain.AprAccount) (err error) {
+//	repo.Logger.Info("company\n\n\n\n\n\n", zap.Any("company", newCompany))
+//	result, err := repo.Collection.UpdateByID(context.Background(), newCompany.ID, newCompany)
+//	if result.UpsertedCount != 1 && err != nil {
+//		repo.Logger.Error(errors.ERR_PATCHING_BY_ID,
+//			zap.Error(err),
+//			zap.Any("newCompany", newCompany),
+//		)
+//		return fmt.Errorf(errors.ERR_PATCHING_BY_ID)
+//	}
+//
+//	return nil
+//
+//}

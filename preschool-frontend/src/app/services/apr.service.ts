@@ -21,8 +21,12 @@ export class AprService {
         return this.http.get<Company[]>(`${environment.baseApiUrl}/${this.url}/`);
     }
 
-    public LiquidateCompany(id: string): Observable<string> {
-        return this.http.get<string>(`${environment.baseApiUrl}/${this.url}/liquidate/${id}`);
+    public UpdateCompany(company: Company): Observable<string> {
+        return this.http.put<string>(`${environment.baseApiUrl}/${this.url}/`, company);
+    }
+
+    public LiquidateCompany(companyID: number): Observable<string> {
+        return this.http.put<string>(`${environment.baseApiUrl}/${this.url}/liquidate/${companyID}`, null);
     }
 
 }

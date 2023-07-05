@@ -67,6 +67,7 @@ import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccinat
 import { EmployeeRequestsComponent } from './components/employee-requests/employee-requests.component';
 import { EmployeeRequestItemComponent } from './components/employee-request-item/employee-request-item.component';
 import { EmployeeChangeEmploymentStatusComponent } from './components/employee-change-employment-status/employee-change-employment-status.component';
+import { ChangeCompanyDetailsComponent } from './components/change-company-details/change-company-details.component';
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import { EmployeeChangeEmploymentStatusComponent } from './components/employee-c
     VaccinationsMyRegularComponent,
     EmployeeRequestsComponent,
     EmployeeRequestItemComponent,
-    EmployeeChangeEmploymentStatusComponent
+    EmployeeChangeEmploymentStatusComponent,
+    ChangeCompanyDetailsComponent
 
   ],
   imports: [
