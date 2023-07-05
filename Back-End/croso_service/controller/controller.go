@@ -141,6 +141,12 @@ func (controller *CrosoController) RequestEmployeeRegistration(writer http.Respo
 			http.Error(writer, err.Error(), http.StatusNotAcceptable)
 			return
 		}
+
+		if err.Error() == errors.ERR_RS_EMPLOYEE_ALREADY_EMPLOYEED {
+			http.Error(writer, err.Error(), http.StatusNotAcceptable)
+			return
+		}
+
 		http.Error(writer, errors.ERR_SERVER_INTERNAL_MSG, http.StatusInternalServerError)
 		return
 	}
