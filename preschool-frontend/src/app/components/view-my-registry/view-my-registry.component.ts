@@ -35,6 +35,7 @@ export class ViewMyRegistryComponent implements OnInit {
       {
         next: (value) => {
           if(value==null){
+            console.log(JSON.stringify(value))
             this.openSnackBar("Korisnik nije preminuo!", "OK")
           }else{
             this.response = value
