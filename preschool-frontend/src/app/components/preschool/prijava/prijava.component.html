@@ -24,10 +24,21 @@
                 <label>Prezime</label>
                 <input type="text" class="form-control" id="" formControlName="prezime">
             </div>
-            <div class="mb-3">
+            <!-- <div class="mb-3">
                 <label>Opstina</label>
                 <input type="text" class="form-control" id="" formControlName="opstina">
-            </div>
+            </div> -->
+            <div class="mb-3">
+                <mat-label>Opstina</mat-label>
+                <select matNativeControl required class="form-control" id="" formControlName="opstina" >
+                  <option value="karaburma">Karaburma</option>
+                  <option value="vracar">Vracar</option>
+                  <option value="dorcol">Dorcol</option>
+                  <option value="temerin">Temerin</option>
+                  <option value="novi-sad">Novi Sad</option>
+                  <option value="zrenjanin">Zrenjanin</option>
+                </select>
+          </div>
             <div class="mb-3">
                 <label>Adresa</label>
                 <input type="text" class="form-control" id="" formControlName="adresa">
