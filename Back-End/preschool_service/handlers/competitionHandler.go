@@ -105,10 +105,10 @@ func (p *ApplyCompetitionHandler) ApplyForCompetition(rw http.ResponseWriter, h 
 		return
 	}
 
-	if deteZS.ZdravstveniProblemi != "" {
+	if deteZS.ZdravstveniProblemi != "Nema" {
 		insertComp.Bodovi = insertComp.Bodovi + 2
 	}
-	if deteZS.SmetnjeURazvoju != "" {
+	if deteZS.SmetnjeURazvoju != "Nema" {
 		insertComp.Bodovi = insertComp.Bodovi + 3
 	}
 

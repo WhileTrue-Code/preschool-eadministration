@@ -117,7 +117,6 @@ func (controller *RegistrarController) Marriage(writer http.ResponseWriter, req 
 }
 
 func (controller *RegistrarController) UpdateCertificate(writer http.ResponseWriter, req *http.Request) {
-
 	var userDied entity.UserDied
 	err := json.NewDecoder(req.Body).Decode(&userDied)
 	if err != nil {
@@ -134,7 +133,7 @@ func (controller *RegistrarController) UpdateCertificate(writer http.ResponseWri
 	}
 
 	writer.WriteHeader(http.StatusOK)
-	writer.Write([]byte("Okej"))
+	//writer.Write([]byte("Okej"))
 	//jsonResponse(token, writer)
 }
 

@@ -68,6 +68,8 @@ import { EmployeeRequestsComponent } from './components/employee-requests/employ
 import { EmployeeRequestItemComponent } from './components/employee-request-item/employee-request-item.component';
 import { EmployeeChangeEmploymentStatusComponent } from './components/employee-change-employment-status/employee-change-employment-status.component';
 import { ChangeCompanyDetailsComponent } from './components/change-company-details/change-company-details.component';
+import { UserDiedComponent } from './components/eZdravstvo/user-died/user-died.component';
+
 
 
 @NgModule({
@@ -126,8 +128,8 @@ import { ChangeCompanyDetailsComponent } from './components/change-company-detai
     EmployeeRequestsComponent,
     EmployeeRequestItemComponent,
     EmployeeChangeEmploymentStatusComponent,
-    ChangeCompanyDetailsComponent
-
+    ChangeCompanyDetailsComponent,
+    UserDiedComponent
   ],
   imports: [
     BrowserModule,

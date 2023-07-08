@@ -37,7 +37,7 @@ import { VaccinationsMyRegularComponent } from './components/eZdravstvo/vaccinat
 import { EmployeeRequestsComponent } from './components/employee-requests/employee-requests.component';
 import { EmployeeChangeEmploymentStatusComponent } from './components/employee-change-employment-status/employee-change-employment-status.component';
 import { ChangeCompanyDetailsComponent } from './components/change-company-details/change-company-details.component';
-
+import { UserDiedComponent } from './components/eZdravstvo/user-died/user-died.component';
 
 const routes: Routes = [
   {
@@ -99,6 +99,10 @@ const routes: Routes = [
   {
     path: "Zdravstveno-Stanje-Add",
     component: ZdravstvenoStanjeAddComponent
+  },
+  {
+    path: "User-Died",
+    component: UserDiedComponent
   },
   {
     path: "Competitions",
